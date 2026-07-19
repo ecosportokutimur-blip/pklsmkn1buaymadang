@@ -1,0 +1,2353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PKL SMK Negeri 1 Buay Madang — Konveksi Jersey Eco Sport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --bg-2: #e9ecef;
+    --card: #ffffff;
+    --card-2: #f8f9fa;
+    --fg: #1a1d21;
+    --fg-2: #4a5057;
+    --muted: #8b929b;
+    --accent: #d4af37;
+    --accent-2: #b8941e;
+    --accent-soft: #e6c869;
+    --border: #d1d5db;
+    --border-2: #c4c9cf;
+  }
+  
+  * { -webkit-font-smoothing: antialiased; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+  
+  .font-display { font-family: 'Rajdhani', sans-serif; }
+  .font-heading { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.02em; }
+  
+  .noise-overlay {
+    position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  
+  .hero-bg {
+    background: 
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(212,175,55,0.1), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(26,29,33,0.05), transparent 60%),
+      linear-gradient(180deg, #ffffff 0%, #f4f5f7 100%);
+  }
+  
+  .orb {
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; pointer-events: none;
+    animation: float 18s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(30px,-40px) scale(1.1); }
+    66% { transform: translate(-20px,30px) scale(0.95); }
+  }
+  
+  .thread-line {
+    position: absolute; height: 1px; background: linear-gradient(90deg, transparent, var(--border-2), transparent);
+    opacity: 0.6;
+  }
+  
+  .btn-primary {
+    background: var(--fg);
+    color: #fff; font-weight: 700; padding: 14px 28px; border-radius: 6px;
+    transition: all 0.3s cubic-bezier(.4,0,.2,1); position: relative; overflow: hidden;
+    text-transform: uppercase; letter-spacing: 0.05em; font-size: 14px;
+    border: 2px solid var(--fg);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--fg); transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(212,175,55,0.4); }
+  
+  .btn-ghost {
+    border: 2px solid var(--border-2); color: var(--fg); padding: 13px 26px; border-radius: 6px;
+    transition: all 0.3s; background: transparent; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: rgba(212,175,55,0.05); }
+  
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px; transition: all 0.3s cubic-bezier(.4,0,.2,1);
+    position: relative; overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+  }
+  .card:hover {
+    border-color: var(--border-2); transform: translateY(-4px);
+    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
+  }
+  .card:hover::before { transform: scaleX(1); }
+  
+  .photo-frame {
+    position: relative; overflow: hidden; border-radius: 8px;
+    aspect-ratio: 3/4; background: var(--bg-2);
+  }
+  .photo-frame img {
+    width:100%; height:100%; object-fit: cover;
+    transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+    filter: grayscale(20%) contrast(1.05);
+  }
+  .photo-frame:hover img { transform: scale(1.05); filter: grayscale(0%) contrast(1.1); }
+  .photo-frame::after {
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(180deg, transparent 50%, rgba(26,29,33,0.85) 100%);
+    pointer-events: none;
+  }
+  
+  .stat-num {
+    font-family: 'Oswald', sans-serif; font-weight: 700; color: var(--fg);
+  }
+  
+  .input {
+    background: var(--card-2); border: 1px solid var(--border); border-radius: 6px;
+    padding: 14px 16px; color: var(--fg); width: 100%; transition: all 0.2s;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
+  }
+  .input:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(212,175,55,0.15); }
+  .input::placeholder { color: var(--muted); }
+  
+  .upload-zone {
+    border: 2px dashed var(--border-2); border-radius: 8px; padding: 36px;
+    text-align: center; transition: all 0.3s; cursor: pointer;
+    background: var(--card-2);
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--accent); background: rgba(212,175,55,0.04);
+  }
+  
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px;
+    background: var(--fg); border: 1px solid var(--fg);
+    border-radius: 4px; font-size: 11px; font-weight: 700; color: #fff;
+    letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Rajdhani', sans-serif;
+  }
+  .pill-accent {
+    background: var(--accent); border-color: var(--accent); color: var(--fg);
+  }
+  .pill-outline {
+    background: transparent; border: 1px solid var(--border-2); color: var(--fg-2);
+  }
+  
+  .section-num {
+    font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600;
+    color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
+  }
+  
+  .marquee {
+    display: flex; gap: 60px; animation: marquee 40s linear infinite; white-space: nowrap;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  
+  .jersey-float { animation: jerseyFloat 6s ease-in-out infinite; }
+  @keyframes jerseyFloat {
+    0%,100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-12px) rotate(1deg); }
+  }
+  
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  
+  .gallery-img {
+    aspect-ratio: 4/3; border-radius: 8px; overflow: hidden; position: relative;
+    background: var(--bg-2);
+  }
+  .gallery-img img { width:100%; height:100%; object-fit: cover; transition: transform 0.5s; }
+  .gallery-img:hover img { transform: scale(1.08); }
+  
+  .timeline-item {
+    position: relative; padding-left: 32px; padding-bottom: 28px;
+    border-left: 2px solid var(--border);
+  }
+  .timeline-item:last-child { border-left-color: transparent; }
+  .timeline-item::before {
+    content:''; position:absolute; left:-6px; top:4px; width:10px; height:10px;
+    background: var(--accent); border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(212,175,55,0.2);
+  }
+  
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 400;
+    background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--accent);
+    padding: 16px 20px; border-radius: 8px; max-width: 360px;
+    transform: translateX(120%); transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15);
+  }
+  .toast.show { transform: translateX(0); }
+  
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+  
+  .pattern-grid {
+    background-image: 
+      linear-gradient(rgba(26,29,33,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,29,33,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  
+  /* ===== ADMIN DASHBOARD STYLES ===== */
+  .admin-overlay {
+    position: fixed; inset: 0; z-index: 200; display: none;
+    background: rgba(26,29,33,0.6); backdrop-filter: blur(12px);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .admin-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .login-card {
+    background: #fff; border-radius: 16px; padding: 40px;
+    width: 100%; max-width: 420px; position: relative; overflow: hidden;
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.4);
+    animation: slideUp 0.4s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .login-card::before {
+    content:''; position: absolute; top:0; left:0; right:0; height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+  }
+
+  .admin-dashboard {
+    position: fixed; inset: 0; z-index: 250; background: var(--bg);
+    display: none; flex-direction: column;
+  }
+  .admin-dashboard.show { display: flex; }
+
+  .admin-header {
+    background: #fff; border-bottom: 1px solid var(--border);
+    padding: 16px 28px; display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  }
+  .admin-body { flex: 1; display: flex; overflow: hidden; }
+  .admin-sidebar {
+    width: 260px; background: var(--fg); color: #fff; padding: 24px 16px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .admin-sidebar-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    border-radius: 8px; cursor: pointer; transition: all 0.2s;
+    color: rgba(255,255,255,0.6); font-weight: 600; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    background: transparent; border: none; width: 100%; text-align: left; font-family: inherit;
+  }
+  .admin-sidebar-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+  .admin-sidebar-item.active { background: var(--accent); color: var(--fg); }
+  .admin-sidebar-item i { width: 18px; text-align: center; }
+
+  .admin-main {
+    flex: 1; padding: 32px; overflow-y: auto; background: var(--bg);
+  }
+  .admin-section { display: none; }
+  .admin-section.active { display: block; animation: fadeIn 0.3s; }
+
+  .stat-card {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px; position: relative; overflow: hidden;
+    transition: all 0.3s;
+  }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1); }
+  .stat-card::before {
+    content:''; position: absolute; top:0; left:0; right:0; height: 3px;
+    background: var(--accent); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .stat-card:hover::before { transform: scaleX(1); }
+
+  .admin-table { width: 100%; background: #fff; border-radius: 12px; overflow: hidden; border-collapse: collapse; }
+  .admin-table th {
+    background: var(--card-2); padding: 14px 16px; text-align: left;
+    font-size: 10px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border);
+  }
+  .admin-table td { padding: 14px 16px; font-size: 13px; border-bottom: 1px solid var(--border); }
+  .admin-table tr:hover td { background: var(--card-2); }
+  .admin-table tr:last-child td { border-bottom: none; }
+
+  .admin-badge {
+    display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px;
+    border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .badge-success { background: rgba(34,197,94,0.1); color: #16a34a; }
+  .badge-warning { background: rgba(245,158,11,0.1); color: #d97706; }
+  .badge-info { background: rgba(212,175,55,0.15); color: var(--accent-2); }
+
+  .icon-btn {
+    width: 32px; height: 32px; border-radius: 6px; display: inline-flex;
+    align-items: center; justify-content: center; transition: all 0.2s;
+    border: 1px solid transparent; cursor: pointer;
+  }
+  .icon-btn:hover { background: var(--bg-2); }
+  .icon-btn.edit:hover { background: rgba(212,175,55,0.1); color: var(--accent-2); }
+  .icon-btn.delete:hover { background: rgba(239,68,68,0.1); color: #dc2626; }
+
+  .admin-form-modal {
+    position: fixed; inset: 0; z-index: 300; background: rgba(26,29,33,0.7);
+    backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .admin-form-modal.show { display: flex; }
+  .admin-form-card {
+    background: #fff; border-radius: 16px; padding: 32px;
+    width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto;
+    animation: slideUp 0.3s;
+  }
+
+  .toggle-password {
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    cursor: pointer; color: var(--muted); transition: color 0.2s;
+  }
+  .toggle-password:hover { color: var(--fg); }
+
+  @media (max-width: 768px) {
+    .hero-title { font-size: 48px !important; line-height: 1 !important; }
+    .admin-sidebar { width: 70px; padding: 16px 8px; }
+    .admin-sidebar-item span { display: none; }
+    .admin-main { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="noise-overlay"></div>
+
+<!-- NAVIGATION -->
+<nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 py-4 flex items-center justify-between">
+    <a href="#hero" class="flex items-center gap-3 group">
+      <div class="w-10 h-10 rounded-md flex items-center justify-center bg-[var(--fg)]">
+        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#d4af37" stroke-width="2.5">
+          <path d="M7 4L4 7v10l3 3M17 4l3 3v10l-3 3M7 4h10M7 20h10M9 9h6M9 13h6"/>
+        </svg>
+      </div>
+      <div class="leading-none">
+        <div class="font-heading text-base font-bold tracking-wider">ECO SPORT</div>
+        <div class="text-[10px] tracking-[0.2em] text-[var(--muted)] uppercase mt-1">Konveksi Jersey</div>
+      </div>
+    </a>
+    
+    <div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-[var(--fg-2)]">
+      <a href="#about" class="hover:text-[var(--accent)] transition uppercase tracking-wide text-xs">Tentang</a>
+      <a href="#students" class="hover:text-[var(--accent)] transition uppercase tracking-wide text-xs">Siswa PKL</a>
+      <a href="#activities" class="hover:text-[var(--accent)] transition uppercase tracking-wide text-xs">Dokumentasi</a>
+      <a href="#report" class="hover:text-[var(--accent)] transition uppercase tracking-wide text-xs">Laporan</a>
+      <a href="#contact" class="hover:text-[var(--accent)] transition uppercase tracking-wide text-xs">Kontak</a>
+    </div>
+    
+    <div class="flex items-center gap-3">
+      <button onclick="openAdminLogin()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider border-2 border-[var(--fg)] text-[var(--fg)] hover:bg-[var(--fg)] hover:text-white transition">
+        <i class="fa-solid fa-user-shield"></i> Admin
+      </button>
+      <a href="#report" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider bg-[var(--accent)] text-[var(--fg)] hover:bg-[var(--fg)] hover:text-[var(--accent)] transition">
+        <i class="fa-solid fa-file-arrow-down"></i> Buat Laporan
+      </a>
+    </div>
+    
+    <button id="menuBtn" class="lg:hidden text-xl text-[var(--fg)]"><i class="fa-solid fa-bars"></i></button>
+  </div>
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-[var(--border)] bg-white">
+    <div class="px-6 py-4 flex flex-col gap-3 text-sm font-semibold">
+      <a href="#about" class="py-2">Tentang</a>
+      <a href="#students" class="py-2">Siswa PKL</a>
+      <a href="#activities" class="py-2">Dokumentasi</a>
+      <a href="#report" class="py-2">Laporan</a>
+      <a href="#contact" class="py-2">Kontak</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="hero-bg relative min-h-screen flex items-center pt-28 pb-20 overflow-hidden">
+  <div class="orb" style="width:500px;height:500px;background:#d4af37;top:-100px;left:-100px;"></div>
+  <div class="orb" style="width:400px;height:400px;background:#1a1d21;bottom:-50px;right:-50px;opacity:0.1;animation-delay:-6s;"></div>
+  <div class="thread-line" style="top:30%;left:0;right:0;"></div>
+  <div class="thread-line" style="top:70%;left:0;right:0;opacity:0.4;"></div>
+  
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 w-full relative z-10">
+    <div class="grid lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-7">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="pill pill-accent"><span class="w-2 h-2 rounded-full bg-[var(--fg)] animate-pulse"></span> Praktik Kerja Lapangan 2025</span>
+        </div>
+        
+        <h1 class="hero-title font-display font-bold text-[80px] lg:text-[110px] leading-[0.9] tracking-tight mb-8 uppercase">
+          Menjahit <span style="color:var(--accent);">Masa Depan</span><br>
+          Bersama Eco Sport
+        </h1>
+        
+        <p class="text-lg text-[var(--fg-2)] max-w-xl mb-10 leading-relaxed font-medium">
+          Enet belajar dari enam siswa SMK Negeri 1 Buay Madang yang menjalani PKL di Konveksi Jersey Eco Sport — di mana setiap jahitan adalah keterampilan, setiap jersey adalah karya.
+        </p>
+        
+        <div class="flex flex-wrap gap-4 mb-12">
+          <a href="#students" class="btn-primary"><i class="fa-solid fa-users mr-2"></i> Kenali Siswa PKL</a>
+          <a href="#report" class="btn-ghost"><i class="fa-solid fa-file-pdf mr-2"></i> Buat Laporan PKL</a>
+        </div>
+        
+        <div class="grid grid-cols-3 gap-6 max-w-xl pt-8 border-t border-[var(--border)]">
+          <div>
+            <div class="stat-num text-5xl">06</div>
+            <div class="text-[10px] text-[var(--muted)] uppercase tracking-widest mt-1 font-bold">Siswa PKL</div>
+          </div>
+          <div>
+            <div class="stat-num text-5xl">04</div>
+            <div class="text-[10px] text-[var(--muted)] uppercase tracking-widest mt-1 font-bold">Bulan Program</div>
+          </div>
+          <div>
+            <div class="stat-num text-5xl">12+</div>
+            <div class="text-[10px] text-[var(--muted)] uppercase tracking-widest mt-1 font-bold">Kompetensi</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="lg:col-span-5 relative">
+        <div class="relative">
+          <div class="absolute inset-0 pattern-grid rounded-3xl opacity-50"></div>
+          
+          <!-- Gambar Hero Custom -->
+          <div class="relative jersey-float">
+            <img src="https://z-cdn-media.chatglm.cn/files/39e85eb4-db35-4dec-9ac4-e7fe1d8d416d.png?auth_key=1884476679-6fedb487c30449ef90239f9b2d947733-0-7e37aae914182557dc1f85c3d537ff98" alt="Konveksi Jersey Eco Sport" class="w-full max-w-lg mx-auto rounded-2xl shadow-2xl object-cover">
+          </div>
+          
+          <div class="mt-6 grid grid-cols-2 gap-4">
+            <div class="bg-white border border-[var(--border)] rounded-lg p-4 shadow-xl">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-md bg-[var(--accent)]/15 flex items-center justify-center text-[var(--accent-2)]">
+                  <i class="fa-solid fa-print"></i>
+                </div>
+                <div>
+                  <div class="text-[10px] text-[var(--muted)] uppercase font-bold">Bidang</div>
+                  <div class="text-sm font-bold font-display uppercase">Konveksi</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white border border-[var(--border)] rounded-lg p-4 shadow-xl">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-md bg-[var(--fg)] flex items-center justify-center text-[var(--accent)]">
+                  <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                  <div class="text-[10px] text-[var(--muted)] uppercase font-bold">Sekolah</div>
+                  <div class="text-sm font-bold font-display uppercase">SMKN 1 Buay Madang</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="absolute bottom-0 left-0 right-0 border-t border-[var(--border)] py-4 overflow-hidden bg-white/50 backdrop-blur">
+    <div class="marquee text-sm font-bold font-display uppercase tracking-widest text-[var(--fg-2)]">
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> DESAIN ARTWORK</span>
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> SUBLIMASI PRINTING</span>
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> CUTTING KAIN</span>
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> JAHIT ASSEMBLY</span>
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> QUALITY CONTROL</span>
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> PACKAGING</span>
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> DESAIN ARTWORK</span>
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> SUBLIMASI PRINTING</span>
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> CUTTING KAIN</span>
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> JAHIT ASSEMBLY</span>
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> QUALITY CONTROL</span>
+      <span class="flex items-center gap-3"><i class="fa-solid fa-circle text-[6px] text-[var(--accent)]"></i> PACKAGING</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="py-28 relative">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid lg:grid-cols-12 gap-16 items-center">
+      <div class="lg:col-span-5 reveal">
+        <div class="section-num mb-4">— 01 / Tentang Program</div>
+        <h2 class="font-display font-bold text-5xl lg:text-6xl leading-none mb-8 uppercase">
+          Dari <span style="color:var(--accent);">Ruang Cetak</span> Menuju Dunia Kerja
+        </h2>
+        <p class="text-[var(--fg-2)] leading-relaxed mb-6 font-medium">
+          Konveksi Jersey Eco Sport menjadi rumah bagi enam siswa SMK Negeri 1 Buay Madang untuk mengasah kompetensi di industri garmen olahraga. Selama empat bulan, mereka terlibat langsung dalam proces produksi — fokus pada teknologi sublimasi printing terkini hingga tahap akhir penjahitan.
+        </p>
+        <p class="text-[var(--fg-2)] leading-relaxed mb-8 font-medium">
+          Program PKL ini dirancang untuk menjembatani teori akademik dengan praktik industri nyata, membekali siswa dengan pengalaman kerja, etos profesional, dan keterampilan teknis yang relevan.
+        </p>
+        
+        <div class="space-y-4">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-md bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-bullseye text-[var(--accent-2)]"></i>
+            </div>
+            <div>
+              <div class="font-bold font-display uppercase mb-1 text-lg">Tujuan Program</div>
+              <div class="text-sm text-[var(--muted)] font-medium">Membentuk tenaga kerja kompeten dan siap pakai di industri konveksi.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-md bg-[var(--fg)] flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-handshake text-[var(--accent)]"></i>
+            </div>
+            <div>
+              <div class="font-bold font-display uppercase mb-1 text-lg">Kemitraan Industri</div>
+              <div class="text-sm text-[var(--muted)] font-medium">Kolaborasi langsung SMKN 1 Buay Madang × Eco Sport Konveksi.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="lg:col-span-7 reveal">
+        <div class="grid grid-cols-2 gap-5">
+          <div class="card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)] text-xl">
+                <i class="fa-solid fa-calendar-days"></i>
+              </div>
+              <span class="text-[10px] text-[var(--muted)] uppercase font-bold">Periode</span>
+            </div>
+            <div class="font-display text-4xl font-bold mb-1 uppercase">4 Bulan</div>
+            <div class="text-sm text-[var(--muted)] font-medium">Januari – April 2025</div>
+          </div>
+          
+          <div class="card p-6" style="margin-top: 32px;">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-lg bg-[var(--fg)] flex items-center justify-center text-[var(--accent)] text-xl">
+                <i class="fa-solid fa-people-group"></i>
+              </div>
+              <span class="text-[10px] text-[var(--muted)] uppercase font-bold">Peserta</span>
+            </div>
+            <div class="font-display text-4xl font-bold mb-1 uppercase">6 Siswa</div>
+            <div class="text-sm text-[var(--muted)] font-medium">Jurusan Busana Butik</div>
+          </div>
+          
+          <div class="card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)] text-xl">
+                <i class="fa-solid fa-list-check"></i>
+              </div>
+              <span class="text-[10px] text-[var(--muted)] uppercase font-bold">Kompetensi</span>
+            </div>
+            <div class="font-display text-4xl font-bold mb-1 uppercase">12+ Skill</div>
+            <div class="text-sm text-[var(--muted)] font-medium">Teknis & Non-Teknis</div>
+          </div>
+          
+          <div class="card p-6" style="margin-top: 32px;">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-lg bg-[var(--fg)] flex items-center justify-center text-[var(--accent)] text-xl">
+                <i class="fa-solid fa-certificate"></i>
+              </div>
+              <span class="text-[10px] text-[var(--muted)] uppercase font-bold">Sertifikasi</span>
+            </div>
+            <div class="font-display text-4xl font-bold mb-1 uppercase">Terakreditasi</div>
+            <div class="text-sm text-[var(--muted)] font-medium">SKKNI Kompetensi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDENTS -->
+<section id="students" class="py-28 relative" style="background: var(--bg-2);">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 reveal">
+      <div>
+        <div class="section-num mb-4">— 02 / Profil Siswa</div>
+        <h2 class="font-display font-bold text-5xl lg:text-6xl leading-none uppercase">
+          Enet <span style="color:var(--accent);">Muda-mudi</span><br>
+          yang Sedang Belajar
+        </h2>
+      </div>
+      <p class="text-[var(--muted)] max-w-md text-sm leading-relaxed font-medium">
+        Berkenalan dengan enam siswa PKL yang menghabiskan empat bulan terakhir memahami setiap detail produksi jersey di Eco Sport.
+      </p>
+    </div>
+    
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="studentGrid"></div>
+  </div>
+</section>
+
+<!-- ACTIVITIES / DOKUMENTASI -->
+<section id="activities" class="py-28 relative">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12 reveal">
+      <div>
+        <div class="section-num mb-4">— 03 / Dokumentasi Kegiatan</div>
+        <h2 class="font-display font-bold text-5xl lg:text-6xl leading-none uppercase mb-3">
+          Catatan <span style="color:var(--accent);">Harian</span> dari Lapangan
+        </h2>
+        <p class="text-[var(--fg-2)] max-w-xl font-medium">
+          Setiap aktivitas yang diunggah akan otomatis menjadi bagian dari laporan PKL. Klik untuk lihat detail.
+        </p>
+      </div>
+      <div class="flex gap-2 flex-wrap" id="filterBtns">
+        <button data-filter="all" class="filter-btn px-4 py-2 rounded-md text-xs font-bold uppercase border-2 border-[var(--accent)] bg-[var(--accent)] text-[var(--fg)]">Semua</button>
+        <button data-filter="design" class="filter-btn px-4 py-2 rounded-md text-xs font-bold uppercase border-2 border-[var(--border-2)] text-[var(--fg-2)] hover:border-[var(--fg)]">Desain</button>
+        <button data-filter="sublimation" class="filter-btn px-4 py-2 rounded-md text-xs font-bold uppercase border-2 border-[var(--border-2)] text-[var(--fg-2)] hover:border-[var(--fg)]">Sublimasi</button>
+        <button data-filter="cutting" class="filter-btn px-4 py-2 rounded-md text-xs font-bold uppercase border-2 border-[var(--border-2)] text-[var(--fg-2)] hover:border-[var(--fg)]">Cutting</button>
+        <button data-filter="sewing" class="filter-btn px-4 py-2 rounded-md text-xs font-bold uppercase border-2 border-[var(--border-2)] text-[var(--fg-2)] hover:border-[var(--fg)]">Jahit</button>
+        <button data-filter="finishing" class="filter-btn px-4 py-2 rounded-md text-xs font-bold uppercase border-2 border-[var(--border-2)] text-[var(--fg-2)] hover:border-[var(--fg)]">Finishing</button>
+      </div>
+    </div>
+    
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- PUBLIC REPORT SECTION (READ ONLY) -->
+<section id="report" class="py-28 relative" style="background: var(--bg-2);">
+  <div class="orb" style="width:400px;height:400px;background:#d4af37;top:20%;left:-100px;opacity:0.1;"></div>
+  
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
+    <div class="text-center mb-16 reveal">
+      <div class="section-num mb-4">— 04 / Pusat Laporan</div>
+      <h2 class="font-display font-bold text-5xl lg:text-6xl leading-none uppercase mb-4">
+        Unduh <span style="color:var(--accent);">Laporan PDF</span>
+      </h2>
+      <p class="text-[var(--fg-2)] max-w-2xl mx-auto font-medium">
+        Sistem akan otomatis menyusun laporan PKL berdasarkan dokumentasi yang dikelola oleh Admin. Unduh laporan lengkap di sini.
+      </p>
+    </div>
+    
+    <div class="card p-8 max-w-2xl mx-auto mb-8 reveal text-center">
+      <div class="w-14 h-14 rounded-xl mx-auto bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)] text-2xl mb-4">
+        <i class="fa-solid fa-file-pdf"></i>
+      </div>
+      <h3 class="font-display text-2xl font-bold uppercase mb-2">Generate Laporan PDF</h3>
+      <p class="text-sm text-[var(--muted)] mb-6 font-medium">Klik tombol di bawah untuk mengunduh laporan lengkap berisi cover, profil siswa, dokumentasi, dan penutup.</p>
+      <button id="btnDownloadPdfPublic" class="btn-primary w-full justify-center">
+        <i class="fa-solid fa-download mr-2"></i> Download Laporan PDF
+      </button>
+    </div>
+    
+    <div class="card p-8 mt-8 reveal">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="font-display text-2xl font-bold uppercase">Dokumentasi Terbaru</h3>
+        <span class="text-xs text-[var(--muted)] font-medium uppercase"><span id="recentCount">0</span> entri</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-[var(--muted)] text-[10px] uppercase tracking-wider border-b border-[var(--border)] font-bold">
+              <th class="py-3 pr-4">Foto</th>
+              <th class="py-3 pr-4">Siswa</th>
+              <th class="py-3 pr-4">Tanggal</th>
+              <th class="py-3 pr-4">Kategori</th>
+              <th class="py-3 pr-4">Judul</th>
+              <th class="py-3 pr-4">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="recentTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE / MILESTONE -->
+<section class="py-28 relative">
+  <div class="max-w-6xl mx-auto px-6 lg:px-10">
+    <div class="text-center mb-16 reveal">
+      <div class="section-num mb-4">— 05 / Alur PKL</div>
+      <h2 class="font-display font-bold text-5xl lg:text-6xl leading-none uppercase">
+        Perjalanan <span style="color:var(--accent);">Belajar</span> Siswa
+      </h2>
+    </div>
+    
+    <div class="grid md:grid-cols-2 gap-x-12 gap-y-2">
+      <div class="reveal">
+        <div class="timeline-item">
+          <div class="text-xs text-[var(--accent-2)] font-bold tracking-wider mb-1 uppercase">Minggu 1-2</div>
+          <h4 class="font-display text-xl font-bold mb-2 uppercase">Orientasi & Pengenalan</h4>
+          <p class="text-sm text-[var(--muted)] leading-relaxed font-medium">Pengenalan lingkungan kerja, standar operasional, safety, dan alat-alat produksi. Siswa mulai berinteraksi dengan pembimbing industri.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="text-xs text-[var(--accent-2)] font-bold tracking-wider mb-1 uppercase">Minggu 3-6</div>
+          <h4 class="font-display text-xl font-bold mb-2 uppercase">Desain & Artwork</h4>
+          <p class="text-sm text-[var(--muted)] leading-relaxed font-medium">Pembuatan desain jersey menggunakan software grafis. Pemahaman color separation, resolution, dan mirror printing untuk kebutuhan sublimasi.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="text-xs text-[var(--accent-2)] font-bold tracking-wider mb-1 uppercase">Minggu 7-12</div>
+          <h4 class="font-display text-xl font-bold mb-2 uppercase">Sublimasi Printing</h4>
+          <p class="text-sm text-[var(--muted)] leading-relaxed font-medium">Proses cetak desain ke kertas sublimasi dan transfer panas ke kain polyester. Pengaturan suhu, tekanan, dan kecepatan mesin heat press.</p>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="timeline-item">
+          <div class="text-xs text-[var(--accent-2)] font-bold tracking-wider mb-1 uppercase">Minggu 13-16</div>
+          <h4 class="font-display text-xl font-bold mb-2 uppercase">Cutting Kain</h4>
+          <p class="text-sm text-[var(--muted)] leading-relaxed font-medium">Memotong kain hasil sublimasi sesuai pola jersey. Penggunaan mesin potong lurus dan teknik cutting presisi tinggi.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="text-xs text-[var(--accent-2)] font-bold tracking-wider mb-1 uppercase">Minggu 17-19</div>
+          <h4 class="font-display text-xl font-bold mb-2 uppercase">Jahit & Assembly (Tahap Akhir)</h4>
+          <p class="text-sm text-[var(--muted)] leading-relaxed font-medium">Perakitan panel jersey menggunakan mesin jahit industri dan overlock. Memasang krah, lengan, dan detail akhir setelah cetakan sublimasi sempurna.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="text-xs text-[var(--accent-2)] font-bold tracking-wider mb-1 uppercase">Minggu 20</div>
+          <h4 class="font-display text-xl font-bold mb-2 uppercase">Finishing & Packaging</h4>
+          <p class="text-sm text-[var(--muted)] leading-relaxed font-medium">Quality check akhir, pemasangan label, lipat rapi, dan kemasan plastik. Siap dikirim ke pelanggan.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-28 relative" style="background: var(--bg-2);">
+  <div class="max-w-6xl mx-auto px-6 lg:px-10">
+    <div class="card p-10 lg:p-16 relative overflow-hidden reveal">
+      <div class="orb" style="width:300px;height:300px;background:#d4af37;top:-100px;right:-50px;opacity:0.15;"></div>
+      <div class="grid lg:grid-cols-2 gap-12 relative z-10">
+        <div>
+          <div class="section-num mb-4">— 06 / Hubungi Kami</div>
+          <h2 class="font-display font-bold text-4xl lg:text-5xl leading-none mb-6 uppercase">
+            Ada <span style="color:var(--accent);">Pertanyaan</span> Seputar Program PKL?
+          </h2>
+          <p class="text-[var(--fg-2)] mb-8 leading-relaxed font-medium">
+            Hubungi tim pembimbing PKL untuk informasi lebih lanjut mengenai program, pendaftaran, atau kerja sama industri.
+          </p>
+          
+          <div class="space-y-4">
+            <div class="flex items-center gap-4">
+              <div class="w-11 h-11 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)]">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div>
+                <div class="text-[10px] text-[var(--muted)] uppercase font-bold">Lokasi PKL</div>
+                <div class="text-sm font-bold font-display uppercase">Konveksi Jersey Eco Sport, Buay Madang</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-11 h-11 rounded-lg bg-[var(--fg)] flex items-center justify-center text-[var(--accent)]">
+                <i class="fa-solid fa-school"></i>
+              </div>
+              <div>
+                <div class="text-[10px] text-[var(--muted)] uppercase font-bold">Asal Sekolah</div>
+                <div class="text-sm font-bold font-display uppercase">SMK Negeri 1 Buay Madang</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-11 h-11 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)]">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+              <div>
+                <div class="text-[10px] text-[var(--muted)] uppercase font-bold">Email Pembimbing</div>
+                <div class="text-sm font-bold font-display lowercase">pkl.ecosport@smkn1buaymadang.sch.id</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <form class="space-y-4" onsubmit="event.preventDefault(); showToast('Pesan terkirim. Tim pembimbing akan merespons dalam 1x24 jam.', 'success'); this.reset();">
+          <input type="text" class="input" placeholder="Nama Lengkap" required>
+          <input type="email" class="input" placeholder="Email" required>
+          <input type="text" class="input" placeholder="Subjek" required>
+          <textarea class="input" rows="4" placeholder="Pesan Anda..." required></textarea>
+          <button type="submit" class="btn-primary w-full justify-center">
+            <i class="fa-solid fa-paper-plane mr-2"></i> Kirim Pesan
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-[var(--border)] py-12 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="flex flex-col md:flex-row justify-between gap-8 mb-8">
+      <div class="max-w-sm">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-md flex items-center justify-center bg-[var(--fg)]">
+            <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#d4af37" stroke-width="2.5">
+              <path d="M7 4L4 7v10l3 3M17 4l3 3v10l-3 3M7 4h10M7 20h10M9 9h6M9 13h6"/>
+            </svg>
+          </div>
+          <div>
+            <div class="font-heading text-base font-bold tracking-wider">ECO SPORT</div>
+            <div class="text-[10px] tracking-[0.2em] text-[var(--muted)] uppercase mt-1">Konveksi Jersey</div>
+          </div>
+        </div>
+        <p class="text-sm text-[var(--muted)] leading-relaxed font-medium">
+          Mitra resmi Praktik Kerja Lapangan SMK Negeri 1 Buay Madang. Membentuk SDM unggul untuk industri konveksi Indonesia.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-2 gap-8 text-sm">
+        <div>
+          <div class="text-[10px] uppercase tracking-widest text-[var(--accent-2)] mb-3 font-bold">Navigasi</div>
+          <ul class="space-y-2 text-[var(--muted)] font-medium">
+            <li><a href="#about" class="hover:text-[var(--fg)]">Tentang</a></li>
+            <li><a href="#students" class="hover:text-[var(--fg)]">Siswa PKL</a></li>
+            <li><a href="#activities" class="hover:text-[var(--fg)]">Dokumentasi</a></li>
+            <li><a href="#report" class="hover:text-[var(--fg)]">Laporan</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[10px] uppercase tracking-widest text-[var(--accent-2)] mb-3 font-bold">Program</div>
+          <ul class="space-y-2 text-[var(--muted)] font-medium">
+            <li>Desain Artwork</li>
+            <li>Sublimasi Printing</li>
+            <li>Cutting & Pola</li>
+            <li>Jahit Assembly</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="border-t border-[var(--border)] pt-6">
+      <div class="flex flex-col md:flex-row justify-between gap-4 text-xs text-[var(--muted)] font-medium">
+        <div>© 2025 Konveksi Jersey Eco Sport × SMK Negeri 1 Buay Madang. Hak cipta dilindungi.</div>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:text-[var(--accent-2)]"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="hover:text-[var(--accent-2)]"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" class="hover:text-[var(--accent-2)]"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" class="hover:text-[var(--accent-2)]"><i class="fa-brands fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ADMIN LOGIN MODAL -->
+<div id="adminLoginModal" class="admin-overlay">
+  <div class="login-card">
+    <button onclick="closeAdminLogin()" class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-400">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 rounded-xl mx-auto mb-4 flex items-center justify-center bg-[var(--fg)]">
+        <i class="fa-solid fa-user-shield text-2xl text-[var(--accent)]"></i>
+      </div>
+      <h2 class="font-display text-2xl font-bold uppercase">Admin Login</h2>
+      <p class="text-xs text-[var(--muted)] mt-1 font-medium">Masuk untuk mengelola data PKL</p>
+    </div>
+    
+    <form id="adminLoginForm" class="space-y-4" onsubmit="return checkLogin()">
+      <div>
+        <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Username</label>
+        <div class="relative">
+          <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]"></i>
+          <input type="text" id="adminUsername" class="input pl-11" placeholder="Masukkan username" required>
+        </div>
+      </div>
+      
+      <div>
+        <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Password</label>
+        <div class="relative">
+          <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]"></i>
+          <input type="password" id="adminPassword" class="input pl-11 pr-12" placeholder="Masukkan password" required>
+          <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('adminPassword', this)"></i>
+        </div>
+      </div>
+      
+      <div class="flex items-center justify-between text-xs">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="rememberAdmin" class="accent-[var(--accent)]">
+          <span class="font-medium text-[var(--fg-2)]">Ingat saya</span>
+        </label>
+        <a href="#" onclick="forgotPassword(); return false;" class="text-[var(--accent-2)] font-bold hover:underline">Lupa password?</a>
+      </div>
+      
+      <button type="submit" class="btn-primary w-full justify-center">
+        <i class="fa-solid fa-right-to-bracket mr-2"></i> Masuk ke Dashboard
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="adminDashboard" class="admin-dashboard">
+  <header class="admin-header">
+    <div class="flex items-center gap-4">
+      <div class="w-10 h-10 rounded-md flex items-center justify-center bg-[var(--fg)]">
+        <i class="fa-solid fa-shield-halved text-[var(--accent)]"></i>
+      </div>
+      <div>
+        <div class="font-heading text-base font-bold tracking-wider">DASHBOARD ADMIN</div>
+        <div class="text-[10px] tracking-[0.15em] text-[var(--muted)] uppercase">PKL Eco Sport — Management System</div>
+      </div>
+    </div>
+    
+    <div class="flex items-center gap-3">
+      <div class="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 border border-green-200">
+        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+        <span class="text-xs font-bold text-green-700 uppercase">Online</span>
+      </div>
+      <div class="hidden md:flex items-center gap-3 pr-4 border-r border-[var(--border)]">
+        <div class="w-9 h-9 rounded-full bg-[var(--fg)] flex items-center justify-center text-[var(--accent)] font-bold">A</div>
+        <div class="leading-tight">
+          <div class="text-sm font-bold">Administrator</div>
+          <div class="text-[10px] text-[var(--muted)] uppercase">Super Admin</div>
+        </div>
+      </div>
+      <button id="btnLogoutHeader" class="icon-btn delete" title="Logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </button>
+    </div>
+  </header>
+  
+  <div class="admin-body">
+    <aside class="admin-sidebar">
+      <div class="text-[10px] text-white/40 uppercase tracking-widest font-bold px-4 mb-3">Menu Utama</div>
+      <button class="admin-sidebar-item active" onclick="switchAdminSection('overview', this)">
+        <i class="fa-solid fa-gauge-high"></i><span>Overview</span>
+      </button>
+      <button class="admin-sidebar-item" onclick="switchAdminSection('students', this)">
+        <i class="fa-solid fa-users"></i><span>Data Siswa</span>
+      </button>
+      <button class="admin-sidebar-item" onclick="switchAdminSection('activities', this)">
+        <i class="fa-solid fa-images"></i><span>Dokumentasi</span>
+      </button>
+      <button class="admin-sidebar-item" onclick="switchAdminSection('reports', this)">
+        <i class="fa-solid fa-file-pdf"></i><span>Laporan</span>
+      </button>
+      
+      <div class="text-[10px] text-white/40 uppercase tracking-widest font-bold px-4 mb-3 mt-6">Sistem</div>
+      <button class="admin-sidebar-item" onclick="switchAdminSection('settings', this)">
+        <i class="fa-solid fa-gear"></i><span>Pengaturan</span>
+      </button>
+      <button class="admin-sidebar-item" onclick="openSitePreview()">
+        <i class="fa-solid fa-eye"></i><span>Lihat Situs</span>
+      </button>
+      <button class="admin-sidebar-item" id="btnLogoutSidebar" style="margin-top: auto; color: #fca5a5;">
+        <i class="fa-solid fa-power-off"></i><span>Keluar</span>
+      </button>
+    </aside>
+    
+    <main class="admin-main">
+      <!-- OVERVIEW SECTION -->
+      <section id="adminOverview" class="admin-section active">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+          <div>
+            <div class="section-num mb-2">— Dashboard</div>
+            <h1 class="font-display text-4xl font-bold uppercase">Selamat Datang, Admin!</h1>
+            <p class="text-sm text-[var(--muted)] mt-1 font-medium">Ringkasan data Praktik Kerja Lapangan Eco Sport</p>
+          </div>
+          <div class="text-left md:text-right">
+            <div class="text-xs text-[var(--muted)] uppercase font-bold">Hari Ini</div>
+            <div class="font-display text-lg font-bold" id="adminTodayDate"></div>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div class="stat-card">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-11 h-11 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)]">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <span class="admin-badge badge-success"><i class="fa-solid fa-arrow-up text-[8px]"></i> Aktif</span>
+            </div>
+            <div class="stat-num text-4xl mb-1" id="adminTotalStudents">0</div>
+            <div class="text-xs text-[var(--muted)] uppercase font-bold tracking-wider">Total Siswa PKL</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-11 h-11 rounded-lg bg-[var(--fg)] flex items-center justify-center text-[var(--accent)]">
+                <i class="fa-solid fa-images"></i>
+              </div>
+              <span class="admin-badge badge-info">Tercatat</span>
+            </div>
+            <div class="stat-num text-4xl mb-1" id="adminTotalActivities">0</div>
+            <div class="text-xs text-[var(--muted)] uppercase font-bold tracking-wider">Total Dokumentasi</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-11 h-11 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)]">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+              <span class="admin-badge badge-warning">Kategori</span>
+            </div>
+            <div class="stat-num text-4xl mb-1" id="adminTotalCategories">0</div>
+            <div class="text-xs text-[var(--muted)] uppercase font-bold tracking-wider">Kategori Aktif</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-11 h-11 rounded-lg bg-[var(--fg)] flex items-center justify-center text-[var(--accent)]">
+                <i class="fa-solid fa-calendar-check"></i>
+              </div>
+              <span class="admin-badge badge-success">Selesai</span>
+            </div>
+            <div class="stat-num text-4xl mb-1">4</div>
+            <div class="text-xs text-[var(--muted)] uppercase font-bold tracking-wider">Bulan Program</div>
+          </div>
+        </div>
+        
+        <div class="grid lg:grid-cols-3 gap-6 mb-8">
+          <div class="lg:col-span-2 card p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="font-display text-xl font-bold uppercase">Dokumentasi Terbaru</h3>
+              <button onclick="switchAdminSection('activities', document.querySelector('[onclick*=activities]'))" class="text-xs font-bold text-[var(--accent-2)] uppercase hover:underline">Lihat Semua →</button>
+            </div>
+            <div class="space-y-3" id="adminRecentActivities"></div>
+          </div>
+          
+          <div class="card p-6">
+            <h3 class="font-display text-xl font-bold uppercase mb-6">Distribusi Kategori</h3>
+            <div class="space-y-4" id="adminCategoryDist"></div>
+          </div>
+        </div>
+        
+        <div class="card p-6">
+          <h3 class="font-display text-xl font-bold uppercase mb-4">Aktivitas Siswa Per Kategori</h3>
+          <div class="overflow-x-auto">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Siswa</th>
+                  <th>Posisi</th>
+                  <th class="text-center">Desain</th>
+                  <th class="text-center">Sublimasi</th>
+                  <th class="text-center">Cutting</th>
+                  <th class="text-center">Jahit</th>
+                  <th class="text-center">Finishing</th>
+                  <th class="text-center">Total</th>
+                </tr>
+              </thead>
+              <tbody id="adminStudentStats"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      
+      <!-- STUDENTS SECTION -->
+      <section id="adminStudents" class="admin-section">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+          <div>
+            <div class="section-num mb-2">— Manajemen Data</div>
+            <h1 class="font-display text-4xl font-bold uppercase">Data Siswa PKL</h1>
+            <p class="text-sm text-[var(--muted)] mt-1 font-medium">Kelola informasi siswa peserta PKL</p>
+          </div>
+          <button onclick="openStudentForm()" class="btn-primary">
+            <i class="fa-solid fa-plus mr-2"></i> Tambah Siswa
+          </button>
+        </div>
+        
+        <div class="card p-6">
+          <div class="flex flex-wrap items-center gap-3 mb-4">
+            <div class="relative flex-1 min-w-[240px] max-w-sm">
+              <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)] text-sm"></i>
+              <input type="text" id="studentSearch" class="input pl-11" placeholder="Cari nama atau kelas..." oninput="renderAdminStudents()">
+            </div>
+            <span class="text-xs text-[var(--muted)] font-bold uppercase"><span id="studentCount">0</span> siswa</span>
+          </div>
+          
+          <div class="overflow-x-auto">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Foto</th>
+                  <th>Nama</th>
+                  <th>Kelas</th>
+                  <th>Posisi</th>
+                  <th>Kontak</th>
+                  <th class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="adminStudentsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      
+      <!-- ACTIVITIES SECTION (WITH FORM & PREVIEW) -->
+      <section id="adminActivities" class="admin-section">
+        <div class="mb-8">
+          <div class="section-num mb-2">— Manajemen Data</div>
+          <h1 class="font-display text-4xl font-bold uppercase">Dokumentasi & Laporan</h1>
+          <p class="text-sm text-[var(--muted)] mt-1 font-medium">Unggah dokumentasi, kelola, dan unduh laporan PKL</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8 mb-8">
+          <div class="card p-8">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-lg bg-[var(--fg)] flex items-center justify-center text-[var(--accent)]">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+              </div>
+              <div>
+                <h3 class="font-display text-2xl font-bold uppercase">Form Dokumentasi</h3>
+                <p class="text-xs text-[var(--muted)] font-medium">Lengkapi form di bawah untuk menambahkan catatan</p>
+              </div>
+            </div>
+            
+            <form id="activityForm" class="space-y-4" onsubmit="return handleActivitySubmit(event)">
+              <div>
+                <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Nama Siswa</label>
+                <select id="studentSelect" class="input" required>
+                  <option value="">— Pilih Siswa —</option>
+                </select>
+              </div>
+              
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Tanggal</label>
+                  <input type="date" id="actDate" class="input" required>
+                </div>
+                <div>
+                  <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Kategori</label>
+                  <select id="actCategory" class="input" required>
+                    <option value="">— Pilih —</option>
+                    <option value="design">Desain</option>
+                    <option value="sublimation">Sublimasi</option>
+                    <option value="cutting">Cutting</option>
+                    <option value="sewing">Jahit</option>
+                    <option value="finishing">Finishing</option>
+                    <option value="quality">Quality Control</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div>
+                <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Judul Kegiatan</label>
+                <input type="text" id="actTitle" class="input" placeholder="Contoh: Proses cetak sublimasi jersey tim futsal" required>
+              </div>
+              
+              <div>
+                <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Deskripsi Kegiatan</label>
+                <textarea id="actDesc" class="input" rows="3" placeholder="Jelaskan kegiatan yang dilakukan, alat yang digunakan, dan hasilnya..." required></textarea>
+              </div>
+              
+              <div>
+                <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Foto Dokumentasi</label>
+                <div id="uploadZone" class="upload-zone">
+                  <input type="file" id="actPhoto" accept="image/*" class="hidden">
+                  <div class="space-y-2">
+                    <i class="fa-solid fa-image text-3xl text-[var(--accent-2)]"></i>
+                    <div class="text-sm font-bold uppercase tracking-wide">Klik atau seret foto ke sini</div>
+                    <div class="text-xs text-[var(--muted)] font-medium">JPG, PNG — maksimal 5MB</div>
+                  </div>
+                </div>
+                <div id="previewWrap" class="hidden mt-3 relative rounded-lg overflow-hidden border border-[var(--border)]">
+                  <img id="previewImg" class="w-full h-48 object-cover">
+                  <button type="button" id="removePreview" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-red-500/80">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <button type="submit" class="btn-primary w-full justify-center mt-2">
+                <i class="fa-solid fa-plus mr-2"></i> Tambahkan ke Laporan
+              </button>
+            </form>
+          </div>
+          
+          <div class="space-y-6">
+            <div class="card p-8">
+              <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)]">
+                    <i class="fa-solid fa-file-lines"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-display text-2xl font-bold uppercase">Pratinjau Laporan</h3>
+                    <p class="text-xs text-[var(--muted)] font-medium">Otomatis diperbarui saat Anda menambah kegiatan</p>
+                  </div>
+                </div>
+                <span class="pill pill-accent"><span class="w-2 h-2 rounded-full bg-[var(--fg)] animate-pulse"></span> Live</span>
+              </div>
+              
+              <div class="space-y-3 mb-6">
+                <div class="flex items-center justify-between py-3 border-b border-[var(--border)]">
+                  <span class="text-sm text-[var(--muted)] font-medium uppercase">Total Dokumentasi</span>
+                  <span class="font-display text-3xl font-bold text-[var(--accent-2)]" id="totalDocs">0</span>
+                </div>
+                <div class="flex items-center justify-between py-3 border-b border-[var(--border)]">
+                  <span class="text-sm text-[var(--muted)] font-medium uppercase">Siswa Terlibat</span>
+                  <span class="font-display text-3xl font-bold" id="totalStudents">0</span>
+                </div>
+                <div class="flex items-center justify-between py-3 border-b border-[var(--border)]">
+                  <span class="text-sm text-[var(--muted)] font-medium uppercase">Kategori Dilaporkan</span>
+                  <span class="font-display text-3xl font-bold" id="totalCategories">0</span>
+                </div>
+                <div class="flex items-center justify-between py-3">
+                  <span class="text-sm text-[var(--muted)] font-medium uppercase">Periode Pelaporan</span>
+                  <span class="text-sm font-bold" id="dateRange">—</span>
+                </div>
+              </div>
+              
+              <button id="btnDownloadPdfAdmin" class="btn-primary w-full justify-center">
+                <i class="fa-solid fa-file-pdf mr-2"></i> Download Laporan PDF
+              </button>
+              
+              <div class="mt-4 text-xs text-[var(--muted)] text-center font-medium">
+                <i class="fa-solid fa-circle-info mr-1"></i> Laporan berisi cover, profil siswa, dan rekap dokumentasi
+              </div>
+            </div>
+            
+            <div class="card p-6">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)] flex-shrink-0">
+                  <i class="fa-solid fa-lightbulb text-sm"></i>
+                </div>
+                <div>
+                  <div class="font-bold font-display uppercase text-lg mb-1">Tips Dokumentasi yang Baik</div>
+                  <ul class="text-xs text-[var(--muted)] space-y-1.5 mt-2 font-medium">
+                    <li>• Foto diambil saat kegiatan berlangsung, bukan posed</li>
+                    <li>• Deskripsi menjelaskan proses, alat, dan hasil kerja</li>
+                    <li>• Satu dokumentasi per kegiatan unik per hari</li>
+                    <li>• Pastikan foto terang dan fokus pada objek kerja</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex flex-wrap items-center gap-3 mb-4">
+            <div class="relative flex-1 min-w-[240px] max-w-sm">
+              <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)] text-sm"></i>
+              <input type="text" id="activitySearch" class="input pl-11" placeholder="Cari judul atau deskripsi..." oninput="renderAdminActivities()">
+            </div>
+            <select id="activityFilterCat" class="input max-w-[180px]" onchange="renderAdminActivities()">
+              <option value="">Semua Kategori</option>
+              <option value="design">Desain</option>
+              <option value="sublimation">Sublimasi</option>
+              <option value="cutting">Cutting</option>
+              <option value="sewing">Jahit</option>
+              <option value="finishing">Finishing</option>
+              <option value="quality">Quality Control</option>
+            </select>
+            <span class="text-xs text-[var(--muted)] font-bold uppercase"><span id="activityCount">0</span> entri</span>
+          </div>
+          
+          <div class="overflow-x-auto">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Foto</th>
+                  <th>Judul</th>
+                  <th>Siswa</th>
+                  <th>Tanggal</th>
+                  <th>Kategori</th>
+                  <th class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="adminActivitiesTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      
+      <!-- REPORTS SECTION -->
+      <section id="adminReports" class="admin-section">
+        <div class="mb-8">
+          <div class="section-num mb-2">— Export & Laporan</div>
+          <h1 class="font-display text-4xl font-bold uppercase">Pusat Laporan</h1>
+          <p class="text-sm text-[var(--muted)] mt-1 font-medium">Generate dan unduh laporan PKL</p>
+        </div>
+        
+        <div class="grid lg:grid-cols-2 gap-6">
+          <div class="card p-8">
+            <div class="w-14 h-14 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)] text-2xl mb-4">
+              <i class="fa-solid fa-file-pdf"></i>
+            </div>
+            <h3 class="font-display text-2xl font-bold uppercase mb-2">Laporan PDF Lengkap</h3>
+            <p class="text-sm text-[var(--muted)] mb-6 font-medium">Unduh laporan PKL dengan cover, profil siswa, dokumentasi lengkap, dan halaman penutup.</p>
+            <button id="btnDownloadPdfReports" class="btn-primary w-full justify-center">
+              <i class="fa-solid fa-download mr-2"></i> Generate & Download PDF
+            </button>
+          </div>
+          
+          <div class="card p-8">
+            <div class="w-14 h-14 rounded-xl bg-[var(--fg)] flex items-center justify-center text-[var(--accent)] text-2xl mb-4">
+              <i class="fa-solid fa-database"></i>
+            </div>
+            <h3 class="font-display text-2xl font-bold uppercase mb-2">Backup Data JSON</h3>
+            <p class="text-sm text-[var(--muted)] mb-6 font-medium">Ekspor seluruh data siswa dan dokumentasi ke file JSON untuk backup atau migrasi.</p>
+            <button onclick="exportDataJSON()" class="btn-ghost w-full justify-center">
+              <i class="fa-solid fa-file-export mr-2"></i> Export Data
+            </button>
+          </div>
+        </div>
+      </section>
+      
+      <!-- SETTINGS SECTION -->
+      <section id="adminSettings" class="admin-section">
+        <div class="mb-8">
+          <div class="section-num mb-2">— Konfigurasi</div>
+          <h1 class="font-display text-4xl font-bold uppercase">Pengaturan Sistem</h1>
+          <p class="text-sm text-[var(--muted)] mt-1 font-medium">Kelola akun dan preferensi sistem</p>
+        </div>
+        
+        <div class="grid lg:grid-cols-2 gap-6">
+          <div class="card p-8">
+            <h3 class="font-display text-xl font-bold uppercase mb-6 flex items-center gap-2">
+              <i class="fa-solid fa-key text-[var(--accent-2)]"></i> Ubah Password
+            </h3>
+            <form id="changePasswordForm" class="space-y-4" onsubmit="changePassword(event)">
+              <div>
+                <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Password Saat Ini</label>
+                <div class="relative">
+                  <input type="password" id="currentPass" class="input pr-12" required>
+                  <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('currentPass', this)"></i>
+                </div>
+              </div>
+              <div>
+                <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Password Baru</label>
+                <div class="relative">
+                  <input type="password" id="newPass" class="input pr-12" required>
+                  <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('newPass', this)"></i>
+                </div>
+              </div>
+              <div>
+                <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Konfirmasi Password Baru</label>
+                <div class="relative">
+                  <input type="password" id="confirmPass" class="input pr-12" required>
+                  <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('confirmPass', this)"></i>
+                </div>
+              </div>
+              <button type="submit" class="btn-primary w-full justify-center">
+                <i class="fa-solid fa-save mr-2"></i> Simpan Perubahan
+              </button>
+            </form>
+          </div>
+          
+          <div class="space-y-6">
+            <div class="card p-8">
+              <h3 class="font-display text-xl font-bold uppercase mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-bell text-[var(--accent-2)]"></i> Notifikasi
+              </h3>
+              <div class="space-y-3">
+                <label class="flex items-center justify-between p-3 rounded-lg hover:bg-[var(--bg-2)] cursor-pointer">
+                  <span class="text-sm font-medium">Email notifikasi dokumen baru</span>
+                  <input type="checkbox" checked class="accent-[var(--accent)] w-5 h-5">
+                </label>
+                <label class="flex items-center justify-between p-3 rounded-lg hover:bg-[var(--bg-2)] cursor-pointer">
+                  <span class="text-sm font-medium">Notifikasi push browser</span>
+                  <input type="checkbox" class="accent-[var(--accent)] w-5 h-5">
+                </label>
+                <label class="flex items-center justify-between p-3 rounded-lg hover:bg-[var(--bg-2)] cursor-pointer">
+                  <span class="text-sm font-medium">Ringkasan mingguan</span>
+                  <input type="checkbox" checked class="accent-[var(--accent)] w-5 h-5">
+                </label>
+              </div>
+            </div>
+            
+            <div class="card p-8" style="border-color: #fecaca;">
+              <h3 class="font-display text-xl font-bold uppercase mb-4 flex items-center gap-2 text-red-600">
+                <i class="fa-solid fa-triangle-exclamation"></i> Zona Berbahaya
+              </h3>
+              <p class="text-xs text-[var(--muted)] mb-4 font-medium">Reset semua data ke pengaturan awal. Tindakan ini tidak dapat dibatalkan.</p>
+              <button onclick="resetAllData()" class="w-full px-4 py-3 rounded-md border-2 border-red-500 text-red-600 font-bold uppercase text-xs hover:bg-red-500 hover:text-white transition">
+                <i class="fa-solid fa-trash mr-2"></i> Reset Semua Data
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- ADMIN FORM MODAL -->
+<div id="adminFormModal" class="admin-form-modal">
+  <div class="admin-form-card">
+    <div class="flex items-center justify-between mb-6">
+      <h3 id="formModalTitle" class="font-display text-2xl font-bold uppercase">Form</h3>
+      <button onclick="closeAdminForm()" class="icon-btn">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div id="formModalContent"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast">
+  <div class="flex items-start gap-3">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-[var(--accent-2)] text-lg mt-0.5"></i>
+    <div>
+      <div id="toastTitle" class="font-bold font-display uppercase text-sm mb-1">Berhasil</div>
+      <div id="toastMsg" class="text-xs text-[var(--muted)] font-medium">Aksi berhasil dilakukan.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL GALERI -->
+<div id="galleryModal" class="fixed inset-0 z-[150] hidden items-center justify-center p-6" style="background:rgba(26,29,33,0.85);backdrop-filter:blur(8px);">
+  <div class="max-w-3xl w-full card p-6 relative">
+    <button id="closeModal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/10 flex items-center justify-center hover:bg-red-500/60 hover:text-white">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <img id="modalImg" class="w-full rounded-lg mb-4 max-h-[60vh] object-cover">
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// =============================================================
+// DEKLARASI DATA AWAL (Harus di paling atas agar tidak error)
+// =============================================================
+const catLabels = {
+  design: 'Desain', sublimation: 'Sublimasi', cutting: 'Cutting',
+  sewing: 'Jahit', finishing: 'Finishing', quality: 'Quality Control'
+};
+
+let students = [
+  {
+    id: 1, nama: "Ahmad Rizki Pratama", kelas: "XII TB 1", posisi: "Desain & Artwork",
+    foto: "https://picsum.photos/seed/student1pkl/400/520.jpg",
+    telepon: "0812-7890-1234", email: "ahmad.rizki@smkn1bm.sch.id",
+    deskripsi: "Berfokus pada pembuatan desain jersey dan artwork. Menguasai Adobe Illustrator dan pemisahan warna untuk kebutuhan cetak sublimasi."
+  },
+  {
+    id: 2, nama: "Siti Nurhaliza", kelas: "XII TB 1", posisi: "Operator Sublimasi",
+    foto: "https://picsum.photos/seed/student2pkl/400/520.jpg",
+    telepon: "0813-4567-8901", email: "siti.nurhaliza@smkn1bm.sch.id",
+    deskripsi: "Mengoperasikan mesin printer sublimasi dan heat press. Teliti dalam mengatur suhu, tekanan, dan waktu transfer warna ke kain."
+  },
+  {
+    id: 3, nama: "Budi Santoso", kelas: "XII TB 2", posisi: "Cutting & Pola",
+    foto: "https://picsum.photos/seed/student3pkl/400/520.jpg",
+    telepon: "0852-1234-5678", email: "budi.santoso@smkn1bm.sch.id",
+    deskripsi: "Memotong kain hasil sublimasi sesuai pola jersey. Menguasai penggunaan mesin potong lurus dan teknik cutting presisi tinggi."
+  },
+  {
+    id: 4, nama: "Dewi Lestari", kelas: "XII TB 1", posisi: "Quality Control",
+    foto: "https://picsum.photos/seed/student4pkl/400/520.jpg",
+    telepon: "0857-9012-3456", email: "dewi.lestari@smkn1bm.sch.id",
+    deskripsi: "Inspektur kualitas cetakan sublimasi dan jahitan akhir. Memastikan warna tajam, tidak luntur, dan jahitan rapi sebelum dikirim."
+  },
+  {
+    id: 5, nama: "Eko Prasetyo", kelas: "XII TB 2", posisi: "Operator Jahit",
+    foto: "https://picsum.photos/seed/student5pkl/400/520.jpg",
+    telepon: "0878-3456-7890", email: "eko.prasetyo@smkn1bm.sch.id",
+    deskripsi: "Bertanggung jawab pada tahap akhir produksi: menjahit dan merakit panel-panel jersey yang telah dicetak sublimasi."
+  },
+  {
+    id: 6, nama: "Fitri Handayani", kelas: "XII TB 1", posisi: "Finishing & Packaging",
+    foto: "https://picsum.photos/seed/student6pkl/400/520.jpg",
+    telepon: "0822-6789-0123", email: "fitri.handayani@smkn1bm.sch.id",
+    deskripsi: "Menangani tahap akhir produksi: pemberian label, lipat rapi, hingga kemasan siap distribusi."
+  }
+];
+
+let activities = [
+  {
+    id: 1, studentId: 1, date: '2025-01-15', category: 'design',
+    title: 'Desain Artwork Jersey Futsal',
+    desc: 'Membuat desain jersey futsal menggunakan Adobe Illustrator. Separasi warna CMYK dan cermin gambar (mirror) untuk kebutuhan cetak sublimasi. Hasil: 3 desain ready to print.',
+    foto: 'https://picsum.photos/seed/activity1/640/480.jpg'
+  },
+  {
+    id: 2, studentId: 2, date: '2025-01-22', category: 'sublimation',
+    title: 'Cetak Sublimasi ke Kertas',
+    desc: 'Mencetak desain ke kertas sublimasi menggunakan printer Epson SureColor. Resolusi 720x720 dpi dengan tinta sublim khusus. Hasil: 20 set kertas cetak siap transfer.',
+    foto: 'https://picsum.photos/seed/activity2/640/480.jpg'
+  },
+  {
+    id: 3, studentId: 2, date: '2025-02-05', category: 'sublimation',
+    title: 'Transfer Panas ke Kain (Heat Press)',
+    desc: 'Proses transfer gambar dari kertas sublim ke kain polyester. Suhu 200°C, tekanan medium, waktu 45 detik. Warna terserap sempurna dan tahan luntur.',
+    foto: 'https://picsum.photos/seed/activity3/640/480.jpg'
+  },
+  {
+    id: 4, studentId: 3, date: '2025-02-12', category: 'cutting',
+    title: 'Cutting Kain Hasil Sublimasi',
+    desc: 'Memotong kain yang sudah berisi cetakan sublimasi sesuai pola jersey. Menggunakan mesin cutting lurus agar tepi potongan rapi dan tidak menggeser pola.',
+    foto: 'https://picsum.photos/seed/activity4/640/480.jpg'
+  },
+  {
+    id: 5, studentId: 5, date: '2025-02-20', category: 'sewing',
+    title: 'Jahit Assembly Jersey (Tahap Akhir)',
+    desc: 'Merakit panel-panel jersey yang telah dicetak sublimasi. Menjahit sambungan bahu, badan, dan memasang krah menggunakan mesin jahit industri dan overlock.',
+    foto: 'https://picsum.photos/seed/activity5/640/480.jpg'
+  },
+  {
+    id: 6, studentId: 6, date: '2025-03-01', category: 'finishing',
+    title: 'Quality Check & Packaging',
+    desc: 'Memeriksa kerapatan jahitan dan ketajaman warna sublimasi. Pemasangan label, lipat rapi, dan dimasukkan ke polybag. Siap dikirim ke pelanggan.',
+    foto: 'https://picsum.photos/seed/activity6/640/480.jpg'
+  }
+];
+
+let currentPhotoData = null;
+
+// =============================================================
+// FUNGSI UTAMA (RENDER, MODAL, DLL)
+// =============================================================
+function formatDate(d) {
+  const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  const date = new Date(d);
+  return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+}
+
+function formatDateLong(d) {
+  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const date = new Date(d);
+  return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+}
+
+function renderStudents() {
+  const grid = document.getElementById('studentGrid');
+  if (!grid) return;
+  grid.innerHTML = students.map((s, i) => `
+    <div class="card p-5 reveal visible" style="transition-delay:${i*60}ms">
+      <div class="photo-frame mb-5">
+        <img src="${s.foto}" alt="${s.nama}" loading="lazy">
+        <div class="absolute top-3 left-3">
+          <span class="pill pill-accent text-[10px]">0${s.id}</span>
+        </div>
+        <div class="absolute bottom-3 left-3 right-3">
+          <div class="text-[10px] uppercase tracking-widest text-[var(--accent)] mb-1 font-bold">${s.posisi}</div>
+          <div class="font-display text-xl font-bold leading-tight uppercase">${s.nama}</div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between mb-3 text-xs">
+        <span class="text-[var(--muted)] font-medium"><i class="fa-solid fa-id-card mr-1.5"></i>${s.kelas}</span>
+        <span class="text-[var(--muted)] font-medium"><i class="fa-solid fa-phone mr-1.5"></i>${s.telepon}</span>
+      </div>
+      <p class="text-xs text-[var(--muted)] leading-relaxed mb-4 font-medium">${s.deskripsi}</p>
+      <a href="mailto:${s.email}" class="text-xs text-[var(--accent-2)] hover:underline font-bold"><i class="fa-solid fa-envelope mr-1.5"></i>${s.email}</a>
+    </div>
+  `).join('');
+  
+  const sel = document.getElementById('studentSelect');
+  if (sel) {
+    sel.innerHTML = '<option value="">— Pilih Siswa —</option>';
+    students.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.id;
+      opt.textContent = `${s.nama} — ${s.posisi}`;
+      sel.appendChild(opt);
+    });
+  }
+}
+
+function renderGallery(filter = 'all') {
+  const grid = document.getElementById('galleryGrid');
+  if (!grid) return;
+  const filtered = filter === 'all' ? activities : activities.filter(a => a.category === filter);
+  
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="col-span-full text-center py-12 text-[var(--muted)] font-medium">Belum ada dokumentasi pada kategori ini.</div>`;
+    return;
+  }
+  
+  grid.innerHTML = filtered.map((a, i) => {
+    const student = students.find(s => s.id === a.studentId);
+    return `
+      <div class="card activity-card overflow-hidden reveal visible" style="transition-delay:${i*40}ms" data-id="${a.id}">
+        <div class="gallery-img">
+          <img src="${a.foto}" alt="${a.title}" loading="lazy">
+          <div class="absolute inset-0 flex items-end p-4" style="background:linear-gradient(180deg,transparent 40%,rgba(26,29,33,0.95));">
+            <div class="w-full">
+              <span class="pill pill-accent text-[10px] mb-2">${catLabels[a.category]}</span>
+              <div class="font-display text-lg font-bold leading-tight uppercase text-white">${a.title}</div>
+              <div class="text-xs text-[var(--accent-soft)] mt-1 font-medium">${formatDate(a.date)} • ${student?.nama || '-'}</div>
+            </div>
+          </div>
+        </div>
+        <div class="p-4">
+          <p class="text-xs text-[var(--muted)] line-clamp-2 leading-relaxed font-medium">${a.desc}</p>
+          <button onclick="openModal(${a.id})" class="mt-3 text-xs font-bold text-[var(--accent-2)] hover:underline uppercase tracking-wide">Lihat Detail <i class="fa-solid fa-arrow-right ml-1"></i></button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateStats() {
+  const td = document.getElementById('totalDocs');
+  if (!td) return;
+  td.textContent = activities.length;
+  document.getElementById('totalStudents').textContent = new Set(activities.map(a => a.studentId)).size;
+  document.getElementById('totalCategories').textContent = new Set(activities.map(a => a.category)).size;
+  
+  if (activities.length > 0) {
+    const dates = activities.map(a => new Date(a.date)).sort((a,b) => a-b);
+    const start = dates[0];
+    const end = dates[dates.length-1];
+    document.getElementById('dateRange').textContent = `${start.getDate()}/${start.getMonth()+1} - ${end.getDate()}/${end.getMonth()+1}/${end.getFullYear()}`;
+  }
+  
+  const tbody = document.getElementById('recentTable');
+  if (!tbody) return;
+  document.getElementById('recentCount').textContent = activities.length;
+  if (activities.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-[var(--muted)] text-sm font-medium">Belum ada dokumentasi.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = activities.slice(0, 6).map(a => {
+    const student = students.find(s => s.id === a.studentId);
+    return `
+      <tr class="border-b border-[var(--border)] hover:bg-[var(--bg-2)]">
+        <td class="py-3 pr-4"><img src="${a.foto}" class="w-12 h-12 rounded-md object-cover"></td>
+        <td class="py-3 pr-4 text-sm font-semibold">${student?.nama || '-'}</td>
+        <td class="py-3 pr-4 text-sm text-[var(--muted)] font-medium">${formatDate(a.date)}</td>
+        <td class="py-3 pr-4"><span class="pill pill-outline text-[10px]">${catLabels[a.category]}</span></td>
+        <td class="py-3 pr-4 text-sm font-medium">${a.title}</td>
+        <td class="py-3 pr-4">
+          <button onclick="openModal(${a.id})" class="text-[var(--accent-2)] hover:text-[var(--accent)] mr-2"><i class="fa-solid fa-eye"></i></button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openModal(id) {
+  const a = activities.find(x => x.id === id);
+  if (!a) return;
+  const student = students.find(s => s.id === a.studentId);
+  document.getElementById('modalImg').src = a.foto;
+  document.getElementById('modalContent').innerHTML = `
+    <div class="flex items-center justify-between mb-3">
+      <span class="pill pill-accent text-[10px]">${catLabels[a.category]}</span>
+      <span class="text-xs text-[var(--muted)] font-medium"><i class="fa-regular fa-calendar mr-1"></i>${formatDateLong(a.date)}</span>
+    </div>
+    <h3 class="font-display text-2xl font-bold mb-2 uppercase">${a.title}</h3>
+    <div class="flex items-center gap-2 text-xs text-[var(--accent-2)] mb-4 font-bold uppercase">
+      <i class="fa-solid fa-user"></i> ${student?.nama || '-'} • ${student?.posisi || '-'}
+    </div>
+    <p class="text-sm text-[var(--fg-2)] leading-relaxed font-medium">${a.desc}</p>
+  `;
+  document.getElementById('galleryModal').classList.remove('hidden');
+  document.getElementById('galleryModal').classList.add('flex');
+}
+
+function showToast(msg, type = 'success') {
+  const toast = document.getElementById('toast');
+  const icon = document.getElementById('toastIcon');
+  const title = document.getElementById('toastTitle');
+  const message = document.getElementById('toastMsg');
+  
+  if (type === 'success') {
+    icon.className = 'fa-solid fa-circle-check text-[var(--accent-2)] text-lg mt-0.5';
+    title.textContent = 'Berhasil';
+  } else if (type === 'error') {
+    icon.className = 'fa-solid fa-circle-exclamation text-red-500 text-lg mt-0.5';
+    title.textContent = 'Kesalahan';
+  } else {
+    icon.className = 'fa-solid fa-circle-info text-[var(--accent-2)] text-lg mt-0.5';
+    title.textContent = 'Informasi';
+  }
+  message.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+// =============================================================
+// FORM & ADMIN LOGIC
+// =============================================================
+function handleFile(file) {
+  if (!file.type.startsWith('image/')) { showToast('File harus berupa gambar.','error'); return; }
+  if (file.size > 5 * 1024 * 1024) { showToast('Ukuran file maksimal 5MB.','error'); return; }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    currentPhotoData = e.target.result;
+    document.getElementById('previewImg').src = e.target.result;
+    document.getElementById('previewWrap').classList.remove('hidden');
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleActivitySubmit(e) {
+  e.preventDefault();
+  
+  const studentVal = document.getElementById('studentSelect').value;
+  if (!studentVal) {
+    showToast('Silakan pilih siswa terlebih dahulu.', 'error');
+    return false;
+  }
+  
+  const newAct = {
+    id: Date.now(),
+    studentId: parseInt(studentVal),
+    date: document.getElementById('actDate').value,
+    category: document.getElementById('actCategory').value,
+    title: document.getElementById('actTitle').value.trim(),
+    desc: document.getElementById('actDesc').value.trim(),
+    foto: currentPhotoData || `https://picsum.photos/seed/new${Date.now()}/640/480.jpg`
+  };
+  
+  activities.unshift(newAct);
+  
+  updateStats();
+  renderAdminActivities();
+  renderGallery('all');
+  if (document.getElementById('adminDashboard').classList.contains('show')) {
+    renderAdminOverview();
+  }
+  
+  document.getElementById('activityForm').reset();
+  currentPhotoData = null;
+  document.getElementById('previewWrap').classList.add('hidden');
+  
+  const actDateEl = document.getElementById('actDate');
+  if (actDateEl) actDateEl.valueAsDate = new Date();
+  
+  showToast('Dokumentasi berhasil ditambahkan ke laporan.', 'success');
+  return false;
+}
+
+function openAdminLogin() {
+  document.getElementById('adminLoginModal').classList.add('show');
+  setTimeout(() => document.getElementById('adminUsername').focus(), 100);
+}
+
+function closeAdminLogin() {
+  document.getElementById('adminLoginModal').classList.remove('show');
+}
+
+function togglePassword(inputId, icon) {
+  const input = document.getElementById(inputId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.remove('fa-eye');
+    icon.classList.add('fa-eye-slash');
+  } else {
+    input.type = 'password';
+    icon.classList.remove('fa-eye-slash');
+    icon.classList.add('fa-eye');
+  }
+}
+
+function forgotPassword() {
+  showToast('Hubungi sistem administrator untuk reset password.', 'info');
+}
+
+function checkLogin() {
+  var u = document.getElementById('adminUsername').value;
+  var p = document.getElementById('adminPassword').value;
+  
+  if (u === 'admin' && p === 'admin123') {
+    document.getElementById('adminLoginModal').classList.remove('show');
+    document.getElementById('adminDashboard').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    
+    renderAdminOverview();
+    document.getElementById('adminTodayDate').textContent = new Date().toLocaleDateString('id-ID', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+    
+    showToast('Selamat datang, Administrator!', 'success');
+  } else {
+    showToast('Username atau password salah!', 'error');
+    document.getElementById('adminPassword').value = '';
+  }
+  return false;
+}
+
+function logoutAdmin() {
+  document.getElementById('adminDashboard').classList.remove('show');
+  document.body.style.overflow = '';
+  showToast('Anda telah keluar dari dashboard.', 'success');
+}
+
+function switchAdminSection(section, el) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.admin-sidebar-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('admin' + section.charAt(0).toUpperCase() + section.slice(1)).classList.add('active');
+  if (el) el.classList.add('active');
+  
+  if (section === 'overview') renderAdminOverview();
+  if (section === 'students') renderAdminStudents();
+  if (section === 'activities') {
+    renderAdminActivities();
+    updateStats();
+  }
+}
+
+function openSitePreview() {
+  document.getElementById('adminDashboard').classList.remove('show');
+  document.body.style.overflow = '';
+  renderGallery('all');
+  updateStats();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  showToast('Mode pratinjau situs aktif. Klik tombol Admin untuk kembali.', 'info');
+}
+
+function renderAdminOverview() {
+  document.getElementById('adminTotalStudents').textContent = students.length;
+  document.getElementById('adminTotalActivities').textContent = activities.length;
+  document.getElementById('adminTotalCategories').textContent = new Set(activities.map(a => a.category)).size;
+  
+  const recent = activities.slice(0, 5);
+  document.getElementById('adminRecentActivities').innerHTML = recent.length ? recent.map(a => {
+    const student = students.find(s => s.id === a.studentId);
+    return `
+      <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-[var(--bg-2)] transition cursor-pointer" onclick="openModal(${a.id})">
+        <img src="${a.foto}" class="w-12 h-12 rounded-md object-cover flex-shrink-0">
+        <div class="flex-1 min-w-0">
+          <div class="font-bold text-sm truncate">${a.title}</div>
+          <div class="text-xs text-[var(--muted)]">${student?.nama || '-'} • ${formatDate(a.date)}</div>
+        </div>
+        <span class="admin-badge badge-info">${catLabels[a.category]}</span>
+      </div>
+    `;
+  }).join('') : '<div class="text-center py-6 text-[var(--muted)] text-sm">Belum ada dokumentasi</div>';
+  
+  const catCount = {};
+  activities.forEach(a => { catCount[a.category] = (catCount[a.category] || 0) + 1; });
+  const maxCount = Math.max(...Object.values(catCount), 1);
+  document.getElementById('adminCategoryDist').innerHTML = Object.entries(catLabels).map(([key, label]) => {
+    const count = catCount[key] || 0;
+    const pct = (count / maxCount) * 100;
+    return `
+      <div>
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-xs font-bold uppercase">${label}</span>
+          <span class="text-xs font-bold text-[var(--accent-2)]">${count}</span>
+        </div>
+        <div class="h-2 rounded-full bg-[var(--bg-2)] overflow-hidden">
+          <div class="h-full bg-[var(--accent)] rounded-full transition-all duration-700" style="width:${pct}%"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  document.getElementById('adminStudentStats').innerHTML = students.map(s => {
+    const counts = { design:0, sublimation:0, cutting:0, sewing:0, finishing:0 };
+    activities.filter(a => a.studentId === s.id).forEach(a => {
+      if (counts[a.category] !== undefined) counts[a.category]++;
+    });
+    const total = Object.values(counts).reduce((a,b) => a+b, 0);
+    return `
+      <tr>
+        <td>
+          <div class="flex items-center gap-3">
+            <img src="${s.foto}" class="w-9 h-9 rounded-full object-cover">
+            <div>
+              <div class="font-bold text-sm">${s.nama}</div>
+              <div class="text-xs text-[var(--muted)]">${s.kelas}</div>
+            </div>
+          </div>
+        </td>
+        <td class="text-xs font-medium">${s.posisi}</td>
+        <td class="text-center font-bold">${counts.design}</td>
+        <td class="text-center font-bold">${counts.sublimation}</td>
+        <td class="text-center font-bold">${counts.cutting}</td>
+        <td class="text-center font-bold">${counts.sewing}</td>
+        <td class="text-center font-bold">${counts.finishing}</td>
+        <td class="text-center"><span class="admin-badge badge-success">${total}</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderAdminStudents() {
+  const search = document.getElementById('studentSearch').value.toLowerCase();
+  const filtered = students.filter(s => 
+    s.nama.toLowerCase().includes(search) || s.kelas.toLowerCase().includes(search) || s.posisi.toLowerCase().includes(search)
+  );
+  document.getElementById('studentCount').textContent = filtered.length;
+  
+  document.getElementById('adminStudentsTable').innerHTML = filtered.length ? filtered.map(s => `
+    <tr>
+      <td><img src="${s.foto}" class="w-11 h-11 rounded-lg object-cover"></td>
+      <td>
+        <div class="font-bold">${s.nama}</div>
+        <div class="text-xs text-[var(--muted)]">${s.email}</div>
+      </td>
+      <td><span class="admin-badge badge-info">${s.kelas}</span></td>
+      <td class="text-xs font-medium">${s.posisi}</td>
+      <td class="text-xs">
+        <div><i class="fa-solid fa-phone text-[var(--muted)] mr-1"></i>${s.telepon}</div>
+      </td>
+      <td class="text-center">
+        <button onclick="openStudentForm(${s.id})" class="icon-btn edit" title="Edit"><i class="fa-solid fa-pen"></i></button>
+        <button onclick="deleteStudent(${s.id})" class="icon-btn delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    </tr>
+  `).join('') : '<tr><td colspan="6" class="text-center py-8 text-[var(--muted)]">Tidak ada siswa ditemukan</td></tr>';
+}
+
+function openStudentForm(id = null) {
+  const s = id ? students.find(x => x.id === id) : null;
+  document.getElementById('formModalTitle').textContent = s ? 'Edit Siswa' : 'Tambah Siswa';
+  document.getElementById('formModalContent').innerHTML = `
+    <form id="studentForm" class="space-y-4" onsubmit="saveStudent(event, ${id || 'null'})">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Nama Lengkap</label>
+          <input type="text" id="sf_nama" class="input" value="${s?.nama || ''}" required>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Kelas</label>
+          <input type="text" id="sf_kelas" class="input" value="${s?.kelas || ''}" placeholder="XII TB 1" required>
+        </div>
+      </div>
+      <div>
+        <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Posisi / Bidang</label>
+        <input type="text" id="sf_posisi" class="input" value="${s?.posisi || ''}" placeholder="Contoh: Desain & Artwork" required>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">No. Telepon</label>
+          <input type="text" id="sf_telepon" class="input" value="${s?.telepon || ''}" required>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Email</label>
+          <input type="email" id="sf_email" class="input" value="${s?.email || ''}" required>
+        </div>
+      </div>
+      <div>
+        <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">URL Foto</label>
+        <input type="url" id="sf_foto" class="input" value="${s?.foto || ''}" placeholder="https://..." required>
+        <p class="text-xs text-[var(--muted)] mt-1">Gunakan URL gambar. Default dari picsum.photos.</p>
+      </div>
+      <div>
+        <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Deskripsi Singkat</label>
+        <textarea id="sf_deskripsi" class="input" rows="3" required>${s?.deskripsi || ''}</textarea>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button type="button" onclick="closeAdminForm()" class="btn-ghost flex-1 justify-center">Batal</button>
+        <button type="submit" class="btn-primary flex-1 justify-center">
+          <i class="fa-solid fa-save mr-2"></i> ${s ? 'Update' : 'Simpan'}
+        </button>
+      </div>
+    </form>
+  `;
+  document.getElementById('adminFormModal').classList.add('show');
+}
+
+function saveStudent(e, id) {
+  e.preventDefault();
+  const data = {
+    nama: document.getElementById('sf_nama').value.trim(),
+    kelas: document.getElementById('sf_kelas').value.trim(),
+    posisi: document.getElementById('sf_posisi').value.trim(),
+    telepon: document.getElementById('sf_telepon').value.trim(),
+    email: document.getElementById('sf_email').value.trim(),
+    foto: document.getElementById('sf_foto').value.trim(),
+    deskripsi: document.getElementById('sf_deskripsi').value.trim()
+  };
+  
+  if (id) {
+    const idx = students.findIndex(s => s.id === id);
+    students[idx] = { ...students[idx], ...data };
+    showToast('Data siswa berhasil diperbarui.', 'success');
+  } else {
+    data.id = Date.now();
+    students.push(data);
+    showToast('Siswa baru berhasil ditambahkan.', 'success');
+  }
+  
+  closeAdminForm();
+  renderAdminStudents();
+  renderStudents();
+  renderGallery('all');
+  updateStats();
+}
+
+function deleteStudent(id) {
+  const s = students.find(x => x.id === id);
+  if (!confirm(`Hapus siswa "${s.nama}"? Aktivitas terkait juga akan dihapus.`)) return;
+  students = students.filter(s => s.id !== id);
+  activities = activities.filter(a => a.studentId !== id);
+  renderAdminStudents();
+  renderStudents();
+  renderGallery('all');
+  updateStats();
+  showToast('Siswa dan dokumentasi terkait telah dihapus.', 'success');
+}
+
+function renderAdminActivities() {
+  const search = document.getElementById('activitySearch').value.toLowerCase();
+  const filterCat = document.getElementById('activityFilterCat').value;
+  const filtered = activities.filter(a => {
+    const matchSearch = a.title.toLowerCase().includes(search) || a.desc.toLowerCase().includes(search);
+    const matchCat = !filterCat || a.category === filterCat;
+    return matchSearch && matchCat;
+  });
+  document.getElementById('activityCount').textContent = filtered.length;
+  
+  document.getElementById('adminActivitiesTable').innerHTML = filtered.length ? filtered.map(a => {
+    const student = students.find(s => s.id === a.studentId);
+    return `
+      <tr>
+        <td><img src="${a.foto}" class="w-11 h-11 rounded-lg object-cover"></td>
+        <td>
+          <div class="font-bold">${a.title}</div>
+          <div class="text-xs text-[var(--muted)] truncate max-w-xs">${a.desc}</div>
+        </td>
+        <td class="text-xs font-medium">${student?.nama || '-'}</td>
+        <td class="text-xs">${formatDate(a.date)}</td>
+        <td><span class="admin-badge badge-info">${catLabels[a.category]}</span></td>
+        <td class="text-center">
+          <button onclick="deleteActivityAdmin(${a.id})" class="icon-btn delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+        </td>
+      </tr>
+    `;
+  }).join('') : '<tr><td colspan="6" class="text-center py-8 text-[var(--muted)]">Tidak ada dokumentasi ditemukan</td></tr>';
+}
+
+function deleteActivityAdmin(id) {
+  if (!confirm('Hapus dokumentasi ini?')) return;
+  activities = activities.filter(a => a.id !== id);
+  renderAdminActivities();
+  renderGallery('all');
+  updateStats();
+  showToast('Dokumentasi telah dihapus.', 'success');
+}
+
+function closeAdminForm() {
+  document.getElementById('adminFormModal').classList.remove('show');
+}
+
+function changePassword(e) {
+  e.preventDefault();
+  const current = document.getElementById('currentPass').value;
+  const newP = document.getElementById('newPass').value;
+  const confirmP = document.getElementById('confirmPass').value;
+  
+  if (current !== 'admin123') {
+    showToast('Password saat ini salah!', 'error');
+    return;
+  }
+  if (newP.length < 6) {
+    showToast('Password baru minimal 6 karakter!', 'error');
+    return;
+  }
+  if (newP !== confirmP) {
+    showToast('Konfirmasi password tidak cocok!', 'error');
+    return;
+  }
+  
+  document.getElementById('changePasswordForm').reset();
+  showToast('Password berhasil diubah.', 'success');
+}
+
+function resetAllData() {
+  if (!confirm('PERINGATAN: Semua data siswa dan dokumentasi akan direset ke default. Lanjutkan?')) return;
+  if (!confirm('Konfirmasi terakhir: Yakin reset semua data?')) return;
+  location.reload();
+}
+
+function exportDataJSON() {
+  const data = {
+    exportDate: new Date().toISOString(),
+    students: students,
+    activities: activities
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `pkl_ecosport_backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Data berhasil diexport ke JSON.', 'success');
+}
+
+// =============================================================
+// DOWNLOAD PDF (DIPASTIKAN JALAN)
+// =============================================================
+function generatePDF(btn) {
+  if (!btn) return;
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyusun Laporan...';
+  btn.disabled = true;
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageW = 210;
+    const pageH = 297;
+    const margin = 15;
+    const contentW = pageW - margin * 2;
+    
+    // COVER PAGE
+    pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
+    pdf.setDrawColor(212, 175, 55); pdf.setGState(new pdf.GState({ opacity: 0.06 }));
+    for (let i = 0; i < pageW; i += 10) { pdf.line(i, 0, i, pageH); }
+    pdf.setGState(new pdf.GState({ opacity: 1 }));
+    pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 8, 'F');
+    pdf.setFillColor(212, 175, 55); pdf.rect(0, 8, pageW, 2, 'F');
+    pdf.rect(0, pageH - 10, pageW, 10, 'F');
+    pdf.setFillColor(26, 29, 33); pdf.roundedRect(margin, 25, 14, 14, 2, 2, 'F');
+    pdf.setTextColor(212, 175, 55); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(10);
+    pdf.text('ES', margin + 7, 34, { align: 'center' });
+    pdf.setTextColor(26, 29, 33); pdf.setFontSize(11);
+    pdf.text('ECO SPORT KONVEKSI', margin + 20, 31);
+    pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
+    pdf.text('JERSEY OLAHRAGA BERKUALITAS', margin + 20, 36);
+    pdf.setDrawColor(212, 175, 55); pdf.setLineWidth(0.5); pdf.line(margin, 80, pageW - margin, 80);
+    pdf.setTextColor(26, 29, 33); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(38);
+    pdf.text('LAPORAN', pageW/2, 110, { align: 'center' });
+    pdf.text('PRAKTIK KERJA', pageW/2, 125, { align: 'center' });
+    pdf.text('LAPANGAN', pageW/2, 140, { align: 'center' });
+    pdf.setFillColor(212, 175, 55); pdf.rect(pageW/2 - 25, 148, 50, 2, 'F');
+    pdf.setFont('helvetica', 'normal'); pdf.setFontSize(14); pdf.setTextColor(212, 175, 55);
+    pdf.text('Konveksi Jersey Eco Sport', pageW/2, 162, { align: 'center' });
+    pdf.setFontSize(10); pdf.setTextColor(74, 80, 87);
+    pdf.text('Periode Januari - April 2025', pageW/2, 170, { align: 'center' });
+    pdf.setFillColor(255, 255, 255); pdf.setDrawColor(209, 213, 219);
+    pdf.roundedRect(margin, 190, contentW, 55, 3, 3, 'FD');
+    pdf.setFillColor(212, 175, 55); pdf.rect(margin, 190, contentW, 1.5, 'F');
+    pdf.setFontSize(8); pdf.setTextColor(139, 146, 155);
+    pdf.text('DISUSUN OLEH', margin + 8, 200); pdf.text('INSTITUSI', pageW/2, 200);
+    pdf.setFont('helvetica', 'bold'); pdf.setFontSize(11); pdf.setTextColor(26, 29, 33);
+    pdf.text('6 Siswa PKL SMKN 1 Buay Madang', margin + 8, 208);
+    pdf.text('SMK Negeri 1 Buay Madang', pageW/2, 208);
+    pdf.setFont('helvetica', 'normal'); pdf.setFontSize(8); pdf.setTextColor(74, 80, 87);
+    pdf.text('Jurusan Tata Busana', margin + 8, 215);
+    pdf.text('Buay Madang, OKU Timur', pageW/2, 215);
+    pdf.setFontSize(8); pdf.setTextColor(139, 146, 155);
+    pdf.text('LOKASI PKL', margin + 8, 228); pdf.text('Pembimbing Industri', pageW/2, 228);
+    pdf.setFont('helvetica', 'bold'); pdf.setFontSize(10); pdf.setTextColor(26, 29, 33);
+    pdf.text('Konveksi Jersey Eco Sport', margin + 8, 236);
+    pdf.text('Tim Produksi Eco Sport', pageW/2, 236);
+    pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
+    pdf.text('Dokumen ini disusun secara otomatis berdasarkan dokumentasi kegiatan PKL', pageW/2, pageH - 20, { align: 'center' });
+    pdf.text(`Diunduh pada ${new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' })}`, pageW/2, pageH - 15, { align: 'center' });
+
+    // PAGE 2: SISWA
+    pdf.addPage();
+    pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
+    pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 6, 'F');
+    pdf.setFillColor(212, 175, 55); pdf.rect(0, 6, pageW, 2, 'F');
+    pdf.setTextColor(212, 175, 55); pdf.setFontSize(8); pdf.text('BAB I', margin, 22);
+    pdf.setTextColor(26, 29, 33); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(22);
+    pdf.text('Profil Siswa PKL', margin, 32);
+    pdf.setDrawColor(212, 175, 55); pdf.setLineWidth(0.8); pdf.line(margin, 37, margin + 45, 37);
+    pdf.setFont('helvetica', 'normal'); pdf.setFontSize(9); pdf.setTextColor(74, 80, 87);
+    const intro1 = 'Program PKL diikuti oleh 6 siswa SMK Negeri 1 Buay Madang yang ditempatkan di berbagai posisi produksi.';
+    pdf.text(pdf.splitTextToSize(intro1, contentW), margin, 47);
+    const colW = (contentW - 8) / 2;
+    for (let i = 0; i < students.length; i++) {
+      const s = students[i];
+      const col = i % 2; const row = Math.floor(i / 2);
+      const x = margin + col * (colW + 8); const y = 70 + row * 65;
+      pdf.setFillColor(255, 255, 255); pdf.setDrawColor(209, 213, 219);
+      pdf.roundedRect(x, y, colW, 58, 2, 2, 'FD');
+      pdf.setFillColor(212, 175, 55); pdf.rect(x, y, colW, 1, 'F');
+      pdf.setFontSize(7); pdf.setTextColor(212, 175, 55); pdf.text(`SISWA 0${s.id}`, x + 4, y + 7);
+      pdf.setFont('helvetica', 'bold'); pdf.setFontSize(11); pdf.setTextColor(26, 29, 33);
+      pdf.text(pdf.splitTextToSize(s.nama, colW - 8)[0], x + 4, y + 14);
+      pdf.setFont('helvetica', 'bold'); pdf.setFontSize(8); pdf.setTextColor(212, 175, 55);
+      pdf.text(s.posisi.toUpperCase(), x + 4, y + 20);
+      pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7.5); pdf.setTextColor(74, 80, 87);
+      pdf.text(`Kelas: ${s.kelas}`, x + 4, y + 27); pdf.text(`Telp: ${s.telepon}`, x + 4, y + 32);
+      pdf.setTextColor(139, 146, 155); pdf.text(pdf.splitTextToSize(s.deskripsi, colW - 8).slice(0, 3), x + 4, y + 39);
+    }
+
+    // PAGE 3+: DOKUMENTASI
+    pdf.addPage();
+    pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
+    pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 6, 'F');
+    pdf.setFillColor(212, 175, 55); pdf.rect(0, 6, pageW, 2, 'F');
+    pdf.setTextColor(212, 175, 55); pdf.setFontSize(8); pdf.text('BAB II', margin, 22);
+    pdf.setTextColor(26, 29, 33); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(22);
+    pdf.text('Dokumentasi Kegiatan', margin, 32);
+    pdf.setDrawColor(212, 175, 55); pdf.line(margin, 37, margin + 55, 37);
+    pdf.setFont('helvetica', 'normal'); pdf.setFontSize(9); pdf.setTextColor(74, 80, 87);
+    const intro2 = `Bagian ini berisi rekapitulasi ${activities.length} dokumentasi kegiatan yang dilakukan selama pelaksanaan PKL.`;
+    pdf.text(pdf.splitTextToSize(intro2, contentW), margin, 47);
+    let y = 60;
+    for (let i = 0; i < activities.length; i++) {
+      const a = activities[i];
+      const student = students.find(s => s.id === a.studentId);
+      if (y > pageH - 80) {
+        pdf.addPage(); pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
+        pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 6, 'F');
+        pdf.setFillColor(212, 175, 55); pdf.rect(0, 6, pageW, 2, 'F'); y = 25;
+      }
+      pdf.setFillColor(255, 255, 255); pdf.setDrawColor(209, 213, 219);
+      pdf.roundedRect(margin, y, contentW, 60, 2, 2, 'FD');
+      pdf.setFillColor(212, 175, 55); pdf.rect(margin, y, contentW, 1, 'F');
+      pdf.setFillColor(26, 29, 33); pdf.roundedRect(margin + 4, y + 4, 14, 6, 1, 1, 'F');
+      pdf.setTextColor(212, 175, 55); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(7);
+      pdf.text(`#${i+1}`, margin + 11, y + 8.5, { align: 'center' });
+      pdf.setFillColor(212, 175, 55); pdf.roundedRect(margin + 20, y + 4, 22, 6, 1, 1, 'F');
+      pdf.setTextColor(26, 29, 33); pdf.setFontSize(6);
+      pdf.text(catLabels[a.category].toUpperCase(), margin + 31, y + 8.5, { align: 'center' });
+      pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
+      pdf.text(formatDateLong(a.date), pageW - margin - 4, y + 8.5, { align: 'right' });
+      pdf.setFont('helvetica', 'bold'); pdf.setFontSize(12); pdf.setTextColor(26, 29, 33);
+      pdf.text(pdf.splitTextToSize(a.title, contentW - 8).slice(0, 2), margin + 4, y + 18);
+      pdf.setFont('helvetica', 'bold'); pdf.setFontSize(8); pdf.setTextColor(212, 175, 55);
+      pdf.text(`Oleh: ${student?.nama || '-'} — ${student?.posisi || '-'}`, margin + 4, y + 27);
+      pdf.setFont('helvetica', 'normal'); pdf.setFontSize(8); pdf.setTextColor(74, 80, 87);
+      pdf.text(pdf.splitTextToSize(a.desc, contentW - 50).slice(0, 4), margin + 4, y + 33);
+      y += 68;
+    }
+
+    // LAST PAGE: PENUTUP
+    pdf.addPage();
+    pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
+    pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 6, 'F');
+    pdf.setFillColor(212, 175, 55); pdf.rect(0, 6, pageW, 2, 'F');
+    pdf.setTextColor(212, 175, 55); pdf.setFontSize(8); pdf.text('BAB III', margin, 25);
+    pdf.setTextColor(26, 29, 33); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(22);
+    pdf.text('Penutup', margin, 35);
+    pdf.setDrawColor(212, 175, 55); pdf.line(margin, 40, margin + 35, 40);
+    pdf.setFont('helvetica', 'normal'); pdf.setFontSize(9); pdf.setTextColor(74, 80, 87);
+    const penutup = `Demikian laporan Praktik Kerja Lapangan ini disusun berdasarkan ${activities.length} dokumentasi kegiatan yang dilakukan oleh 6 siswa SMK Negeri 1 Buay Madang di Konveksi Jersey Eco Sport. Selama pelaksanaan PKL, siswa telah mempelajari berbagai aspek produksi jersey mulai dari desain artwork, proses sublimasi printing, cutting kain, hingga tahap akhir penjahitan dan packaging.
+
+Kegiatan PKL ini memberikan pengalaman langsung kepada siswa dalam lingkungan industri konveksi yang sesungguhnya. Siswa tidak hanya mempelajari keterampilan teknis, tetapi juga etos kerja, disiplin, kerja sama tim, dan tanggung jawab profesional.
+
+Kami mengucapkan terima kasih kepada pihak Konveksi Jersey Eco Sport yang telah memberikan kesempatan dan bimbingan kepada siswa-siswi kami. Semoga kerja sama ini dapat berlanjut dan memberikan manfaat bagi pengembangan SDM di bidang industri konveksi.`;
+    pdf.text(pdf.splitTextToSize(penutup, contentW), margin, 55);
+    pdf.setFontSize(9); pdf.setTextColor(26, 29, 33);
+    pdf.text('Buay Madang, ' + new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' }), pageW - margin - 60, 200, { align: 'left' });
+    pdf.setFontSize(8); pdf.setTextColor(139, 146, 155);
+    pdf.text('Pembimbing Sekolah', margin, 215); pdf.text('Pembimbing Industri', pageW - margin - 50, 215);
+    pdf.setDrawColor(139, 146, 155); pdf.setLineWidth(0.2);
+    pdf.line(margin, 240, margin + 60, 240); pdf.line(pageW - margin - 50, 240, pageW - margin, 240);
+    pdf.setFontSize(9); pdf.setTextColor(26, 29, 33);
+    pdf.text('Drs. Sutrisno, M.Pd', margin, 246); pdf.text('Bpk. Hendra Wijaya', pageW - margin - 50, 246);
+    pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
+    pdf.text('SMK Negeri 1 Buay Madang', margin, 251); pdf.text('Konveksi Jersey Eco Sport', pageW - margin - 50, 251);
+    
+    const pageCount = pdf.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      pdf.setPage(i); pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
+      pdf.text(`${i} / ${pageCount}`, pageW - margin, pageH - 8, { align: 'right' });
+      pdf.text('LAPORAN PKL — SMKN 1 BUAY MADANG x ECO SPORT', margin, pageH - 8);
+    }
+    
+    pdf.save(`Laporan_PKL_EcoSport_${new Date().toISOString().slice(0,10)}.pdf`);
+    showToast('Laporan PDF berhasil diunduh.','success');
+  } catch (err) {
+    console.error("PDF Generation Error:", err);
+    alert('Gagal membuat PDF. Error: ' + err.message);
+    showToast('Gagal membuat PDF.','error');
+  } finally {
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+  }
+}
+
+// =============================================================
+// EVENT LISTENERS & INITIALIZATION
+// =============================================================
+document.getElementById('filterBtns').addEventListener('click', (e) => {
+  if (e.target.classList.contains('filter-btn')) {
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('border-[var(--accent)]','bg-[var(--accent)]','text-[var(--fg)]');
+      b.classList.add('border-[var(--border-2)]','text-[var(--fg-2)]');
+    });
+    e.target.classList.add('border-[var(--accent)]','bg-[var(--accent)]','text-[var(--fg)]');
+    e.target.classList.remove('border-[var(--border-2)]','text-[var(--fg-2)]');
+    renderGallery(e.target.dataset.filter);
+  }
+});
+
+document.getElementById('closeModal').addEventListener('click', () => {
+  document.getElementById('galleryModal').classList.add('hidden');
+  document.getElementById('galleryModal').classList.remove('flex');
+});
+document.getElementById('galleryModal').addEventListener('click', (e) => {
+  if (e.target.id === 'galleryModal') {
+    e.currentTarget.classList.add('hidden');
+    e.currentTarget.classList.remove('flex');
+  }
+});
+
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('actPhoto');
+if (uploadZone) {
+  uploadZone.addEventListener('click', () => fileInput.click());
+  uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+  uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files[0]) handleFile(e.target.files[0]);
+  });
+}
+
+if (document.getElementById('removePreview')) {
+  document.getElementById('removePreview').addEventListener('click', () => {
+    currentPhotoData = null;
+    fileInput.value = '';
+    document.getElementById('previewWrap').classList.add('hidden');
+  });
+}
+
+document.getElementById('btnLogoutHeader').addEventListener('click', logoutAdmin);
+document.getElementById('btnLogoutSidebar').addEventListener('click', logoutAdmin);
+
+document.getElementById('btnDownloadPdfPublic').addEventListener('click', function() { generatePDF(this); });
+document.getElementById('btnDownloadPdfAdmin').addEventListener('click', function() { generatePDF(this); });
+document.getElementById('btnDownloadPdfReports').addEventListener('click', function() { generatePDF(this); });
+
+document.getElementById('adminLoginModal').addEventListener('click', function(e) {
+  if (e.target.id === 'adminLoginModal') closeAdminLogin();
+});
+document.getElementById('adminFormModal').addEventListener('click', function(e) {
+  if (e.target.id === 'adminFormModal') closeAdminForm();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    if (document.getElementById('adminFormModal').classList.contains('show')) closeAdminForm();
+    else if (document.getElementById('adminLoginModal').classList.contains('show')) closeAdminLogin();
+  }
+});
+
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    nav.style.background = 'rgba(255, 255, 255, 0.9)';
+    nav.style.backdropFilter = 'blur(12px)';
+    nav.style.borderBottom = '1px solid var(--border)';
+    nav.style.boxShadow = '0 2px 10px rgba(0,0,0,0.03)';
+  } else {
+    nav.style.background = 'transparent';
+    nav.style.backdropFilter = 'none';
+    nav.style.borderBottom = 'none';
+    nav.style.boxShadow = 'none';
+  }
+});
+
+document.getElementById('menuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+function observeReveal() {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+}
+
+// INISIALISASI PERTAMA KALI
+renderStudents();
+renderGallery('all');
+updateStats();
+setTimeout(observeReveal, 100);
+
+const actDateEl = document.getElementById('actDate');
+if (actDateEl) actDateEl.valueAsDate = new Date();
+</script>
+</body>
+</html>
