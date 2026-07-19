@@ -10,6 +10,8 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Library Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --bg: #f4f5f7;
@@ -1403,95 +1405,57 @@
 
 <script>
 // =============================================================
-// DEKLARASI DATA AWAL (Harus di paling atas agar tidak error)
+// KONFIGURASI & INISIALISASI SUPABASE
 // =============================================================
+const SUPABASE_URL = "https://mnfxodgxarzummriztoh.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZnhvZGd4YXJ6dW1tcml6dG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5MDc3NzIsImV4cCI6MjA5OTQ4Mzc3Mn0.d3GAZnmwQZd5261H3dwXeakUDIOYAIQMOKYiIFd74QA";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const catLabels = {
   design: 'Desain', sublimation: 'Sublimasi', cutting: 'Cutting',
   sewing: 'Jahit', finishing: 'Finishing', quality: 'Quality Control'
 };
 
-let students = [
-  {
-    id: 1, nama: "Ahmad Rizki Pratama", kelas: "XII TB 1", posisi: "Desain & Artwork",
-    foto: "https://picsum.photos/seed/student1pkl/400/520.jpg",
-    telepon: "0812-7890-1234", email: "ahmad.rizki@smkn1bm.sch.id",
-    deskripsi: "Berfokus pada pembuatan desain jersey dan artwork. Menguasai Adobe Illustrator dan pemisahan warna untuk kebutuhan cetak sublimasi."
-  },
-  {
-    id: 2, nama: "Siti Nurhaliza", kelas: "XII TB 1", posisi: "Operator Sublimasi",
-    foto: "https://picsum.photos/seed/student2pkl/400/520.jpg",
-    telepon: "0813-4567-8901", email: "siti.nurhaliza@smkn1bm.sch.id",
-    deskripsi: "Mengoperasikan mesin printer sublimasi dan heat press. Teliti dalam mengatur suhu, tekanan, dan waktu transfer warna ke kain."
-  },
-  {
-    id: 3, nama: "Budi Santoso", kelas: "XII TB 2", posisi: "Cutting & Pola",
-    foto: "https://picsum.photos/seed/student3pkl/400/520.jpg",
-    telepon: "0852-1234-5678", email: "budi.santoso@smkn1bm.sch.id",
-    deskripsi: "Memotong kain hasil sublimasi sesuai pola jersey. Menguasai penggunaan mesin potong lurus dan teknik cutting presisi tinggi."
-  },
-  {
-    id: 4, nama: "Dewi Lestari", kelas: "XII TB 1", posisi: "Quality Control",
-    foto: "https://picsum.photos/seed/student4pkl/400/520.jpg",
-    telepon: "0857-9012-3456", email: "dewi.lestari@smkn1bm.sch.id",
-    deskripsi: "Inspektur kualitas cetakan sublimasi dan jahitan akhir. Memastikan warna tajam, tidak luntur, dan jahitan rapi sebelum dikirim."
-  },
-  {
-    id: 5, nama: "Eko Prasetyo", kelas: "XII TB 2", posisi: "Operator Jahit",
-    foto: "https://picsum.photos/seed/student5pkl/400/520.jpg",
-    telepon: "0878-3456-7890", email: "eko.prasetyo@smkn1bm.sch.id",
-    deskripsi: "Bertanggung jawab pada tahap akhir produksi: menjahit dan merakit panel-panel jersey yang telah dicetak sublimasi."
-  },
-  {
-    id: 6, nama: "Fitri Handayani", kelas: "XII TB 1", posisi: "Finishing & Packaging",
-    foto: "https://picsum.photos/seed/student6pkl/400/520.jpg",
-    telepon: "0822-6789-0123", email: "fitri.handayani@smkn1bm.sch.id",
-    deskripsi: "Menangani tahap akhir produksi: pemberian label, lipat rapi, hingga kemasan siap distribusi."
-  }
-];
-
-let activities = [
-  {
-    id: 1, studentId: 1, date: '2025-01-15', category: 'design',
-    title: 'Desain Artwork Jersey Futsal',
-    desc: 'Membuat desain jersey futsal menggunakan Adobe Illustrator. Separasi warna CMYK dan cermin gambar (mirror) untuk kebutuhan cetak sublimasi. Hasil: 3 desain ready to print.',
-    foto: 'https://picsum.photos/seed/activity1/640/480.jpg'
-  },
-  {
-    id: 2, studentId: 2, date: '2025-01-22', category: 'sublimation',
-    title: 'Cetak Sublimasi ke Kertas',
-    desc: 'Mencetak desain ke kertas sublimasi menggunakan printer Epson SureColor. Resolusi 720x720 dpi dengan tinta sublim khusus. Hasil: 20 set kertas cetak siap transfer.',
-    foto: 'https://picsum.photos/seed/activity2/640/480.jpg'
-  },
-  {
-    id: 3, studentId: 2, date: '2025-02-05', category: 'sublimation',
-    title: 'Transfer Panas ke Kain (Heat Press)',
-    desc: 'Proses transfer gambar dari kertas sublim ke kain polyester. Suhu 200°C, tekanan medium, waktu 45 detik. Warna terserap sempurna dan tahan luntur.',
-    foto: 'https://picsum.photos/seed/activity3/640/480.jpg'
-  },
-  {
-    id: 4, studentId: 3, date: '2025-02-12', category: 'cutting',
-    title: 'Cutting Kain Hasil Sublimasi',
-    desc: 'Memotong kain yang sudah berisi cetakan sublimasi sesuai pola jersey. Menggunakan mesin cutting lurus agar tepi potongan rapi dan tidak menggeser pola.',
-    foto: 'https://picsum.photos/seed/activity4/640/480.jpg'
-  },
-  {
-    id: 5, studentId: 5, date: '2025-02-20', category: 'sewing',
-    title: 'Jahit Assembly Jersey (Tahap Akhir)',
-    desc: 'Merakit panel-panel jersey yang telah dicetak sublimasi. Menjahit sambungan bahu, badan, dan memasang krah menggunakan mesin jahit industri dan overlock.',
-    foto: 'https://picsum.photos/seed/activity5/640/480.jpg'
-  },
-  {
-    id: 6, studentId: 6, date: '2025-03-01', category: 'finishing',
-    title: 'Quality Check & Packaging',
-    desc: 'Memeriksa kerapatan jahitan dan ketajaman warna sublimasi. Pemasangan label, lipat rapi, dan dimasukkan ke polybag. Siap dikirim ke pelanggan.',
-    foto: 'https://picsum.photos/seed/activity6/640/480.jpg'
-  }
-];
-
+let students = [];
+let activities = [];
 let currentPhotoData = null;
 
 // =============================================================
-// FUNGSI UTAMA (RENDER, MODAL, DLL)
+// FUNGSI AMBIL DATA DARI SUPABASE
+// =============================================================
+async function fetchInitialData() {
+  showToast('Memuat data dari server...', 'info');
+  
+  const { data: studentData, error: errStd } = await db.from('students').select('*');
+  if (errStd) {
+    showToast('Gagal memuat data siswa: ' + errStd.message, 'error');
+  } else {
+    students = studentData.map(s => ({
+      id: s.id, nama: s.nama, kelas: s.kelas, posisi: s.posisi, 
+      telepon: s.telepon, email: s.email, foto: s.foto, deskripsi: s.deskripsi
+    }));
+  }
+
+  const { data: actData, error: errAct } = await db.from('activities').select('*');
+  if (errAct) {
+    showToast('Gagal memuat data dokumentasi: ' + errAct.message, 'error');
+  } else {
+    activities = actData.map(a => ({
+      id: a.id, studentId: a.student_id, date: a.date, 
+      category: a.category, title: a.title, desc: a.description, foto: a.foto
+    }));
+  }
+
+  renderStudents();
+  renderGallery('all');
+  updateStats();
+  if (document.getElementById('adminDashboard').classList.contains('show')) {
+    renderAdminOverview();
+  }
+}
+
+// =============================================================
+// FUNGSI FORMAT TANGGAL
 // =============================================================
 function formatDate(d) {
   const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
@@ -1506,6 +1470,9 @@ function formatDateLong(d) {
   return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
+// =============================================================
+// FUNGSI RENDER UI
+// =============================================================
 function renderStudents() {
   const grid = document.getElementById('studentGrid');
   if (!grid) return;
@@ -1669,7 +1636,7 @@ function handleFile(file) {
   reader.readAsDataURL(file);
 }
 
-function handleActivitySubmit(e) {
+async function handleActivitySubmit(e) {
   e.preventDefault();
   
   const studentVal = document.getElementById('studentSelect').value;
@@ -1678,17 +1645,29 @@ function handleActivitySubmit(e) {
     return false;
   }
   
-  const newAct = {
-    id: Date.now(),
-    studentId: parseInt(studentVal),
+  const newActData = {
+    student_id: parseInt(studentVal),
     date: document.getElementById('actDate').value,
     category: document.getElementById('actCategory').value,
     title: document.getElementById('actTitle').value.trim(),
-    desc: document.getElementById('actDesc').value.trim(),
+    description: document.getElementById('actDesc').value.trim(),
     foto: currentPhotoData || `https://picsum.photos/seed/new${Date.now()}/640/480.jpg`
   };
-  
-  activities.unshift(newAct);
+
+  const { data, error } = await db.from('activities').insert([newActData]).select();
+
+  if (error) {
+    showToast('Gagal menyimpan ke database: ' + error.message, 'error');
+    return false;
+  }
+
+  if (data && data.length > 0) {
+    const savedAct = data[0];
+    activities.unshift({
+      id: savedAct.id, studentId: savedAct.student_id, date: savedAct.date, 
+      category: savedAct.category, title: savedAct.title, desc: savedAct.description, foto: savedAct.foto
+    });
+  }
   
   updateStats();
   renderAdminActivities();
@@ -1704,7 +1683,7 @@ function handleActivitySubmit(e) {
   const actDateEl = document.getElementById('actDate');
   if (actDateEl) actDateEl.valueAsDate = new Date();
   
-  showToast('Dokumentasi berhasil ditambahkan ke laporan.', 'success');
+  showToast('Dokumentasi berhasil disimpan ke server.', 'success');
   return false;
 }
 
@@ -1734,11 +1713,14 @@ function forgotPassword() {
   showToast('Hubungi sistem administrator untuk reset password.', 'info');
 }
 
-function checkLogin() {
+async function checkLogin() {
   var u = document.getElementById('adminUsername').value;
   var p = document.getElementById('adminPassword').value;
   
-  if (u === 'admin' && p === 'admin123') {
+  // Cek ke tabel admin di Supabase
+  const { data, error } = await db.from('admin').select('*').eq('username', u).eq('password', p).single();
+
+  if (data) {
     document.getElementById('adminLoginModal').classList.remove('show');
     document.getElementById('adminDashboard').classList.add('show');
     document.body.style.overflow = 'hidden';
@@ -1929,7 +1911,7 @@ function openStudentForm(id = null) {
   document.getElementById('adminFormModal').classList.add('show');
 }
 
-function saveStudent(e, id) {
+async function saveStudent(e, id) {
   e.preventDefault();
   const data = {
     nama: document.getElementById('sf_nama').value.trim(),
@@ -1942,12 +1924,15 @@ function saveStudent(e, id) {
   };
   
   if (id) {
+    const { error } = await db.from('students').update(data).eq('id', id);
+    if (error) { showToast('Gagal update: ' + error.message, 'error'); return; }
     const idx = students.findIndex(s => s.id === id);
     students[idx] = { ...students[idx], ...data };
     showToast('Data siswa berhasil diperbarui.', 'success');
   } else {
-    data.id = Date.now();
-    students.push(data);
+    const { data: newData, error } = await db.from('students').insert([data]).select();
+    if (error) { showToast('Gagal menyimpan: ' + error.message, 'error'); return; }
+    if(newData && newData.length > 0) students.push(newData[0]);
     showToast('Siswa baru berhasil ditambahkan.', 'success');
   }
   
@@ -1958,9 +1943,13 @@ function saveStudent(e, id) {
   updateStats();
 }
 
-function deleteStudent(id) {
+async function deleteStudent(id) {
   const s = students.find(x => x.id === id);
   if (!confirm(`Hapus siswa "${s.nama}"? Aktivitas terkait juga akan dihapus.`)) return;
+  
+  const { error } = await db.from('students').delete().eq('id', id);
+  if (error) { showToast('Gagal menghapus: ' + error.message, 'error'); return; }
+
   students = students.filter(s => s.id !== id);
   activities = activities.filter(a => a.studentId !== id);
   renderAdminStudents();
@@ -2000,8 +1989,12 @@ function renderAdminActivities() {
   }).join('') : '<tr><td colspan="6" class="text-center py-8 text-[var(--muted)]">Tidak ada dokumentasi ditemukan</td></tr>';
 }
 
-function deleteActivityAdmin(id) {
-  if (!confirm('Hapus dokumentasi ini?')) return;
+async function deleteActivityAdmin(id) {
+  if (!confirm('Hapus dokumentasi ini dari server?')) return;
+  
+  const { error } = await db.from('activities').delete().eq('id', id);
+  if (error) { showToast('Gagal menghapus: ' + error.message, 'error'); return; }
+
   activities = activities.filter(a => a.id !== id);
   renderAdminActivities();
   renderGallery('all');
@@ -2037,8 +2030,7 @@ function changePassword(e) {
 }
 
 function resetAllData() {
-  if (!confirm('PERINGATAN: Semua data siswa dan dokumentasi akan direset ke default. Lanjutkan?')) return;
-  if (!confirm('Konfirmasi terakhir: Yakin reset semua data?')) return;
+  if (!confirm('PERINGATAN: Halaman akan dimuat ulang untuk menyegarkan data dari server. Lanjutkan?')) return;
   location.reload();
 }
 
@@ -2340,10 +2332,8 @@ function observeReveal() {
   document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
 }
 
-// INISIALISASI PERTAMA KALI
-renderStudents();
-renderGallery('all');
-updateStats();
+// INISIALISASI PERTAMA KALI (Ambil data dari Supabase)
+fetchInitialData();
 setTimeout(observeReveal, 100);
 
 const actDateEl = document.getElementById('actDate');
