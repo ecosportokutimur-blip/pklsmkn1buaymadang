@@ -1135,55 +1135,25 @@
                 <textarea id="actDesc" class="input" rows="3" placeholder="Jelaskan kegiatan yang dilakukan, alat yang digunakan, dan hasilnya..." required></textarea>
               </div>
               
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Foto Dokumentasi</label>
-                  <div id="uploadZone" class="upload-zone" style="padding: 20px;">
-                    <input type="file" id="actPhoto" accept="image/*" class="hidden">
-                    <div class="space-y-2">
-                      <i class="fa-solid fa-image text-2xl text-[var(--accent-2)]"></i>
-                      <div class="text-xs font-bold uppercase tracking-wide">Klik atau seret foto</div>
-                    </div>
-                  </div>
-                  <div id="previewWrap" class="hidden mt-3 relative rounded-lg overflow-hidden border border-[var(--border)]">
-                    <img id="previewImg" class="w-full h-32 object-cover">
-                    <button type="button" id="removePreview" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-red-500/80">
-                      <i class="fa-solid fa-xmark text-sm"></i>
-                    </button>
+              <div>
+                <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Foto Dokumentasi</label>
+                <div id="uploadZone" class="upload-zone">
+                  <input type="file" id="actPhoto" accept="image/*" class="hidden">
+                  <div class="space-y-2">
+                    <i class="fa-solid fa-image text-3xl text-[var(--accent-2)]"></i>
+                    <div class="text-sm font-bold uppercase tracking-wide">Klik atau seret foto ke sini</div>
+                    <div class="text-xs text-[var(--muted)] font-medium">JPG, PNG — maksimal 5MB</div>
                   </div>
                 </div>
-                
-                <div>
-                  <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Video Proses (Opsional)</label>
-                  <div id="uploadZoneVideo" class="upload-zone" style="padding: 20px;">
-                    <input type="file" id="actVideo" accept="video/*" class="hidden">
-                    <div class="space-y-2">
-                      <i class="fa-solid fa-film text-2xl text-[var(--accent-2)]"></i>
-                      <div class="text-xs font-bold uppercase tracking-wide">Klik atau seret video</div>
-                    </div>
-                  </div>
-                  <div id="previewVideoWrap" class="hidden mt-3 relative rounded-lg overflow-hidden border border-[var(--border)]">
-                    <video id="previewVideo" class="w-full h-32 object-cover" muted></video>
-                    <button type="button" id="removeVideoPreview" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-red-500/80">
-                      <i class="fa-solid fa-xmark text-sm"></i>
-                    </button>
-                  </div>
+                <div id="previewWrap" class="hidden mt-3 relative rounded-lg overflow-hidden border border-[var(--border)]">
+                  <img id="previewImg" class="w-full h-48 object-cover">
+                  <button type="button" id="removePreview" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-red-500/80">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                  </button>
                 </div>
-              </div>
-
-              <!-- Toggle Publish -->
-              <div class="flex items-center justify-between p-4 rounded-lg border border-[var(--border)] bg-[var(--card-2)]">
-                <div>
-                  <div class="text-sm font-bold text-[var(--fg)]">Publish Dokumentasi</div>
-                  <div class="text-xs text-[var(--muted)]">Tampilkan ke publik (Situs Utama)</div>
-                </div>
-                <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" id="publishToggle" class="sr-only peer">
-                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-amber-300 dark:peer-focus:ring-amber-500 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[var(--accent)]"></div>
-                </label>
               </div>
               
-              <button type="submit" id="activitySubmitBtn" class="btn-primary w-full justify-center mt-2">
+              <button type="submit" class="btn-primary w-full justify-center mt-2">
                 <i class="fa-solid fa-plus mr-2"></i> Tambahkan ke Laporan
               </button>
             </form>
@@ -1437,8 +1407,8 @@
 // =============================================================
 // KONFIGURASI SUPABASE (GANTI DENGAN KREDENSIAL ANDA)
 // =============================================================
-const SUPABASE_URL = "https://yvpwcxekznzojwlwiwjh.supabase.co"; 
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2cHdjeGVrem56b2p3bHdpd2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1MzE5MzIsImV4cCI6MjEwMDEwNzkzMn0.KZtGl8G6OaGhSg6-gPspzt_sc3-kI34HlDEOy_ASnk4"; 
+const SUPABASE_URL = "https://yvpwcxekznzojwlwiwjh.supabase.co"; // Ganti dengan URL Anda (cth: https://abcd1234.supabase.co)
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2cHdjeGVrem56b2p3bHdpd2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1MzE5MzIsImV4cCI6MjEwMDEwNzkzMn0.KZtGl8G6OaGhSg6-gPspzt_sc3-kI34HlDEOy_ASnk4"; // Ganti dengan Anon Key Anda
 
 let db;
 try {
@@ -1462,8 +1432,7 @@ const catLabels = {
 let students = [];
 let activities = [];
 let currentPhotoData = null;
-let currentVideoData = null;
-let currentStudentPhotoData = null; 
+let currentStudentPhotoData = null; // Variabel untuk foto siswa yang diupload
 
 // =============================================================
 // FUNGSI UTAMA
@@ -1489,13 +1458,16 @@ async function loadData() {
     return;
   }
   try {
+    // Fetch Students
     const { data: stuData, error: e1 } = await db.from('students').select('*').order('id', { ascending: true });
     if (e1) throw e1;
     students = stuData || [];
 
+    // Fetch Activities
     const { data: actData, error: e2 } = await db.from('activities').select('*').order('date', { ascending: false });
     if (e2) throw e2;
     
+    // Mapping data activities (snake_case dari DB ke camelCase di JS)
     activities = (actData || []).map(a => ({
       id: a.id,
       studentId: a.student_id,
@@ -1503,11 +1475,10 @@ async function loadData() {
       category: a.category,
       title: a.title,
       desc: a.description,
-      foto: a.foto,
-      video_url: a.video_url,
-      is_published: a.is_published
+      foto: a.foto
     }));
 
+    // Render semua tampilan
     renderStudents();
     renderGallery('all');
     updateStats();
@@ -1557,9 +1528,7 @@ function renderStudents() {
 function renderGallery(filter = 'all') {
   const grid = document.getElementById('galleryGrid');
   if (!grid) return;
-  // Hanya tampilkan yang sudah di-publish (is_published == true) di halaman publik
-  const publishedActivities = activities.filter(a => a.is_published);
-  const filtered = filter === 'all' ? publishedActivities : publishedActivities.filter(a => a.category === filter);
+  const filtered = filter === 'all' ? activities : activities.filter(a => a.category === filter);
   
   if (filtered.length === 0) {
     grid.innerHTML = `<div class="col-span-full text-center py-12 text-[var(--muted)] font-medium">Belum ada dokumentasi pada kategori ini.</div>`;
@@ -1605,13 +1574,12 @@ function updateStats() {
   
   const tbody = document.getElementById('recentTable');
   if (!tbody) return;
-  const publishedActivities = activities.filter(a => a.is_published);
-  document.getElementById('recentCount').textContent = publishedActivities.length;
-  if (publishedActivities.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-[var(--muted)] text-sm font-medium">Belum ada dokumentasi yang dipublikasikan.</td></tr>`;
+  document.getElementById('recentCount').textContent = activities.length;
+  if (activities.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-[var(--muted)] text-sm font-medium">Belum ada dokumentasi.</td></tr>`;
     return;
   }
-  tbody.innerHTML = publishedActivities.slice(0, 6).map(a => {
+  tbody.innerHTML = activities.slice(0, 6).map(a => {
     const student = students.find(s => s.id === a.studentId);
     return `
       <tr class="border-b border-[var(--border)] hover:bg-[var(--bg-2)]">
@@ -1632,32 +1600,16 @@ function openModal(id) {
   const a = activities.find(x => x.id === id);
   if (!a) return;
   const student = students.find(s => s.id === a.studentId);
-  
   document.getElementById('modalImg').src = a.foto;
-  
-  let videoHtml = '';
-  if (a.video_url) {
-    videoHtml = `
-      <video controls class="w-full rounded-lg mb-4 mt-4 border border-[var(--border)]">
-        <source src="${a.video_url}" type="video/mp4">
-        Browser Anda tidak mendukung tag video.
-      </video>
-    `;
-  }
-  
   document.getElementById('modalContent').innerHTML = `
     <div class="flex items-center justify-between mb-3">
-      <div class="flex gap-2">
-        <span class="pill pill-accent text-[10px]">${catLabels[a.category] || a.category}</span>
-        ${a.is_published ? '<span class="pill text-[10px]" style="background: #16a34a; color: white;"><i class="fa-solid fa-check mr-1"></i> Published</span>' : '<span class="pill pill-outline text-[10px]">Draft</span>'}
-      </div>
+      <span class="pill pill-accent text-[10px]">${catLabels[a.category] || a.category}</span>
       <span class="text-xs text-[var(--muted)] font-medium"><i class="fa-regular fa-calendar mr-1"></i>${formatDateLong(a.date)}</span>
     </div>
     <h3 class="font-display text-2xl font-bold mb-2 uppercase">${a.title}</h3>
     <div class="flex items-center gap-2 text-xs text-[var(--accent-2)] mb-4 font-bold uppercase">
       <i class="fa-solid fa-user"></i> ${student?.nama || '-'} • ${student?.posisi || '-'}
     </div>
-    ${videoHtml}
     <p class="text-sm text-[var(--fg-2)] leading-relaxed font-medium">${a.desc}</p>
   `;
   document.getElementById('galleryModal').classList.remove('hidden');
@@ -1718,21 +1670,7 @@ function handleFile(file) {
   reader.readAsDataURL(file);
 }
 
-// Fungsi untuk menangani upload video
-function handleVideoFile(file) {
-  if (!file.type.startsWith('video/')) { showToast('File harus berupa video.','error'); return; }
-  if (file.size > 50 * 1024 * 1024) { showToast('Ukuran video maksimal 50MB.','error'); return; }
-  
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    currentVideoData = e.target.result; 
-    const videoElem = document.getElementById('previewVideo');
-    videoElem.src = currentVideoData;
-    document.getElementById('previewVideoWrap').classList.remove('hidden');
-  };
-  reader.readAsDataURL(file);
-}
-
+// Fungsi khusus untuk menangani upload foto siswa
 function handleStudentFile(file) {
   if (!file.type.startsWith('image/')) { showToast('File harus berupa gambar.','error'); return; }
   if (file.size > 5 * 1024 * 1024) { showToast('Ukuran file maksimal 5MB.','error'); return; }
@@ -1771,29 +1709,19 @@ async function handleActivitySubmit(e) {
     return false;
   }
   
-  const isPublished = document.getElementById('publishToggle').checked;
-  
   const payload = {
     student_id: parseInt(studentVal),
     date: document.getElementById('actDate').value,
     category: document.getElementById('actCategory').value,
     title: document.getElementById('actTitle').value.trim(),
     description: document.getElementById('actDesc').value.trim(),
-    foto: currentPhotoData || `https://picsum.photos/seed/new${Date.now()}/640/480.jpg`,
-    video_url: currentVideoData, 
-    is_published: isPublished    
+    foto: currentPhotoData || `https://picsum.photos/seed/new${Date.now()}/640/480.jpg`
   };
-  
-  const submitBtn = document.getElementById('activitySubmitBtn');
-  submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...';
-  submitBtn.disabled = true;
   
   const { data, error } = await db.from('activities').insert([payload]).select();
   
   if (error) {
     showToast('Gagal menyimpan ke database: ' + error.message, 'error');
-    submitBtn.innerHTML = '<i class="fa-solid fa-plus mr-2"></i> Tambahkan ke Laporan';
-    submitBtn.disabled = false;
     return false;
   }
   
@@ -1805,9 +1733,7 @@ async function handleActivitySubmit(e) {
       category: data[0].category,
       title: data[0].title,
       desc: data[0].description,
-      foto: data[0].foto,
-      video_url: data[0].video_url,
-      is_published: data[0].is_published
+      foto: data[0].foto
     };
     activities.unshift(newAct);
   }
@@ -1821,18 +1747,12 @@ async function handleActivitySubmit(e) {
   
   document.getElementById('activityForm').reset();
   currentPhotoData = null;
-  currentVideoData = null;
   document.getElementById('previewWrap').classList.add('hidden');
-  document.getElementById('previewVideoWrap').classList.add('hidden');
-  document.getElementById('publishToggle').checked = false; 
   
   const actDateEl = document.getElementById('actDate');
   if (actDateEl) actDateEl.valueAsDate = new Date();
   
-  showToast('Dokumentasi & Video proses berhasil di-publish!', 'success');
-  
-  submitBtn.innerHTML = '<i class="fa-solid fa-plus mr-2"></i> Tambahkan ke Laporan';
-  submitBtn.disabled = false;
+  showToast('Dokumentasi berhasil ditambahkan ke laporan.', 'success');
   return false;
 }
 
@@ -2043,11 +1963,13 @@ function openStudentForm(id = null) {
     </form>
   `;
   
+  // Set initial preview if editing
   if (s && s.foto) {
     document.getElementById('sf_previewImg').src = s.foto;
     document.getElementById('sf_previewWrap').classList.remove('hidden');
   }
   
+  // Attach listeners for student photo upload
   const sfZone = document.getElementById('sf_uploadZone');
   const sfInput = document.getElementById('sf_photo');
   if (sfZone) {
@@ -2145,7 +2067,7 @@ function renderAdminActivities() {
       <tr>
         <td><img src="${a.foto}" class="w-11 h-11 rounded-lg object-cover"></td>
         <td>
-          <div class="font-bold">${a.title} ${a.is_published ? '<i class="fa-solid fa-circle-check text-green-500 ml-1" title="Published"></i>' : ''}</div>
+          <div class="font-bold">${a.title}</div>
           <div class="text-xs text-[var(--muted)] truncate max-w-xs">${a.desc}</div>
         </td>
         <td class="text-xs font-medium">${student?.nama || '-'}</td>
@@ -2319,14 +2241,15 @@ function generatePDF(btn) {
     pdf.text(pdf.splitTextToSize(intro2, contentW), margin, 47);
     
     let y = 60;
-    const imgW = 50; 
-    const imgH = 40; 
-    const textOffset = 55; 
+    const imgW = 50; // Lebar gambar di PDF
+    const imgH = 40; // Tinggi gambar di PDF
+    const textOffset = 55; // Jarak teks dari kiri gambar
     
     for (let i = 0; i < activities.length; i++) {
       const a = activities[i];
       const student = students.find(s => s.id === a.studentId);
       
+      // Cek halaman baru
       if (y > pageH - 80) {
         pdf.addPage(); pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
         pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 6, 'F');
@@ -2337,10 +2260,12 @@ function generatePDF(btn) {
       pdf.roundedRect(margin, y, contentW, 52, 2, 2, 'FD');
       pdf.setFillColor(212, 175, 55); pdf.rect(margin, y, contentW, 1, 'F');
       
+      // Masukkan Foto Dokumentasi
       try {
         if (a.foto && a.foto.startsWith('data:image')) {
           pdf.addImage(a.foto, 'JPEG', margin + 3, y + 6, imgW, imgH);
         } else {
+          // Fallback jika bukan base64 (misal dari picsum)
           pdf.setFillColor(230, 230, 230); pdf.rect(margin + 3, y + 6, imgW, imgH, 'F');
           pdf.setTextColor(150, 150, 150); pdf.setFontSize(8);
           pdf.text('Foto tidak tersedia', margin + 3 + imgW/2, y + 6 + imgH/2, { align: 'center' });
@@ -2349,6 +2274,7 @@ function generatePDF(btn) {
         console.error("Gagal memuat gambar ke PDF", imgErr);
       }
       
+      // Header di sebelah kanan gambar
       pdf.setFillColor(26, 29, 33); pdf.roundedRect(margin + textOffset, y + 4, 14, 6, 1, 1, 'F');
       pdf.setTextColor(212, 175, 55); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(7);
       pdf.text(`#${i+1}`, margin + textOffset + 7, y + 8.5, { align: 'center' });
@@ -2358,16 +2284,19 @@ function generatePDF(btn) {
       pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
       pdf.text(formatDateLong(a.date), pageW - margin - 4, y + 8.5, { align: 'right' });
       
+      // Judul
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(11); pdf.setTextColor(26, 29, 33);
       pdf.text(pdf.splitTextToSize(a.title, contentW - textOffset - 4), margin + textOffset, y + 15);
       
+      // Siswa
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(8); pdf.setTextColor(212, 175, 55);
       pdf.text(`Oleh: ${student?.nama || '-'}`, margin + textOffset, y + 22);
       
+      // Deskripsi
       pdf.setFont('helvetica', 'normal'); pdf.setFontSize(8); pdf.setTextColor(74, 80, 87);
       pdf.text(pdf.splitTextToSize(a.desc, contentW - textOffset - 4).slice(0, 4), margin + textOffset, y + 27);
       
-      y += 60; 
+      y += 60; // Jarak ke entri berikutnya
     }
 
     // LAST PAGE: PENUTUP
@@ -2458,31 +2387,6 @@ if (document.getElementById('removePreview')) {
     currentPhotoData = null;
     fileInput.value = '';
     document.getElementById('previewWrap').classList.add('hidden');
-  });
-}
-
-// Event listener untuk upload video
-const uploadZoneVideo = document.getElementById('uploadZoneVideo');
-const fileVideoInput = document.getElementById('actVideo');
-if (uploadZoneVideo) {
-  uploadZoneVideo.addEventListener('click', () => fileVideoInput.click());
-  uploadZoneVideo.addEventListener('dragover', (e) => { e.preventDefault(); uploadZoneVideo.classList.add('dragover'); });
-  uploadZoneVideo.addEventListener('dragleave', () => uploadZoneVideo.classList.remove('dragover'));
-  uploadZoneVideo.addEventListener('drop', (e) => {
-    e.preventDefault();
-    uploadZoneVideo.classList.remove('dragover');
-    if (e.dataTransfer.files[0]) handleVideoFile(e.dataTransfer.files[0]);
-  });
-  fileVideoInput.addEventListener('change', (e) => {
-    if (e.target.files[0]) handleVideoFile(e.target.files[0]);
-  });
-}
-
-if (document.getElementById('removeVideoPreview')) {
-  document.getElementById('removeVideoPreview').addEventListener('click', () => {
-    currentVideoData = null;
-    fileVideoInput.value = '';
-    document.getElementById('previewVideoWrap').classList.add('hidden');
   });
 }
 
