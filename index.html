@@ -1415,9 +1415,70 @@ const catLabels = {
   design: 'Desain', sublimation: 'Sublimasi', cutting: 'Cutting',
   sewing: 'Jahit', finishing: 'Finishing', quality: 'Quality Control'
 };
+// =============================================================
+// KONFIGURASI SUPABASE
+// =============================================================
+const SUPABASE_URL = "https://yvpwcxekznzojwlwiwjh.supabase.co"; // Ganti dengan URL Anda
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2cHdjeGVrem56b2p3bHdpd2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1MzE5MzIsImV4cCI6MjEwMDEwNzkzMn0.KZtGl8G6OaGhSg6-gPspzt_sc3-kI34HlDEOy_ASnk4"; // Ganti dengan Anon Key Anda
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let students = [];
 let activities = [];
+let currentPhotoData = null;
+
+const catLabels = {
+  design: 'Desain', sublimation: 'Sublimasi', cutting: 'Cutting',
+  sewing: 'Jahit', finishing: 'Finishing', quality: 'Quality Control'
+};
+
+// =============================================================
+// FUNGSI AMBIL DATA DARI SUPABASE
+// =============================================================
+async function fetchInitialData() {
+  showToast('Memuat data dari server...', 'info');
+  
+  // Ambil data Siswa
+  const { data: studentData, error: errStd } = await db.from('students').select('*');
+  if (errStd) {
+    showToast('Gagal memuat data siswa: ' + errStd.message, 'error');
+  } else {
+    // Mapping kolom database ke JavaScript (snake_case ke camelCase)
+    students = studentData.map(s => ({
+      id: s.id,
+      nama: s.nama,
+      kelas: s.kelas,
+      posisi: s.posisi,
+      telepon: s.telepon,
+      email: s.email,
+      foto: s.foto,
+      deskripsi: s.deskripsi
+    }));
+  }
+
+  // Ambil data Aktivitas
+  const { data: actData, error: errAct } = await db.from('activities').select('*');
+  if (errAct) {
+    showToast('Gagal memuat data dokumentasi: ' + errAct.message, 'error');
+  } else {
+    activities = actData.map(a => ({
+      id: a.id,
+      studentId: a.student_id, // Mapping foreign key
+      date: a.date,
+      category: a.category,
+      title: a.title,
+      desc: a.description, // Mapping kolom description ke desc
+      foto: a.foto
+    }));
+  }
+
+  // Render ke Tampilan
+  renderStudents();
+  renderGallery('all');
+  updateStats();
+  if (document.getElementById('adminDashboard').classList.contains('show')) {
+    renderAdminOverview();
+  }
+}
 let currentPhotoData = null;
 
 // =============================================================
