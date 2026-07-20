@@ -10,8 +10,9 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<!-- Library Supabase -->
+<!-- TAMBAHAN LIBRARY SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
   :root {
     --bg: #f4f5f7;
@@ -212,7 +213,6 @@
     background-size: 40px 40px;
   }
   
-  /* ===== ADMIN DASHBOARD STYLES ===== */
   .admin-overlay {
     position: fixed; inset: 0; z-index: 200; display: none;
     background: rgba(26,29,33,0.6); backdrop-filter: blur(12px);
@@ -1405,135 +1405,89 @@
 
 <script>
 // =============================================================
-// KONFIGURASI & INISIALISASI SUPABASE
+// KONFIGURASI SUPABASE (GANTI DENGAN KREDENSIAL ANDA)
 // =============================================================
-const SUPABASE_URL = "https://mnfxodgxarzummriztoh.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZnhvZGd4YXJ6dW1tcml6dG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5MDc3NzIsImV4cCI6MjA5OTQ4Mzc3Mn0.d3GAZnmwQZd5261H3dwXeakUDIOYAIQMOKYiIFd74QA";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = "https://yvpwcxekznzojwlwiwjh.supabase.co"; // Ganti dengan URL Anda (cth: https://abcd1234.supabase.co)
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2cHdjeGVrem56b2p3bHdpd2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1MzE5MzIsImV4cCI6MjEwMDEwNzkzMn0.KZtGl8G6OaGhSg6-gPspzt_sc3-kI34HlDEOy_ASnk4"; // Ganti dengan Anon Key Anda
 
+let db;
+try {
+  if (window.supabase) {
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } else {
+    console.error("Library Supabase tidak dimuat.");
+  }
+} catch (err) {
+  console.error("Gagal inisialisasi Supabase:", err);
+}
+
+// =============================================================
+// DEKLARASI DATA AWAL
+// =============================================================
 const catLabels = {
   design: 'Desain', sublimation: 'Sublimasi', cutting: 'Cutting',
   sewing: 'Jahit', finishing: 'Finishing', quality: 'Quality Control'
 };
-// =============================================================
-// KONFIGURASI SUPABASE
-// =============================================================
-const SUPABASE_URL = "https://yvpwcxekznzojwlwiwjh.supabase.co"; // Ganti dengan URL Anda
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2cHdjeGVrem56b2p3bHdpd2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1MzE5MzIsImV4cCI6MjEwMDEwNzkzMn0.KZtGl8G6OaGhSg6-gPspzt_sc3-kI34HlDEOy_ASnk4"; // Ganti dengan Anon Key Anda
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let students = [];
 let activities = [];
 let currentPhotoData = null;
 
-const catLabels = {
-  design: 'Desain', sublimation: 'Sublimasi', cutting: 'Cutting',
-  sewing: 'Jahit', finishing: 'Finishing', quality: 'Quality Control'
-};
-
 // =============================================================
-// FUNGSI AMBIL DATA DARI SUPABASE
-// =============================================================
-async function fetchInitialData() {
-  showToast('Memuat data dari server...', 'info');
-  
-  // Ambil data Siswa
-  const { data: studentData, error: errStd } = await db.from('students').select('*');
-  if (errStd) {
-    showToast('Gagal memuat data siswa: ' + errStd.message, 'error');
-  } else {
-    // Mapping kolom database ke JavaScript (snake_case ke camelCase)
-    students = studentData.map(s => ({
-      id: s.id,
-      nama: s.nama,
-      kelas: s.kelas,
-      posisi: s.posisi,
-      telepon: s.telepon,
-      email: s.email,
-      foto: s.foto,
-      deskripsi: s.deskripsi
-    }));
-  }
-
-  // Ambil data Aktivitas
-  const { data: actData, error: errAct } = await db.from('activities').select('*');
-  if (errAct) {
-    showToast('Gagal memuat data dokumentasi: ' + errAct.message, 'error');
-  } else {
-    activities = actData.map(a => ({
-      id: a.id,
-      studentId: a.student_id, // Mapping foreign key
-      date: a.date,
-      category: a.category,
-      title: a.title,
-      desc: a.description, // Mapping kolom description ke desc
-      foto: a.foto
-    }));
-  }
-
-  // Render ke Tampilan
-  renderStudents();
-  renderGallery('all');
-  updateStats();
-  if (document.getElementById('adminDashboard').classList.contains('show')) {
-    renderAdminOverview();
-  }
-}
-let currentPhotoData = null;
-
-// =============================================================
-// FUNGSI AMBIL DATA DARI SUPABASE
-// =============================================================
-async function fetchInitialData() {
-  showToast('Memuat data dari server...', 'info');
-  
-  const { data: studentData, error: errStd } = await db.from('students').select('*');
-  if (errStd) {
-    showToast('Gagal memuat data siswa: ' + errStd.message, 'error');
-  } else {
-    students = studentData.map(s => ({
-      id: s.id, nama: s.nama, kelas: s.kelas, posisi: s.posisi, 
-      telepon: s.telepon, email: s.email, foto: s.foto, deskripsi: s.deskripsi
-    }));
-  }
-
-  const { data: actData, error: errAct } = await db.from('activities').select('*');
-  if (errAct) {
-    showToast('Gagal memuat data dokumentasi: ' + errAct.message, 'error');
-  } else {
-    activities = actData.map(a => ({
-      id: a.id, studentId: a.student_id, date: a.date, 
-      category: a.category, title: a.title, desc: a.description, foto: a.foto
-    }));
-  }
-
-  renderStudents();
-  renderGallery('all');
-  updateStats();
-  if (document.getElementById('adminDashboard').classList.contains('show')) {
-    renderAdminOverview();
-  }
-}
-
-// =============================================================
-// FUNGSI FORMAT TANGGAL
+// FUNGSI UTAMA
 // =============================================================
 function formatDate(d) {
+  if (!d) return '-';
   const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   const date = new Date(d);
   return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
 function formatDateLong(d) {
+  if (!d) return '-';
   const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
   const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
   const date = new Date(d);
   return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-// =============================================================
-// FUNGSI RENDER UI
-// =============================================================
+async function loadData() {
+  if (!db) {
+    showToast("Database tidak terhubung. Periksa konfigurasi Supabase.", "error");
+    return;
+  }
+  try {
+    // Fetch Students
+    const { data: stuData, error: e1 } = await db.from('students').select('*').order('id', { ascending: true });
+    if (e1) throw e1;
+    students = stuData || [];
+
+    // Fetch Activities
+    const { data: actData, error: e2 } = await db.from('activities').select('*').order('date', { ascending: false });
+    if (e2) throw e2;
+    
+    // Mapping data activities (snake_case dari DB ke camelCase di JS)
+    activities = (actData || []).map(a => ({
+      id: a.id,
+      studentId: a.student_id,
+      date: a.date,
+      category: a.category,
+      title: a.title,
+      desc: a.description,
+      foto: a.foto
+    }));
+
+    // Render semua tampilan
+    renderStudents();
+    renderGallery('all');
+    updateStats();
+    observeReveal();
+  } catch (err) {
+    console.error("Gagal memuat data dari Supabase:", err);
+    showToast("Gagal memuat data: " + err.message, "error");
+  }
+}
+
 function renderStudents() {
   const grid = document.getElementById('studentGrid');
   if (!grid) return;
@@ -1588,7 +1542,7 @@ function renderGallery(filter = 'all') {
           <img src="${a.foto}" alt="${a.title}" loading="lazy">
           <div class="absolute inset-0 flex items-end p-4" style="background:linear-gradient(180deg,transparent 40%,rgba(26,29,33,0.95));">
             <div class="w-full">
-              <span class="pill pill-accent text-[10px] mb-2">${catLabels[a.category]}</span>
+              <span class="pill pill-accent text-[10px] mb-2">${catLabels[a.category] || a.category}</span>
               <div class="font-display text-lg font-bold leading-tight uppercase text-white">${a.title}</div>
               <div class="text-xs text-[var(--accent-soft)] mt-1 font-medium">${formatDate(a.date)} • ${student?.nama || '-'}</div>
             </div>
@@ -1631,7 +1585,7 @@ function updateStats() {
         <td class="py-3 pr-4"><img src="${a.foto}" class="w-12 h-12 rounded-md object-cover"></td>
         <td class="py-3 pr-4 text-sm font-semibold">${student?.nama || '-'}</td>
         <td class="py-3 pr-4 text-sm text-[var(--muted)] font-medium">${formatDate(a.date)}</td>
-        <td class="py-3 pr-4"><span class="pill pill-outline text-[10px]">${catLabels[a.category]}</span></td>
+        <td class="py-3 pr-4"><span class="pill pill-outline text-[10px]">${catLabels[a.category] || a.category}</span></td>
         <td class="py-3 pr-4 text-sm font-medium">${a.title}</td>
         <td class="py-3 pr-4">
           <button onclick="openModal(${a.id})" class="text-[var(--accent-2)] hover:text-[var(--accent)] mr-2"><i class="fa-solid fa-eye"></i></button>
@@ -1648,7 +1602,7 @@ function openModal(id) {
   document.getElementById('modalImg').src = a.foto;
   document.getElementById('modalContent').innerHTML = `
     <div class="flex items-center justify-between mb-3">
-      <span class="pill pill-accent text-[10px]">${catLabels[a.category]}</span>
+      <span class="pill pill-accent text-[10px]">${catLabels[a.category] || a.category}</span>
       <span class="text-xs text-[var(--muted)] font-medium"><i class="fa-regular fa-calendar mr-1"></i>${formatDateLong(a.date)}</span>
     </div>
     <h3 class="font-display text-2xl font-bold mb-2 uppercase">${a.title}</h3>
@@ -1685,14 +1639,32 @@ function showToast(msg, type = 'success') {
 // =============================================================
 // FORM & ADMIN LOGIC
 // =============================================================
+
 function handleFile(file) {
   if (!file.type.startsWith('image/')) { showToast('File harus berupa gambar.','error'); return; }
   if (file.size > 5 * 1024 * 1024) { showToast('Ukuran file maksimal 5MB.','error'); return; }
+  
   const reader = new FileReader();
   reader.onload = (e) => {
-    currentPhotoData = e.target.result;
-    document.getElementById('previewImg').src = e.target.result;
-    document.getElementById('previewWrap').classList.remove('hidden');
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      if (width > 800) {
+        height = Math.round((height * 800) / width);
+        width = 800;
+      }
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      currentPhotoData = canvas.toDataURL('image/jpeg', 0.7); 
+      
+      document.getElementById('previewImg').src = currentPhotoData;
+      document.getElementById('previewWrap').classList.remove('hidden');
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
@@ -1706,7 +1678,7 @@ async function handleActivitySubmit(e) {
     return false;
   }
   
-  const newActData = {
+  const payload = {
     student_id: parseInt(studentVal),
     date: document.getElementById('actDate').value,
     category: document.getElementById('actCategory').value,
@@ -1714,20 +1686,25 @@ async function handleActivitySubmit(e) {
     description: document.getElementById('actDesc').value.trim(),
     foto: currentPhotoData || `https://picsum.photos/seed/new${Date.now()}/640/480.jpg`
   };
-
-  const { data, error } = await db.from('activities').insert([newActData]).select();
-
+  
+  const { data, error } = await db.from('activities').insert([payload]).select();
+  
   if (error) {
     showToast('Gagal menyimpan ke database: ' + error.message, 'error');
     return false;
   }
-
+  
   if (data && data.length > 0) {
-    const savedAct = data[0];
-    activities.unshift({
-      id: savedAct.id, studentId: savedAct.student_id, date: savedAct.date, 
-      category: savedAct.category, title: savedAct.title, desc: savedAct.description, foto: savedAct.foto
-    });
+    const newAct = {
+      id: data[0].id,
+      studentId: data[0].student_id,
+      date: data[0].date,
+      category: data[0].category,
+      title: data[0].title,
+      desc: data[0].description,
+      foto: data[0].foto
+    };
+    activities.unshift(newAct);
   }
   
   updateStats();
@@ -1744,53 +1721,32 @@ async function handleActivitySubmit(e) {
   const actDateEl = document.getElementById('actDate');
   if (actDateEl) actDateEl.valueAsDate = new Date();
   
-  showToast('Dokumentasi berhasil disimpan ke server.', 'success');
+  showToast('Dokumentasi berhasil ditambahkan ke laporan.', 'success');
   return false;
 }
 
-function openAdminLogin() {
-  document.getElementById('adminLoginModal').classList.add('show');
-  setTimeout(() => document.getElementById('adminUsername').focus(), 100);
-}
-
-function closeAdminLogin() {
-  document.getElementById('adminLoginModal').classList.remove('show');
-}
+function openAdminLogin() { document.getElementById('adminLoginModal').classList.add('show'); setTimeout(() => document.getElementById('adminUsername').focus(), 100); }
+function closeAdminLogin() { document.getElementById('adminLoginModal').classList.remove('show'); }
 
 function togglePassword(inputId, icon) {
   const input = document.getElementById(inputId);
-  if (input.type === 'password') {
-    input.type = 'text';
-    icon.classList.remove('fa-eye');
-    icon.classList.add('fa-eye-slash');
-  } else {
-    input.type = 'password';
-    icon.classList.remove('fa-eye-slash');
-    icon.classList.add('fa-eye');
-  }
+  if (input.type === 'password') { input.type = 'text'; icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash'); } 
+  else { input.type = 'password'; icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
 }
 
-function forgotPassword() {
-  showToast('Hubungi sistem administrator untuk reset password.', 'info');
-}
+function forgotPassword() { showToast('Hubungi sistem administrator untuk reset password.', 'info'); }
 
-async function checkLogin() {
+function checkLogin() {
   var u = document.getElementById('adminUsername').value;
   var p = document.getElementById('adminPassword').value;
   
-  // Cek ke tabel admin di Supabase
-  const { data, error } = await db.from('admin').select('*').eq('username', u).eq('password', p).single();
-
-  if (data) {
+  if (u === 'admin' && p === 'admin123') {
     document.getElementById('adminLoginModal').classList.remove('show');
     document.getElementById('adminDashboard').classList.add('show');
     document.body.style.overflow = 'hidden';
     
     renderAdminOverview();
-    document.getElementById('adminTodayDate').textContent = new Date().toLocaleDateString('id-ID', {
-      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-    });
-    
+    document.getElementById('adminTodayDate').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     showToast('Selamat datang, Administrator!', 'success');
   } else {
     showToast('Username atau password salah!', 'error');
@@ -1799,24 +1755,16 @@ async function checkLogin() {
   return false;
 }
 
-function logoutAdmin() {
-  document.getElementById('adminDashboard').classList.remove('show');
-  document.body.style.overflow = '';
-  showToast('Anda telah keluar dari dashboard.', 'success');
-}
+function logoutAdmin() { document.getElementById('adminDashboard').classList.remove('show'); document.body.style.overflow = ''; showToast('Anda telah keluar dari dashboard.', 'success'); }
 
 function switchAdminSection(section, el) {
   document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.admin-sidebar-item').forEach(i => i.classList.remove('active'));
   document.getElementById('admin' + section.charAt(0).toUpperCase() + section.slice(1)).classList.add('active');
   if (el) el.classList.add('active');
-  
   if (section === 'overview') renderAdminOverview();
   if (section === 'students') renderAdminStudents();
-  if (section === 'activities') {
-    renderAdminActivities();
-    updateStats();
-  }
+  if (section === 'activities') { renderAdminActivities(); updateStats(); }
 }
 
 function openSitePreview() {
@@ -1843,7 +1791,7 @@ function renderAdminOverview() {
           <div class="font-bold text-sm truncate">${a.title}</div>
           <div class="text-xs text-[var(--muted)]">${student?.nama || '-'} • ${formatDate(a.date)}</div>
         </div>
-        <span class="admin-badge badge-info">${catLabels[a.category]}</span>
+        <span class="admin-badge badge-info">${catLabels[a.category] || a.category}</span>
       </div>
     `;
   }).join('') : '<div class="text-center py-6 text-[var(--muted)] text-sm">Belum ada dokumentasi</div>';
@@ -1898,9 +1846,7 @@ function renderAdminOverview() {
 
 function renderAdminStudents() {
   const search = document.getElementById('studentSearch').value.toLowerCase();
-  const filtered = students.filter(s => 
-    s.nama.toLowerCase().includes(search) || s.kelas.toLowerCase().includes(search) || s.posisi.toLowerCase().includes(search)
-  );
+  const filtered = students.filter(s => s.nama.toLowerCase().includes(search) || s.kelas.toLowerCase().includes(search) || s.posisi.toLowerCase().includes(search));
   document.getElementById('studentCount').textContent = filtered.length;
   
   document.getElementById('adminStudentsTable').innerHTML = filtered.length ? filtered.map(s => `
@@ -1991,9 +1937,9 @@ async function saveStudent(e, id) {
     students[idx] = { ...students[idx], ...data };
     showToast('Data siswa berhasil diperbarui.', 'success');
   } else {
-    const { data: newData, error } = await db.from('students').insert([data]).select();
-    if (error) { showToast('Gagal menyimpan: ' + error.message, 'error'); return; }
-    if(newData && newData.length > 0) students.push(newData[0]);
+    const { data: newStu, error } = await db.from('students').insert([data]).select();
+    if (error) { showToast('Gagal tambah: ' + error.message, 'error'); return; }
+    if (newStu && newStu.length > 0) students.push(newStu[0]);
     showToast('Siswa baru berhasil ditambahkan.', 'success');
   }
   
@@ -2006,11 +1952,11 @@ async function saveStudent(e, id) {
 
 async function deleteStudent(id) {
   const s = students.find(x => x.id === id);
-  if (!confirm(`Hapus siswa "${s.nama}"? Aktivitas terkait juga akan dihapus.`)) return;
+  if (!confirm(`Hapus siswa "${s.nama}"? Aktivitas terkait juga akan dihapus otomatis dari database.`)) return;
   
   const { error } = await db.from('students').delete().eq('id', id);
   if (error) { showToast('Gagal menghapus: ' + error.message, 'error'); return; }
-
+  
   students = students.filter(s => s.id !== id);
   activities = activities.filter(a => a.studentId !== id);
   renderAdminStudents();
@@ -2041,7 +1987,7 @@ function renderAdminActivities() {
         </td>
         <td class="text-xs font-medium">${student?.nama || '-'}</td>
         <td class="text-xs">${formatDate(a.date)}</td>
-        <td><span class="admin-badge badge-info">${catLabels[a.category]}</span></td>
+        <td><span class="admin-badge badge-info">${catLabels[a.category] || a.category}</span></td>
         <td class="text-center">
           <button onclick="deleteActivityAdmin(${a.id})" class="icon-btn delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
         </td>
@@ -2051,11 +1997,11 @@ function renderAdminActivities() {
 }
 
 async function deleteActivityAdmin(id) {
-  if (!confirm('Hapus dokumentasi ini dari server?')) return;
+  if (!confirm('Hapus dokumentasi ini dari database?')) return;
   
   const { error } = await db.from('activities').delete().eq('id', id);
   if (error) { showToast('Gagal menghapus: ' + error.message, 'error'); return; }
-
+  
   activities = activities.filter(a => a.id !== id);
   renderAdminActivities();
   renderGallery('all');
@@ -2063,9 +2009,7 @@ async function deleteActivityAdmin(id) {
   showToast('Dokumentasi telah dihapus.', 'success');
 }
 
-function closeAdminForm() {
-  document.getElementById('adminFormModal').classList.remove('show');
-}
+function closeAdminForm() { document.getElementById('adminFormModal').classList.remove('show'); }
 
 function changePassword(e) {
   e.preventDefault();
@@ -2073,26 +2017,23 @@ function changePassword(e) {
   const newP = document.getElementById('newPass').value;
   const confirmP = document.getElementById('confirmPass').value;
   
-  if (current !== 'admin12345') {
-    showToast('Password saat ini salah!', 'error');
-    return;
-  }
-  if (newP.length < 6) {
-    showToast('Password baru minimal 6 karakter!', 'error');
-    return;
-  }
-  if (newP !== confirmP) {
-    showToast('Konfirmasi password tidak cocok!', 'error');
-    return;
-  }
+  if (current !== 'admin123') { showToast('Password saat ini salah!', 'error'); return; }
+  if (newP.length < 6) { showToast('Password baru minimal 6 karakter!', 'error'); return; }
+  if (newP !== confirmP) { showToast('Konfirmasi password tidak cocok!', 'error'); return; }
   
   document.getElementById('changePasswordForm').reset();
-  showToast('Password berhasil diubah.', 'success');
+  showToast('Password berhasil diubah (simulasi).', 'success');
 }
 
-function resetAllData() {
-  if (!confirm('PERINGATAN: Halaman akan dimuat ulang untuk menyegarkan data dari server. Lanjutkan?')) return;
-  location.reload();
+async function resetAllData() {
+  if (!confirm('PERINGATAN: Semua data siswa dan dokumentasi akan dihapus dari database Supabase. Lanjutkan?')) return;
+  if (!confirm('Konfirmasi terakhir: Yakin reset semua data?')) return;
+  
+  await db.from('activities').delete().neq('id', 0);
+  await db.from('students').delete().neq('id', 0);
+  
+  showToast('Semua data telah direset.', 'success');
+  setTimeout(() => location.reload(), 1500);
 }
 
 function exportDataJSON() {
@@ -2112,7 +2053,7 @@ function exportDataJSON() {
 }
 
 // =============================================================
-// DOWNLOAD PDF (DIPASTIKAN JALAN)
+// DOWNLOAD PDF
 // =============================================================
 function generatePDF(btn) {
   if (!btn) return;
@@ -2123,9 +2064,7 @@ function generatePDF(btn) {
   try {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p', 'mm', 'a4');
-    const pageW = 210;
-    const pageH = 297;
-    const margin = 15;
+    const pageW = 210, pageH = 297, margin = 15;
     const contentW = pageW - margin * 2;
     
     // COVER PAGE
@@ -2183,7 +2122,7 @@ function generatePDF(btn) {
     pdf.text('Profil Siswa PKL', margin, 32);
     pdf.setDrawColor(212, 175, 55); pdf.setLineWidth(0.8); pdf.line(margin, 37, margin + 45, 37);
     pdf.setFont('helvetica', 'normal'); pdf.setFontSize(9); pdf.setTextColor(74, 80, 87);
-    const intro1 = 'Program PKL diikuti oleh 6 siswa SMK Negeri 1 Buay Madang yang ditempatkan di berbagai posisi produksi.';
+    const intro1 = `Program PKL diikuti oleh ${students.length} siswa SMK Negeri 1 Buay Madang yang ditempatkan di berbagai posisi produksi.`;
     pdf.text(pdf.splitTextToSize(intro1, contentW), margin, 47);
     const colW = (contentW - 8) / 2;
     for (let i = 0; i < students.length; i++) {
@@ -2232,7 +2171,7 @@ function generatePDF(btn) {
       pdf.text(`#${i+1}`, margin + 11, y + 8.5, { align: 'center' });
       pdf.setFillColor(212, 175, 55); pdf.roundedRect(margin + 20, y + 4, 22, 6, 1, 1, 'F');
       pdf.setTextColor(26, 29, 33); pdf.setFontSize(6);
-      pdf.text(catLabels[a.category].toUpperCase(), margin + 31, y + 8.5, { align: 'center' });
+      pdf.text(catLabels[a.category] || a.category, margin + 31, y + 8.5, { align: 'center' });
       pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
       pdf.text(formatDateLong(a.date), pageW - margin - 4, y + 8.5, { align: 'right' });
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(12); pdf.setTextColor(26, 29, 33);
@@ -2254,11 +2193,7 @@ function generatePDF(btn) {
     pdf.text('Penutup', margin, 35);
     pdf.setDrawColor(212, 175, 55); pdf.line(margin, 40, margin + 35, 40);
     pdf.setFont('helvetica', 'normal'); pdf.setFontSize(9); pdf.setTextColor(74, 80, 87);
-    const penutup = `Demikian laporan Praktik Kerja Lapangan ini disusun berdasarkan ${activities.length} dokumentasi kegiatan yang dilakukan oleh 6 siswa SMK Negeri 1 Buay Madang di Konveksi Jersey Eco Sport. Selama pelaksanaan PKL, siswa telah mempelajari berbagai aspek produksi jersey mulai dari desain artwork, proses sublimasi printing, cutting kain, hingga tahap akhir penjahitan dan packaging.
-
-Kegiatan PKL ini memberikan pengalaman langsung kepada siswa dalam lingkungan industri konveksi yang sesungguhnya. Siswa tidak hanya mempelajari keterampilan teknis, tetapi juga etos kerja, disiplin, kerja sama tim, dan tanggung jawab profesional.
-
-Kami mengucapkan terima kasih kepada pihak Konveksi Jersey Eco Sport yang telah memberikan kesempatan dan bimbingan kepada siswa-siswi kami. Semoga kerja sama ini dapat berlanjut dan memberikan manfaat bagi pengembangan SDM di bidang industri konveksi.`;
+    const penutup = `Demikian laporan Praktik Kerja Lapangan ini disusun berdasarkan ${activities.length} dokumentasi kegiatan yang dilakukan oleh 6 siswa SMK Negeri 1 Buay Madang di Konveksi Jersey Eco Sport. Selama pelaksanaan PKL, siswa telah mempelajari berbagai aspek produksi jersey mulai dari desain artwork, proses sublimasi printing, cutting kain, hingga tahap akhir penjahitan dan packaging.\n\nKegiatan PKL ini memberikan pengalaman langsung kepada siswa dalam lingkungan industri konveksi yang sesungguhnya. Siswa tidak hanya mempelajari keterampilan teknis, tetapi juga etos kerja, disiplin, kerja sama tim, dan tanggung jawab profesional.\n\nKami mengucapkan terima kasih kepada pihak Konveksi Jersey Eco Sport yang telah memberikan kesempatan dan bimbingan kepada siswa-siswi kami. Semoga kerja sama ini dapat berlanjut dan memberikan manfaat bagi pengembangan SDM di bidang industri konveksi.`;
     pdf.text(pdf.splitTextToSize(penutup, contentW), margin, 55);
     pdf.setFontSize(9); pdf.setTextColor(26, 29, 33);
     pdf.text('Buay Madang, ' + new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' }), pageW - margin - 60, 200, { align: 'left' });
@@ -2282,7 +2217,6 @@ Kami mengucapkan terima kasih kepada pihak Konveksi Jersey Eco Sport yang telah 
     showToast('Laporan PDF berhasil diunduh.','success');
   } catch (err) {
     console.error("PDF Generation Error:", err);
-    alert('Gagal membuat PDF. Error: ' + err.message);
     showToast('Gagal membuat PDF.','error');
   } finally {
     btn.innerHTML = originalHTML;
@@ -2393,12 +2327,11 @@ function observeReveal() {
   document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
 }
 
-// INISIALISASI PERTAMA KALI (Ambil data dari Supabase)
-fetchInitialData();
-setTimeout(observeReveal, 100);
-
 const actDateEl = document.getElementById('actDate');
 if (actDateEl) actDateEl.valueAsDate = new Date();
+
+// INISIALISASI: AMBIL DATA DARI DATABASE
+loadData();
 </script>
 </body>
 </html>
