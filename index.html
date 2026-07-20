@@ -1432,6 +1432,7 @@ const catLabels = {
 let students = [];
 let activities = [];
 let currentPhotoData = null;
+let currentStudentPhotoData = null; // Variabel untuk foto siswa yang diupload
 
 // =============================================================
 // FUNGSI UTAMA
@@ -1669,6 +1670,36 @@ function handleFile(file) {
   reader.readAsDataURL(file);
 }
 
+// Fungsi khusus untuk menangani upload foto siswa
+function handleStudentFile(file) {
+  if (!file.type.startsWith('image/')) { showToast('File harus berupa gambar.','error'); return; }
+  if (file.size > 5 * 1024 * 1024) { showToast('Ukuran file maksimal 5MB.','error'); return; }
+  
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      if (width > 600) {
+        height = Math.round((height * 600) / width);
+        width = 600;
+      }
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      currentStudentPhotoData = canvas.toDataURL('image/jpeg', 0.7); 
+      
+      document.getElementById('sf_previewImg').src = currentStudentPhotoData;
+      document.getElementById('sf_previewWrap').classList.remove('hidden');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
 async function handleActivitySubmit(e) {
   e.preventDefault();
   
@@ -1871,6 +1902,8 @@ function renderAdminStudents() {
 
 function openStudentForm(id = null) {
   const s = id ? students.find(x => x.id === id) : null;
+  currentStudentPhotoData = s ? s.foto : null;
+  
   document.getElementById('formModalTitle').textContent = s ? 'Edit Siswa' : 'Tambah Siswa';
   document.getElementById('formModalContent').innerHTML = `
     <form id="studentForm" class="space-y-4" onsubmit="saveStudent(event, ${id || 'null'})">
@@ -1898,11 +1931,25 @@ function openStudentForm(id = null) {
           <input type="email" id="sf_email" class="input" value="${s?.email || ''}" required>
         </div>
       </div>
+      
       <div>
-        <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">URL Foto</label>
-        <input type="url" id="sf_foto" class="input" value="${s?.foto || ''}" placeholder="https://..." required>
-        <p class="text-xs text-[var(--muted)] mt-1">Gunakan URL gambar. Default dari picsum.photos.</p>
+        <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Foto Siswa</label>
+        <div id="sf_uploadZone" class="upload-zone">
+          <input type="file" id="sf_photo" accept="image/*" class="hidden">
+          <div class="space-y-2">
+            <i class="fa-solid fa-image text-3xl text-[var(--accent-2)]"></i>
+            <div class="text-sm font-bold uppercase tracking-wide">Klik atau seret foto ke sini</div>
+            <div class="text-xs text-[var(--muted)] font-medium">JPG, PNG — maksimal 5MB</div>
+          </div>
+        </div>
+        <div id="sf_previewWrap" class="hidden mt-3 relative rounded-lg overflow-hidden border border-[var(--border)]">
+          <img id="sf_previewImg" class="w-full h-48 object-cover">
+          <button type="button" id="sf_removePreview" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-red-500/80">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
       </div>
+
       <div>
         <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Deskripsi Singkat</label>
         <textarea id="sf_deskripsi" class="input" rows="3" required>${s?.deskripsi || ''}</textarea>
@@ -1915,18 +1962,56 @@ function openStudentForm(id = null) {
       </div>
     </form>
   `;
+  
+  // Set initial preview if editing
+  if (s && s.foto) {
+    document.getElementById('sf_previewImg').src = s.foto;
+    document.getElementById('sf_previewWrap').classList.remove('hidden');
+  }
+  
+  // Attach listeners for student photo upload
+  const sfZone = document.getElementById('sf_uploadZone');
+  const sfInput = document.getElementById('sf_photo');
+  if (sfZone) {
+    sfZone.addEventListener('click', () => sfInput.click());
+    sfZone.addEventListener('dragover', (e) => { e.preventDefault(); sfZone.classList.add('dragover'); });
+    sfZone.addEventListener('dragleave', () => sfZone.classList.remove('dragover'));
+    sfZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      sfZone.classList.remove('dragover');
+      if (e.dataTransfer.files[0]) handleStudentFile(e.dataTransfer.files[0]);
+    });
+    sfInput.addEventListener('change', (e) => {
+      if (e.target.files[0]) handleStudentFile(e.target.files[0]);
+    });
+  }
+  
+  if (document.getElementById('sf_removePreview')) {
+    document.getElementById('sf_removePreview').addEventListener('click', () => {
+      currentStudentPhotoData = null;
+      sfInput.value = '';
+      document.getElementById('sf_previewWrap').classList.add('hidden');
+    });
+  }
+  
   document.getElementById('adminFormModal').classList.add('show');
 }
 
 async function saveStudent(e, id) {
   e.preventDefault();
+  
+  if (!currentStudentPhotoData) {
+    showToast('Silakan unggah foto siswa terlebih dahulu.', 'error');
+    return;
+  }
+  
   const data = {
     nama: document.getElementById('sf_nama').value.trim(),
     kelas: document.getElementById('sf_kelas').value.trim(),
     posisi: document.getElementById('sf_posisi').value.trim(),
     telepon: document.getElementById('sf_telepon').value.trim(),
     email: document.getElementById('sf_email').value.trim(),
-    foto: document.getElementById('sf_foto').value.trim(),
+    foto: currentStudentPhotoData,
     deskripsi: document.getElementById('sf_deskripsi').value.trim()
   };
   
@@ -2154,33 +2239,64 @@ function generatePDF(btn) {
     pdf.setFont('helvetica', 'normal'); pdf.setFontSize(9); pdf.setTextColor(74, 80, 87);
     const intro2 = `Bagian ini berisi rekapitulasi ${activities.length} dokumentasi kegiatan yang dilakukan selama pelaksanaan PKL.`;
     pdf.text(pdf.splitTextToSize(intro2, contentW), margin, 47);
+    
     let y = 60;
+    const imgW = 50; // Lebar gambar di PDF
+    const imgH = 40; // Tinggi gambar di PDF
+    const textOffset = 55; // Jarak teks dari kiri gambar
+    
     for (let i = 0; i < activities.length; i++) {
       const a = activities[i];
       const student = students.find(s => s.id === a.studentId);
+      
+      // Cek halaman baru
       if (y > pageH - 80) {
         pdf.addPage(); pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
         pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 6, 'F');
         pdf.setFillColor(212, 175, 55); pdf.rect(0, 6, pageW, 2, 'F'); y = 25;
       }
+      
       pdf.setFillColor(255, 255, 255); pdf.setDrawColor(209, 213, 219);
-      pdf.roundedRect(margin, y, contentW, 60, 2, 2, 'FD');
+      pdf.roundedRect(margin, y, contentW, 52, 2, 2, 'FD');
       pdf.setFillColor(212, 175, 55); pdf.rect(margin, y, contentW, 1, 'F');
-      pdf.setFillColor(26, 29, 33); pdf.roundedRect(margin + 4, y + 4, 14, 6, 1, 1, 'F');
+      
+      // Masukkan Foto Dokumentasi
+      try {
+        if (a.foto && a.foto.startsWith('data:image')) {
+          pdf.addImage(a.foto, 'JPEG', margin + 3, y + 6, imgW, imgH);
+        } else {
+          // Fallback jika bukan base64 (misal dari picsum)
+          pdf.setFillColor(230, 230, 230); pdf.rect(margin + 3, y + 6, imgW, imgH, 'F');
+          pdf.setTextColor(150, 150, 150); pdf.setFontSize(8);
+          pdf.text('Foto tidak tersedia', margin + 3 + imgW/2, y + 6 + imgH/2, { align: 'center' });
+        }
+      } catch (imgErr) {
+        console.error("Gagal memuat gambar ke PDF", imgErr);
+      }
+      
+      // Header di sebelah kanan gambar
+      pdf.setFillColor(26, 29, 33); pdf.roundedRect(margin + textOffset, y + 4, 14, 6, 1, 1, 'F');
       pdf.setTextColor(212, 175, 55); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(7);
-      pdf.text(`#${i+1}`, margin + 11, y + 8.5, { align: 'center' });
-      pdf.setFillColor(212, 175, 55); pdf.roundedRect(margin + 20, y + 4, 22, 6, 1, 1, 'F');
+      pdf.text(`#${i+1}`, margin + textOffset + 7, y + 8.5, { align: 'center' });
+      pdf.setFillColor(212, 175, 55); pdf.roundedRect(margin + textOffset + 16, y + 4, 22, 6, 1, 1, 'F');
       pdf.setTextColor(26, 29, 33); pdf.setFontSize(6);
-      pdf.text(catLabels[a.category] || a.category, margin + 31, y + 8.5, { align: 'center' });
+      pdf.text(catLabels[a.category] || a.category, margin + textOffset + 27, y + 8.5, { align: 'center' });
       pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
       pdf.text(formatDateLong(a.date), pageW - margin - 4, y + 8.5, { align: 'right' });
-      pdf.setFont('helvetica', 'bold'); pdf.setFontSize(12); pdf.setTextColor(26, 29, 33);
-      pdf.text(pdf.splitTextToSize(a.title, contentW - 8).slice(0, 2), margin + 4, y + 18);
+      
+      // Judul
+      pdf.setFont('helvetica', 'bold'); pdf.setFontSize(11); pdf.setTextColor(26, 29, 33);
+      pdf.text(pdf.splitTextToSize(a.title, contentW - textOffset - 4), margin + textOffset, y + 15);
+      
+      // Siswa
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(8); pdf.setTextColor(212, 175, 55);
-      pdf.text(`Oleh: ${student?.nama || '-'} — ${student?.posisi || '-'}`, margin + 4, y + 27);
+      pdf.text(`Oleh: ${student?.nama || '-'}`, margin + textOffset, y + 22);
+      
+      // Deskripsi
       pdf.setFont('helvetica', 'normal'); pdf.setFontSize(8); pdf.setTextColor(74, 80, 87);
-      pdf.text(pdf.splitTextToSize(a.desc, contentW - 50).slice(0, 4), margin + 4, y + 33);
-      y += 68;
+      pdf.text(pdf.splitTextToSize(a.desc, contentW - textOffset - 4).slice(0, 4), margin + textOffset, y + 27);
+      
+      y += 60; // Jarak ke entri berikutnya
     }
 
     // LAST PAGE: PENUTUP
