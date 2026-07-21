@@ -1517,12 +1517,12 @@
   </div>
 </div>
 
-<!-- MODAL GALERI -->
-<div id="galleryModal" class="fixed inset-0 z-[150] hidden items-center justify-center p-6" style="background:rgba(26,29,33,0.85);backdrop-filter:blur(8px);">
-  <div class="max-w-3xl w-full card p-6 relative">
-    <button id="closeModal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/10 flex items-center justify-center hover:bg-red-500/60 hover:text-white">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
+<!-- MODAL GALERI (Diperbarui: Scrollable & X di Pojok) -->
+<div id="galleryModal" class="fixed inset-0 z-[150] hidden items-start justify-center p-4 md:p-8 overflow-y-auto" style="background:rgba(26,29,33,0.85);backdrop-filter:blur(8px);">
+  <button id="closeModal" class="fixed top-4 right-4 md:top-6 md:right-6 w-10 h-10 rounded-full bg-white/20 hover:bg-red-500/80 text-white flex items-center justify-center z-20 shadow-lg transition">
+    <i class="fa-solid fa-xmark text-lg"></i>
+  </button>
+  <div class="max-w-3xl w-full card p-6 relative my-8">
     <img id="modalImg" class="w-full rounded-lg mb-4 max-h-[60vh] object-cover">
     <div id="modalContent"></div>
   </div>
@@ -1616,12 +1616,10 @@ function confirmPembimbingData(e) {
   
   try { localStorage.setItem('pembimbingData', JSON.stringify(pembimbingData)); } catch(e) {}
   
-  // TANGKAP TOMBOL DULU SEBELUM DIMUTLAKKAN
   const btnToTrigger = pendingPdfButton;
   closePembimbingEditor();
   pendingPdfButton = null;
   
-  // LANJUT GENERATE PDF
   if (btnToTrigger) {
     generatePDF(btnToTrigger);
   }
@@ -1803,6 +1801,7 @@ function openModal(id) {
   `;
   document.getElementById('galleryModal').classList.remove('hidden');
   document.getElementById('galleryModal').classList.add('flex');
+  document.body.style.overflow = 'hidden'; // Cegah scroll background
 }
 
 function showToast(msg, type = 'success') {
@@ -2370,7 +2369,6 @@ async function handleEditActivity(id) {
     return;
   }
   
-  // Update data di array lokal
   activities[idx] = {
     ...activities[idx],
     date: updatedData.date,
@@ -2560,7 +2558,7 @@ async function generatePDF(btn) {
       pdf.setTextColor(139, 146, 155); pdf.text(pdf.splitTextToSize(s.deskripsi, colW - 8).slice(0, 3), x + 4, y + 39);
     }
 
-    // PAGE 3+: DOKUMENTASI
+    // PAGE 3+: DOKUMENTASI (Diperbarui: Dinamis Sesuai Panjang Deskripsi)
     pdf.addPage();
     pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
     pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 6, 'F');
@@ -2582,14 +2580,20 @@ async function generatePDF(btn) {
       const a = activities[i];
       const student = students.find(s => s.id === a.studentId);
       
-      if (y > pageH - 80) {
+      // Hitung jumlah baris deskripsi
+      const descLines = pdf.splitTextToSize(a.desc, contentW - textOffset - 4);
+      // Tentukan tinggi kotak dinamis (minimum 52, atau sesuaikan dengan jumlah baris)
+      const cardHeight = Math.max(52, 30 + (descLines.length * 5));
+      
+      // Cek halaman baru
+      if (y + cardHeight > pageH - 20) {
         pdf.addPage(); pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
         pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 6, 'F');
         pdf.setFillColor(212, 175, 55); pdf.rect(0, 6, pageW, 2, 'F'); y = 25;
       }
       
       pdf.setFillColor(255, 255, 255); pdf.setDrawColor(209, 213, 219);
-      pdf.roundedRect(margin, y, contentW, 52, 2, 2, 'FD');
+      pdf.roundedRect(margin, y, contentW, cardHeight, 2, 2, 'FD');
       pdf.setFillColor(212, 175, 55); pdf.rect(margin, y, contentW, 1, 'F');
       
       // Masukkan Foto Dokumentasi
@@ -2610,6 +2614,7 @@ async function generatePDF(btn) {
         pdf.text('Foto tidak tersedia', margin + 3 + imgW/2, y + 6 + imgH/2, { align: 'center' });
       }
       
+      // Header di sebelah kanan gambar
       pdf.setFillColor(26, 29, 33); pdf.roundedRect(margin + textOffset, y + 4, 14, 6, 1, 1, 'F');
       pdf.setTextColor(212, 175, 55); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(7);
       pdf.text(`#${i+1}`, margin + textOffset + 7, y + 8.5, { align: 'center' });
@@ -2619,16 +2624,19 @@ async function generatePDF(btn) {
       pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
       pdf.text(formatDateLong(a.date), pageW - margin - 4, y + 8.5, { align: 'right' });
       
+      // Judul
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(11); pdf.setTextColor(26, 29, 33);
       pdf.text(pdf.splitTextToSize(a.title, contentW - textOffset - 4), margin + textOffset, y + 15);
       
+      // Siswa
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(8); pdf.setTextColor(212, 175, 55);
       pdf.text(`Oleh: ${student?.nama || '-'}`, margin + textOffset, y + 22);
       
+      // Deskripsi (MENAMPILKAN SELURUH TEKS)
       pdf.setFont('helvetica', 'normal'); pdf.setFontSize(8); pdf.setTextColor(74, 80, 87);
-      pdf.text(pdf.splitTextToSize(a.desc, contentW - textOffset - 4).slice(0, 4), margin + textOffset, y + 27);
+      pdf.text(descLines, margin + textOffset, y + 27);
       
-      y += 60;
+      y += cardHeight + 8; // Jarak ke entri berikutnya
     }
 
     // LAST PAGE: PENUTUP
@@ -2693,11 +2701,13 @@ document.getElementById('filterBtns').addEventListener('click', (e) => {
 document.getElementById('closeModal').addEventListener('click', () => {
   document.getElementById('galleryModal').classList.add('hidden');
   document.getElementById('galleryModal').classList.remove('flex');
+  document.body.style.overflow = '';
 });
 document.getElementById('galleryModal').addEventListener('click', (e) => {
   if (e.target.id === 'galleryModal') {
     e.currentTarget.classList.add('hidden');
     e.currentTarget.classList.remove('flex');
+    document.body.style.overflow = '';
   }
 });
 
