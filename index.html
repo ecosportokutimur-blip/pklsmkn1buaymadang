@@ -112,11 +112,6 @@
     filter: grayscale(20%) contrast(1.05);
   }
   .photo-frame:hover img { transform: scale(1.05); filter: grayscale(0%) contrast(1.1); }
-  .photo-frame::after {
-    content:''; position:absolute; inset:0;
-    background: linear-gradient(180deg, transparent 40%, rgba(26,29,33,0.9) 100%);
-    pointer-events: none;
-  }
   
   .stat-num {
     font-family: 'Oswald', sans-serif; font-weight: 700; color: var(--fg);
@@ -1537,8 +1532,8 @@
 // =============================================================
 // KONFIGURASI SUPABASE (GANTI DENGAN KREDENSIAL ANDA)
 // =============================================================
-const SUPABASE_URL = "https://yvpwcxekznzojwlwiwjh.supabase.co"; // Ganti dengan URL Anda (cth: https://abcd1234.supabase.co)
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2cHdjeGVrem56b2p3bHdpd2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1MzE5MzIsImV4cCI6MjEwMDEwNzkzMn0.KZtGl8G6OaGhSg6-gPspzt_sc3-kI34HlDEOy_ASnk4"; // Ganti dengan Anon Key Anda
+const SUPABASE_URL = "https://yvpwcxekznzojwlwiwjh.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2cHdjeGVrem56b2p3bHdpd2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1MzE5MzIsImV4cCI6MjEwMDEwNzkzMn0.KZtGl8G6OaGhSg6-gPspzt_sc3-kI34HlDEOy_ASnk4";
 
 let db;
 try {
@@ -1562,7 +1557,7 @@ const catLabels = {
 let students = [];
 let activities = [];
 let currentPhotoData = null;
-let currentStudentPhotoData = null; // Variabel untuk foto siswa yang diupload
+let currentStudentPhotoData = null;
 
 // =============================================================
 // DATA PEMBIMBING (EDITABLE & PERSISTENT)
@@ -1579,7 +1574,6 @@ let pembimbingData = {
   kota: 'Buay Madang'
 };
 
-// Load dari localStorage jika ada
 try {
   const saved = localStorage.getItem('pembimbingData');
   if (saved) pembimbingData = { ...pembimbingData, ...JSON.parse(saved) };
@@ -1589,7 +1583,6 @@ let pendingPdfButton = null;
 
 function openPembimbingEditor(btn) {
   pendingPdfButton = btn;
-  // Pre-fill form dengan data tersimpan
   document.getElementById('pe_nama_sekolah').value = pembimbingData.namaSekolah;
   document.getElementById('pe_jabatan_sekolah').value = pembimbingData.jabatanSekolah;
   document.getElementById('pe_institusi_sekolah').value = pembimbingData.institusiSekolah;
@@ -1604,12 +1597,11 @@ function openPembimbingEditor(btn) {
 
 function closePembimbingEditor() {
   document.getElementById('pembimbingEditorModal').classList.remove('show');
-  pendingPdfButton = null;
 }
 
 function confirmPembimbingData(e) {
   e.preventDefault();
-  // Simpan data baru
+  
   pembimbingData = {
     namaSekolah: document.getElementById('pe_nama_sekolah').value.trim(),
     jabatanSekolah: document.getElementById('pe_jabatan_sekolah').value.trim(),
@@ -1622,13 +1614,16 @@ function confirmPembimbingData(e) {
     kota: document.getElementById('pe_kota').value.trim()
   };
   
-  // Persist ke localStorage
   try { localStorage.setItem('pembimbingData', JSON.stringify(pembimbingData)); } catch(e) {}
   
-  // Tutup modal & generate PDF
+  // TANGKAP TOMBOL DULU SEBELUM DIMUTLAKKAN
+  const btnToTrigger = pendingPdfButton;
   closePembimbingEditor();
-  if (pendingPdfButton) {
-    generatePDF(pendingPdfButton);
+  pendingPdfButton = null;
+  
+  // LANJUT GENERATE PDF
+  if (btnToTrigger) {
+    generatePDF(btnToTrigger);
   }
 }
 
@@ -1656,16 +1651,13 @@ async function loadData() {
     return;
   }
   try {
-    // Fetch Students
     const { data: stuData, error: e1 } = await db.from('students').select('*').order('id', { ascending: true });
     if (e1) throw e1;
     students = stuData || [];
 
-    // Fetch Activities
     const { data: actData, error: e2 } = await db.from('activities').select('*').order('date', { ascending: false });
     if (e2) throw e2;
     
-    // Mapping data activities (snake_case dari DB ke camelCase di JS)
     activities = (actData || []).map(a => ({
       id: a.id,
       studentId: a.student_id,
@@ -1676,7 +1668,6 @@ async function loadData() {
       foto: a.foto
     }));
 
-    // Render semua tampilan
     renderStudents();
     renderGallery('all');
     updateStats();
@@ -1874,7 +1865,6 @@ function handleFile(file) {
   reader.readAsDataURL(file);
 }
 
-// Fungsi khusus untuk menangani upload foto siswa
 function handleStudentFile(file) {
   if (!file.type.startsWith('image/')) { showToast('File harus berupa gambar.','error'); return; }
   if (file.size > 5 * 1024 * 1024) { showToast('Ukuran file maksimal 5MB.','error'); return; }
@@ -2001,7 +1991,6 @@ function switchAdminSection(section, el) {
   if (section === 'students') renderAdminStudents();
   if (section === 'activities') { renderAdminActivities(); updateStats(); }
   
-  // Auto close sidebar on mobile after click
   if (window.innerWidth <= 768) {
     document.getElementById('adminSidebar').classList.remove('show');
     document.getElementById('adminSidebarOverlay').classList.remove('show');
@@ -2173,13 +2162,11 @@ function openStudentForm(id = null) {
     </form>
   `;
   
-  // Set initial preview if editing
   if (s && s.foto) {
     document.getElementById('sf_previewImg').src = s.foto;
     document.getElementById('sf_previewWrap').classList.remove('hidden');
   }
   
-  // Attach listeners for student photo upload
   const sfZone = document.getElementById('sf_uploadZone');
   const sfInput = document.getElementById('sf_photo');
   if (sfZone) {
@@ -2200,7 +2187,7 @@ function openStudentForm(id = null) {
     document.getElementById('sf_removePreview').addEventListener('click', () => {
       currentStudentPhotoData = null;
       sfInput.value = '';
-      document.getElementById('sf_previewWrap').classList.remove('hidden');
+      document.getElementById('sf_previewWrap').classList.add('hidden');
     });
   }
   
@@ -2350,7 +2337,30 @@ function exportDataJSON() {
 // =============================================================
 // DOWNLOAD PDF
 // =============================================================
-function generatePDF(btn) {
+
+// Fungsi bantu untuk konversi URL gambar ke Base64 (agar bisa masuk PDF)
+function getBase64ImageFromURL(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      try {
+        resolve(canvas.toDataURL('image/jpeg', 0.8));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    img.onerror = (error) => reject(error);
+    img.src = url;
+  });
+}
+
+async function generatePDF(btn) {
   if (!btn) return;
   const originalHTML = btn.innerHTML;
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyusun Laporan...';
@@ -2451,15 +2461,14 @@ function generatePDF(btn) {
     pdf.text(pdf.splitTextToSize(intro2, contentW), margin, 47);
     
     let y = 60;
-    const imgW = 50; // Lebar gambar di PDF
-    const imgH = 40; // Tinggi gambar di PDF
-    const textOffset = 55; // Jarak teks dari kiri gambar
+    const imgW = 50; 
+    const imgH = 40; 
+    const textOffset = 55; 
     
     for (let i = 0; i < activities.length; i++) {
       const a = activities[i];
       const student = students.find(s => s.id === a.studentId);
       
-      // Cek halaman baru
       if (y > pageH - 80) {
         pdf.addPage(); pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
         pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 6, 'F');
@@ -2472,19 +2481,22 @@ function generatePDF(btn) {
       
       // Masukkan Foto Dokumentasi
       try {
-        if (a.foto && a.foto.startsWith('data:image')) {
-          pdf.addImage(a.foto, 'JPEG', margin + 3, y + 6, imgW, imgH);
+        let imgData = a.foto;
+        if (a.foto && !a.foto.startsWith('data:image')) {
+          imgData = await getBase64ImageFromURL(a.foto);
+        }
+        if (imgData) {
+          pdf.addImage(imgData, 'JPEG', margin + 3, y + 6, imgW, imgH);
         } else {
-          // Fallback jika bukan base64 (misal dari picsum)
-          pdf.setFillColor(230, 230, 230); pdf.rect(margin + 3, y + 6, imgW, imgH, 'F');
-          pdf.setTextColor(150, 150, 150); pdf.setFontSize(8);
-          pdf.text('Foto tidak tersedia', margin + 3 + imgW/2, y + 6 + imgH/2, { align: 'center' });
+          throw new Error("No image data");
         }
       } catch (imgErr) {
         console.error("Gagal memuat gambar ke PDF", imgErr);
+        pdf.setFillColor(230, 230, 230); pdf.rect(margin + 3, y + 6, imgW, imgH, 'F');
+        pdf.setTextColor(150, 150, 150); pdf.setFontSize(8);
+        pdf.text('Foto tidak tersedia', margin + 3 + imgW/2, y + 6 + imgH/2, { align: 'center' });
       }
       
-      // Header di sebelah kanan gambar
       pdf.setFillColor(26, 29, 33); pdf.roundedRect(margin + textOffset, y + 4, 14, 6, 1, 1, 'F');
       pdf.setTextColor(212, 175, 55); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(7);
       pdf.text(`#${i+1}`, margin + textOffset + 7, y + 8.5, { align: 'center' });
@@ -2494,19 +2506,16 @@ function generatePDF(btn) {
       pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
       pdf.text(formatDateLong(a.date), pageW - margin - 4, y + 8.5, { align: 'right' });
       
-      // Judul
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(11); pdf.setTextColor(26, 29, 33);
       pdf.text(pdf.splitTextToSize(a.title, contentW - textOffset - 4), margin + textOffset, y + 15);
       
-      // Siswa
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(8); pdf.setTextColor(212, 175, 55);
       pdf.text(`Oleh: ${student?.nama || '-'}`, margin + textOffset, y + 22);
       
-      // Deskripsi
       pdf.setFont('helvetica', 'normal'); pdf.setFontSize(8); pdf.setTextColor(74, 80, 87);
       pdf.text(pdf.splitTextToSize(a.desc, contentW - textOffset - 4).slice(0, 4), margin + textOffset, y + 27);
       
-      y += 60; // Jarak ke entri berikutnya
+      y += 60;
     }
 
     // LAST PAGE: PENUTUP
@@ -2531,7 +2540,6 @@ function generatePDF(btn) {
     pdf.text(pembimbingData.namaSekolah, margin, 246); pdf.text(pembimbingData.namaIndustri, pageW - margin - 50, 246);
     pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
     pdf.text(pembimbingData.institusiSekolah, margin, 251); pdf.text(pembimbingData.institusiIndustri, pageW - margin - 50, 251);
-    // Tambahkan NIP / Jabatan di bawah institusi
     pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
     if (pembimbingData.jabatanSekolah) pdf.text(pembimbingData.jabatanSekolah, margin, 256);
     if (pembimbingData.jabatanIndustri) pdf.text(pembimbingData.jabatanIndustri, pageW - margin - 50, 256);
@@ -2664,7 +2672,6 @@ function observeReveal() {
 const actDateEl = document.getElementById('actDate');
 if (actDateEl) actDateEl.valueAsDate = new Date();
 
-// INISIALISASI: AMBIL DATA DARI DATABASE
 loadData();
 </script>
 </body>
