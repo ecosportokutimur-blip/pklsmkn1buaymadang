@@ -2091,7 +2091,7 @@ function renderAdminStudents() {
       <td class="text-xs">
         <div><i class="fa-solid fa-phone text-[var(--muted)] mr-1"></i>${s.telepon}</div>
       </td>
-      <td class="text-center">
+      <td class="text-center whitespace-nowrap">
         <button onclick="openStudentForm(${s.id})" class="icon-btn edit" title="Edit"><i class="fa-solid fa-pen"></i></button>
         <button onclick="deleteStudent(${s.id})" class="icon-btn delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
       </td>
@@ -2248,6 +2248,9 @@ async function deleteStudent(id) {
   showToast('Siswa dan dokumentasi terkait telah dihapus.', 'success');
 }
 
+// =============================================================
+// DOKUMENTASI (RENDER, EDIT, HAPUS)
+// =============================================================
 function renderAdminActivities() {
   const search = document.getElementById('activitySearch').value.toLowerCase();
   const filterCat = document.getElementById('activityFilterCat').value;
@@ -2270,12 +2273,122 @@ function renderAdminActivities() {
         <td class="text-xs font-medium">${student?.nama || '-'}</td>
         <td class="text-xs">${formatDate(a.date)}</td>
         <td><span class="admin-badge badge-info">${catLabels[a.category] || a.category}</span></td>
-        <td class="text-center">
-          <button onclick="deleteActivityAdmin(${a.id})" class="icon-btn delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+        <td class="text-center whitespace-nowrap">
+          <button onclick="openActivityForm(${a.id})" class="icon-btn edit" title="Edit">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button onclick="deleteActivityAdmin(${a.id})" class="icon-btn delete" title="Hapus">
+            <i class="fa-solid fa-trash"></i>
+          </button>
         </td>
       </tr>
     `;
   }).join('') : '<tr><td colspan="6" class="text-center py-8 text-[var(--muted)]">Tidak ada dokumentasi ditemukan</td></tr>';
+}
+
+function openActivityForm(id) {
+  const a = activities.find(x => x.id === id);
+  if (!a) return;
+  
+  document.getElementById('formModalTitle').textContent = 'Edit Dokumentasi';
+  document.getElementById('formModalContent').innerHTML = `
+    <form id="editActForm" class="space-y-4">
+      <div>
+        <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Nama Siswa</label>
+        <select id="edit_student" class="input" required disabled>
+          ${students.map(s => `<option value="${s.id}" ${s.id === a.studentId ? 'selected' : ''}>${s.nama} — ${s.posisi}</option>`).join('')}
+        </select>
+        <p class="text-[10px] text-[var(--muted)] mt-1 font-medium">Siswa tidak dapat diganti saat edit dokumentasi.</p>
+      </div>
+      
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Tanggal</label>
+          <input type="date" id="edit_date" class="input" value="${a.date}" required>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Kategori</label>
+          <select id="edit_cat" class="input" required>
+            <option value="design" ${a.category === 'design' ? 'selected' : ''}>Desain</option>
+            <option value="sublimation" ${a.category === 'sublimation' ? 'selected' : ''}>Sublimasi</option>
+            <option value="cutting" ${a.category === 'cutting' ? 'selected' : ''}>Cutting</option>
+            <option value="sewing" ${a.category === 'sewing' ? 'selected' : ''}>Jahit</option>
+            <option value="finishing" ${a.category === 'finishing' ? 'selected' : ''}>Finishing</option>
+            <option value="quality" ${a.category === 'quality' ? 'selected' : ''}>Quality Control</option>
+          </select>
+        </div>
+      </div>
+      
+      <div>
+        <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Judul Kegiatan</label>
+        <input type="text" id="edit_title" class="input" value="${a.title}" required>
+      </div>
+      
+      <div>
+        <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Deskripsi Kegiatan</label>
+        <textarea id="edit_desc" class="input" rows="3" required>${a.desc}</textarea>
+      </div>
+      
+      <div>
+        <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Foto Dokumentasi Saat Ini</label>
+        <img src="${a.foto}" class="w-full h-40 object-cover rounded-lg border border-[var(--border)] mb-2">
+        <p class="text-[10px] text-[var(--muted)] font-medium">Catatan: Foto tidak dapat diganti melalui form ini untuk mencegah kehilangan data. Jika perlu ganti foto, hapus dan buat dokumentasi baru.</p>
+      </div>
+      
+      <div class="flex gap-3 pt-2">
+        <button type="button" onclick="closeAdminForm()" class="btn-ghost flex-1 justify-center">Batal</button>
+        <button type="submit" class="btn-primary flex-1 justify-center">
+          <i class="fa-solid fa-save mr-2"></i> Update Dokumentasi
+        </button>
+      </div>
+    </form>
+  `;
+  
+  document.getElementById('adminFormModal').classList.add('show');
+  
+  document.getElementById('editActForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    handleEditActivity(id);
+  });
+}
+
+async function handleEditActivity(id) {
+  const idx = activities.findIndex(x => x.id === id);
+  if (idx === -1) return;
+  
+  const updatedData = {
+    date: document.getElementById('edit_date').value,
+    category: document.getElementById('edit_cat').value,
+    title: document.getElementById('edit_title').value.trim(),
+    description: document.getElementById('edit_desc').value.trim()
+  };
+  
+  const { error } = await db.from('activities').update(updatedData).eq('id', id);
+  
+  if (error) {
+    showToast('Gagal update: ' + error.message, 'error');
+    return;
+  }
+  
+  // Update data di array lokal
+  activities[idx] = {
+    ...activities[idx],
+    date: updatedData.date,
+    category: updatedData.category,
+    title: updatedData.title,
+    desc: updatedData.description
+  };
+  
+  closeAdminForm();
+  renderAdminActivities();
+  renderGallery('all');
+  updateStats();
+  
+  if (document.getElementById('adminDashboard').classList.contains('show')) {
+    renderAdminOverview();
+  }
+  
+  showToast('Dokumentasi berhasil diperbarui.', 'success');
 }
 
 async function deleteActivityAdmin(id) {
