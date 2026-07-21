@@ -759,6 +759,37 @@
                 <div class="text-sm font-bold font-display lowercase">pkl.ecosport@smkn1buaymadang.sch.id</div>
               </div>
             </div>
+            <div class="flex items-center gap-4">
+              <div class="w-11 h-11 rounded-lg bg-[var(--fg)] flex items-center justify-center text-[var(--accent)]">
+                <i class="fa-solid fa-globe"></i>
+              </div>
+              <div>
+                <div class="text-[10px] text-[var(--muted)] uppercase font-bold">Website Resmi</div>
+                <a href="https://ecosportokutimur-blip.github.io/jersey-eco-sport/" target="_blank" class="text-sm font-bold font-display lowercase hover:text-[var(--accent-2)]">ecosportokutimur-blip.github.io</a>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-11 h-11 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)]">
+                <i class="fa-solid fa-book"></i>
+              </div>
+              <div>
+                <div class="text-[10px] text-[var(--muted)] uppercase font-bold">Katalog Produk</div>
+                <a href="https://ecosportokutimur-blip.github.io/katalogecosport/" target="_blank" class="text-sm font-bold font-display lowercase hover:text-[var(--accent-2)]">Lihat Katalog Online</a>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-11 h-11 rounded-lg bg-[var(--fg)] flex items-center justify-center text-[var(--accent)]">
+                <i class="fa-solid fa-share-nodes"></i>
+              </div>
+              <div>
+                <div class="text-[10px] text-[var(--muted)] uppercase font-bold">Media Sosial</div>
+                <div class="flex items-center gap-4 text-xl mt-1">
+                  <a href="https://web.facebook.com/konveksi.ecosport.oku.timur" target="_blank" class="text-[var(--fg-2)] hover:text-[var(--accent-2)]"><i class="fa-brands fa-facebook"></i></a>
+                  <a href="https://www.instagram.com/konveksi_ecosport_okutimur/" target="_blank" class="text-[var(--fg-2)] hover:text-[var(--accent-2)]"><i class="fa-brands fa-instagram"></i></a>
+                  <a href="https://www.tiktok.com/@konveksi.eco.sport" target="_blank" class="text-[var(--fg-2)] hover:text-[var(--accent-2)]"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -822,11 +853,12 @@
     <div class="border-t border-[var(--border)] pt-6">
       <div class="flex flex-col md:flex-row justify-between gap-4 text-xs text-[var(--muted)] font-medium">
         <div>© 2026 Konveksi Jersey Eco Sport x SMK NEGERI 1 Buay Madang. Hak cipta dilindungi.</div>
-        <div class="flex items-center gap-4">
-          <a href="#" class="hover:text-[var(--accent-2)]"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#" class="hover:text-[var(--accent-2)]"><i class="fa-brands fa-whatsapp"></i></a>
-          <a href="#" class="hover:text-[var(--accent-2)]"><i class="fa-brands fa-tiktok"></i></a>
-          <a href="#" class="hover:text-[var(--accent-2)]"><i class="fa-brands fa-linkedin"></i></a>
+        <div class="flex flex-wrap items-center gap-4 text-base">
+          <a href="https://web.facebook.com/konveksi.ecosport.oku.timur" target="_blank" class="hover:text-[var(--accent-2)]" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="https://www.instagram.com/konveksi_ecosport_okutimur/" target="_blank" class="hover:text-[var(--accent-2)]" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@konveksi.eco.sport" target="_blank" class="hover:text-[var(--accent-2)]" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="https://ecosportokutimur-blip.github.io/jersey-eco-sport/" target="_blank" class="hover:text-[var(--accent-2)]" title="Website"><i class="fa-solid fa-globe"></i></a>
+          <a href="https://ecosportokutimur-blip.github.io/katalogecosport/" target="_blank" class="hover:text-[var(--accent-2)]" title="Katalog Produk"><i class="fa-solid fa-book-open"></i></a>
         </div>
       </div>
     </div>
@@ -1393,13 +1425,18 @@
 </div>
 
 <!-- MODAL GALERI -->
-<div id="galleryModal" class="fixed inset-0 z-[150] hidden items-center justify-center p-6" style="background:rgba(26,29,33,0.85);backdrop-filter:blur(8px);">
-  <div class="max-w-3xl w-full card p-6 relative">
-    <button id="closeModal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/10 flex items-center justify-center hover:bg-red-500/60 hover:text-white">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-    <img id="modalImg" class="w-full rounded-lg mb-4 max-h-[60vh] object-cover">
-    <div id="modalContent"></div>
+<div id="galleryModal" class="fixed inset-0 z-[150] hidden items-center justify-center p-4" style="background:rgba(26,29,33,0.85);backdrop-filter:blur(8px);">
+  <div class="max-w-3xl w-full card relative" style="max-height:90vh; overflow-y:auto;">
+    <div class="sticky top-0 z-20 flex items-center justify-between px-5 py-3 bg-white border-b border-[var(--border)] rounded-t-xl">
+      <span class="font-display text-base font-bold uppercase tracking-wide text-[var(--fg)]">Detail Dokumentasi</span>
+      <button id="closeModal" class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition shadow-md" title="Tutup">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+    <div class="p-6">
+      <img id="modalImg" class="w-full rounded-lg mb-4 max-h-[60vh] object-cover">
+      <div id="modalContent"></div>
+    </div>
   </div>
 </div>
 
@@ -1614,6 +1651,9 @@ function openModal(id) {
   `;
   document.getElementById('galleryModal').classList.remove('hidden');
   document.getElementById('galleryModal').classList.add('flex');
+  // Reset scroll ke atas saat dibuka
+  const modalScroll = document.querySelector('#galleryModal > div');
+  if (modalScroll) modalScroll.scrollTop = 0;
 }
 
 function showToast(msg, type = 'success') {
@@ -2159,7 +2199,8 @@ function generatePDF(btn) {
     pdf.setGState(new pdf.GState({ opacity: 1 }));
     pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 8, 'F');
     pdf.setFillColor(212, 175, 55); pdf.rect(0, 8, pageW, 2, 'F');
-    pdf.rect(0, pageH - 10, pageW, 10, 'F');
+    pdf.setFillColor(26, 29, 33); pdf.rect(0, pageH - 12, pageW, 12, 'F');
+    pdf.setFillColor(212, 175, 55); pdf.rect(0, pageH - 14, pageW, 2, 'F');
     pdf.setFillColor(26, 29, 33); pdf.roundedRect(margin, 25, 14, 14, 2, 2, 'F');
     pdf.setTextColor(212, 175, 55); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(10);
     pdf.text('ES', margin + 7, 34, { align: 'center' });
@@ -2194,8 +2235,11 @@ function generatePDF(btn) {
     pdf.text('Konveksi Jersey Eco Sport', margin + 8, 236);
     pdf.text('Tim Produksi Eco Sport', pageW/2, 236);
     pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
-    pdf.text('Dokumen ini disusun secara otomatis berdasarkan dokumentasi kegiatan PKL', pageW/2, pageH - 20, { align: 'center' });
-    pdf.text(`Diunduh pada ${new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' })}`, pageW/2, pageH - 15, { align: 'center' });
+    pdf.text('Dokumen ini disusun secara otomatis berdasarkan dokumentasi kegiatan PKL', pageW/2, pageH - 22, { align: 'center' });
+    pdf.text(`Diunduh pada ${new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' })}`, pageW/2, pageH - 17, { align: 'center' });
+    pdf.setTextColor(212, 175, 55);
+    pdf.text('FB: konveksi.ecosport.oku.timur  |  IG: konveksi_ecosport_okutimur  |  TikTok: @konveksi.eco.sport', pageW/2, pageH - 7, { align: 'center' });
+    pdf.text('Web: ecosportokutimur-blip.github.io/jersey-eco-sport  |  Katalog: ecosportokutimur-blip.github.io/katalogecosport', pageW/2, pageH - 3, { align: 'center' });
 
     // PAGE 2: SISWA
     pdf.addPage();
@@ -2249,15 +2293,25 @@ function generatePDF(btn) {
       const a = activities[i];
       const student = students.find(s => s.id === a.studentId);
       
+      // Hitung tinggi dinamis berdasarkan teks
+      const titleLines = pdf.splitTextToSize(a.title, contentW - textOffset - 4);
+      const descLines = pdf.splitTextToSize(a.desc, contentW - textOffset - 4);
+      
+      const titleHeight = titleLines.length * 4.5; // estimasi tinggi judul
+      const descHeight = descLines.length * 4; // estimasi tinggi deskripsi
+      
+      // Tinggi kotak minimal 52 (untuk muat gambar) atau menyesuaikan teks
+      const blockHeight = Math.max(52, 15 + titleHeight + 7 + descHeight + 6);
+      
       // Cek halaman baru
-      if (y > pageH - 80) {
+      if (y + blockHeight > pageH - 30) {
         pdf.addPage(); pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
         pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 6, 'F');
         pdf.setFillColor(212, 175, 55); pdf.rect(0, 6, pageW, 2, 'F'); y = 25;
       }
       
       pdf.setFillColor(255, 255, 255); pdf.setDrawColor(209, 213, 219);
-      pdf.roundedRect(margin, y, contentW, 52, 2, 2, 'FD');
+      pdf.roundedRect(margin, y, contentW, blockHeight, 2, 2, 'FD');
       pdf.setFillColor(212, 175, 55); pdf.rect(margin, y, contentW, 1, 'F');
       
       // Masukkan Foto Dokumentasi
@@ -2286,17 +2340,19 @@ function generatePDF(btn) {
       
       // Judul
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(11); pdf.setTextColor(26, 29, 33);
-      pdf.text(pdf.splitTextToSize(a.title, contentW - textOffset - 4), margin + textOffset, y + 15);
+      pdf.text(titleLines, margin + textOffset, y + 15);
       
       // Siswa
+      let textY = y + 15 + titleHeight;
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(8); pdf.setTextColor(212, 175, 55);
-      pdf.text(`Oleh: ${student?.nama || '-'}`, margin + textOffset, y + 22);
+      pdf.text(`Oleh: ${student?.nama || '-'}`, margin + textOffset, textY);
       
-      // Deskripsi
+      // Deskripsi (tanpa dipotong)
+      textY += 5;
       pdf.setFont('helvetica', 'normal'); pdf.setFontSize(8); pdf.setTextColor(74, 80, 87);
-      pdf.text(pdf.splitTextToSize(a.desc, contentW - textOffset - 4).slice(0, 4), margin + textOffset, y + 27);
+      pdf.text(descLines, margin + textOffset, textY);
       
-      y += 60; // Jarak ke entri berikutnya
+      y += blockHeight + 8; // Jarak ke entri berikutnya
     }
 
     // LAST PAGE: PENUTUP
@@ -2408,6 +2464,10 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     if (document.getElementById('adminFormModal').classList.contains('show')) closeAdminForm();
     else if (document.getElementById('adminLoginModal').classList.contains('show')) closeAdminLogin();
+    else if (!document.getElementById('galleryModal').classList.contains('hidden')) {
+      document.getElementById('galleryModal').classList.add('hidden');
+      document.getElementById('galleryModal').classList.remove('flex');
+    }
   }
 });
 
