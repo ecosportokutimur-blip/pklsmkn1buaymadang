@@ -114,7 +114,7 @@
   .photo-frame:hover img { transform: scale(1.05); filter: grayscale(0%) contrast(1.1); }
   .photo-frame::after {
     content:''; position:absolute; inset:0;
-    background: linear-gradient(180deg, transparent 50%, rgba(26,29,33,0.85) 100%);
+    background: linear-gradient(180deg, transparent 40%, rgba(26,29,33,0.9) 100%);
     pointer-events: none;
   }
   
@@ -248,6 +248,7 @@
   .admin-sidebar {
     width: 260px; background: var(--fg); color: #fff; padding: 24px 16px;
     display: flex; flex-direction: column; gap: 4px;
+    transition: width 0.3s ease;
   }
   .admin-sidebar-item {
     display: flex; align-items: center; gap: 12px; padding: 12px 16px;
@@ -255,6 +256,7 @@
     color: rgba(255,255,255,0.6); font-weight: 600; font-size: 13px;
     text-transform: uppercase; letter-spacing: 0.04em;
     background: transparent; border: none; width: 100%; text-align: left; font-family: inherit;
+    white-space: nowrap;
   }
   .admin-sidebar-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
   .admin-sidebar-item.active { background: var(--accent); color: var(--fg); }
@@ -324,11 +326,24 @@
   }
   .toggle-password:hover { color: var(--fg); }
 
+  /* Mobile Responsive Dashboard */
+  .mobile-menu-btn { display: none; }
+  
   @media (max-width: 768px) {
     .hero-title { font-size: 48px !important; line-height: 1 !important; }
-    .admin-sidebar { width: 70px; padding: 16px 8px; }
-    .admin-sidebar-item span { display: none; }
+    .admin-sidebar { 
+      position: fixed; top: 0; left: 0; bottom: 0; 
+      width: 250px; z-index: 260; transform: translateX(-100%);
+      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    }
+    .admin-sidebar.show { transform: translateX(0); }
+    .admin-sidebar-item span { display: inline; }
     .admin-main { padding: 16px; }
+    .mobile-menu-btn { display: inline-flex; }
+    .admin-overlay-bg {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 255; display: none;
+    }
+    .admin-overlay-bg.show { display: block; }
   }
 </style>
 </head>
@@ -360,7 +375,7 @@
     
     <div class="flex items-center gap-3">
       <button onclick="openAdminLogin()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider border-2 border-[var(--fg)] text-[var(--fg)] hover:bg-[var(--fg)] hover:text-white transition">
-        <i class="fa-solid fa-user-shield"></i> Admin
+        <i class="fa-solid fa-user-shield"></i> <span class="hidden md:inline">Admin</span>
       </button>
       <a href="#report" class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider bg-[var(--accent)] text-[var(--fg)] hover:bg-[var(--fg)] hover:text-[var(--accent)] transition">
         <i class="fa-solid fa-file-arrow-down"></i> Buat Laporan
@@ -759,35 +774,26 @@
                 <div class="text-sm font-bold font-display lowercase">pkl.ecosport@smkn1buaymadang.sch.id</div>
               </div>
             </div>
-            <div class="flex items-center gap-4">
-              <div class="w-11 h-11 rounded-lg bg-[var(--fg)] flex items-center justify-center text-[var(--accent)]">
-                <i class="fa-solid fa-globe"></i>
-              </div>
-              <div>
-                <div class="text-[10px] text-[var(--muted)] uppercase font-bold">Website Resmi</div>
-                <a href="https://ecosportokutimur-blip.github.io/jersey-eco-sport/" target="_blank" class="text-sm font-bold font-display lowercase hover:text-[var(--accent-2)]">ecosportokutimur-blip.github.io</a>
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <div class="w-11 h-11 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent-2)]">
-                <i class="fa-solid fa-book"></i>
-              </div>
-              <div>
-                <div class="text-[10px] text-[var(--muted)] uppercase font-bold">Katalog Produk</div>
-                <a href="https://ecosportokutimur-blip.github.io/katalogecosport/" target="_blank" class="text-sm font-bold font-display lowercase hover:text-[var(--accent-2)]">Lihat Katalog Online</a>
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <div class="w-11 h-11 rounded-lg bg-[var(--fg)] flex items-center justify-center text-[var(--accent)]">
-                <i class="fa-solid fa-share-nodes"></i>
-              </div>
-              <div>
-                <div class="text-[10px] text-[var(--muted)] uppercase font-bold">Media Sosial</div>
-                <div class="flex items-center gap-4 text-xl mt-1">
-                  <a href="https://web.facebook.com/konveksi.ecosport.oku.timur" target="_blank" class="text-[var(--fg-2)] hover:text-[var(--accent-2)]"><i class="fa-brands fa-facebook"></i></a>
-                  <a href="https://www.instagram.com/konveksi_ecosport_okutimur/" target="_blank" class="text-[var(--fg-2)] hover:text-[var(--accent-2)]"><i class="fa-brands fa-instagram"></i></a>
-                  <a href="https://www.tiktok.com/@konveksi.eco.sport" target="_blank" class="text-[var(--fg-2)] hover:text-[var(--accent-2)]"><i class="fa-brands fa-tiktok"></i></a>
-                </div>
+            
+            <!-- SOSMED LINKS -->
+            <div class="pt-4 border-t border-[var(--border)]">
+              <div class="text-[10px] text-[var(--muted)] uppercase font-bold mb-3">Media Sosial & Web Resmi</div>
+              <div class="flex flex-wrap gap-3">
+                <a href="https://www.instagram.com/konveksi_ecosport_okutimur/" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-md border border-[var(--border)] hover:bg-[var(--fg)] hover:text-white transition text-xs font-bold uppercase tracking-wider">
+                  <i class="fa-brands fa-instagram text-pink-500"></i> Instagram
+                </a>
+                <a href="https://www.tiktok.com/@konveksi.eco.sport" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-md border border-[var(--border)] hover:bg-[var(--fg)] hover:text-white transition text-xs font-bold uppercase tracking-wider">
+                  <i class="fa-brands fa-tiktok"></i> TikTok
+                </a>
+                <a href="https://web.facebook.com/konveksi.ecosport.oku.timur" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-md border border-[var(--border)] hover:bg-[var(--fg)] hover:text-white transition text-xs font-bold uppercase tracking-wider">
+                  <i class="fa-brands fa-facebook text-blue-600"></i> Facebook
+                </a>
+                <a href="https://ecosportokutimur-blip.github.io/katalogecosport/" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-md border border-[var(--border)] hover:bg-[var(--fg)] hover:text-white transition text-xs font-bold uppercase tracking-wider">
+                  <i class="fa-solid fa-book-open text-[var(--accent-2)]"></i> Katalog
+                </a>
+                <a href="https://ecosportokutimur-blip.github.io/jersey-eco-sport/" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-md border border-[var(--border)] hover:bg-[var(--fg)] hover:text-white transition text-xs font-bold uppercase tracking-wider">
+                  <i class="fa-solid fa-globe text-green-600"></i> Website
+                </a>
               </div>
             </div>
           </div>
@@ -853,12 +859,12 @@
     <div class="border-t border-[var(--border)] pt-6">
       <div class="flex flex-col md:flex-row justify-between gap-4 text-xs text-[var(--muted)] font-medium">
         <div>© 2026 Konveksi Jersey Eco Sport x SMK NEGERI 1 Buay Madang. Hak cipta dilindungi.</div>
-        <div class="flex flex-wrap items-center gap-4 text-base">
-          <a href="https://web.facebook.com/konveksi.ecosport.oku.timur" target="_blank" class="hover:text-[var(--accent-2)]" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
-          <a href="https://www.instagram.com/konveksi_ecosport_okutimur/" target="_blank" class="hover:text-[var(--accent-2)]" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://www.tiktok.com/@konveksi.eco.sport" target="_blank" class="hover:text-[var(--accent-2)]" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-          <a href="https://ecosportokutimur-blip.github.io/jersey-eco-sport/" target="_blank" class="hover:text-[var(--accent-2)]" title="Website"><i class="fa-solid fa-globe"></i></a>
-          <a href="https://ecosportokutimur-blip.github.io/katalogecosport/" target="_blank" class="hover:text-[var(--accent-2)]" title="Katalog Produk"><i class="fa-solid fa-book-open"></i></a>
+        <div class="flex items-center gap-4">
+          <a href="https://www.instagram.com/konveksi_ecosport_okutimur/" target="_blank" class="hover:text-[var(--accent-2)]"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@konveksi.eco.sport" target="_blank" class="hover:text-[var(--accent-2)]"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="https://web.facebook.com/konveksi.ecosport.oku.timur" target="_blank" class="hover:text-[var(--accent-2)]"><i class="fa-brands fa-facebook"></i></a>
+          <a href="https://ecosportokutimur-blip.github.io/katalogecosport/" target="_blank" class="hover:text-[var(--accent-2)]"><i class="fa-solid fa-book-open"></i></a>
+          <a href="https://ecosportokutimur-blip.github.io/jersey-eco-sport/" target="_blank" class="hover:text-[var(--accent-2)]"><i class="fa-solid fa-globe"></i></a>
         </div>
       </div>
     </div>
@@ -917,12 +923,15 @@
 <div id="adminDashboard" class="admin-dashboard">
   <header class="admin-header">
     <div class="flex items-center gap-4">
+      <button class="mobile-menu-btn icon-btn" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars text-lg"></i>
+      </button>
       <div class="w-10 h-10 rounded-md flex items-center justify-center bg-[var(--fg)]">
         <i class="fa-solid fa-shield-halved text-[var(--accent)]"></i>
       </div>
       <div>
         <div class="font-heading text-base font-bold tracking-wider">DASHBOARD ADMIN</div>
-        <div class="text-[10px] tracking-[0.15em] text-[var(--muted)] uppercase">PKL Eco Sport — Management System</div>
+        <div class="text-[10px] tracking-[0.15em] text-[var(--muted)] uppercase hidden md:block">PKL Eco Sport — Management System</div>
       </div>
     </div>
     
@@ -945,7 +954,8 @@
   </header>
   
   <div class="admin-body">
-    <aside class="admin-sidebar">
+    <div id="adminSidebarOverlay" class="admin-overlay-bg" onclick="toggleSidebar()"></div>
+    <aside class="admin-sidebar" id="adminSidebar">
       <div class="text-[10px] text-white/40 uppercase tracking-widest font-bold px-4 mb-3">Menu Utama</div>
       <button class="admin-sidebar-item active" onclick="switchAdminSection('overview', this)">
         <i class="fa-solid fa-gauge-high"></i><span>Overview</span>
@@ -978,7 +988,7 @@
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
           <div>
             <div class="section-num mb-2">— Dashboard</div>
-            <h1 class="font-display text-4xl font-bold uppercase">Selamat Datang, Admin!</h1>
+            <h1 class="font-display text-3xl md:text-4xl font-bold uppercase">Selamat Datang, Admin!</h1>
             <p class="text-sm text-[var(--muted)] mt-1 font-medium">Ringkasan data Praktik Kerja Lapangan Eco Sport</p>
           </div>
           <div class="text-left md:text-right">
@@ -995,7 +1005,7 @@
               </div>
               <span class="admin-badge badge-success"><i class="fa-solid fa-arrow-up text-[8px]"></i> Aktif</span>
             </div>
-            <div class="stat-num text-4xl mb-1" id="adminTotalStudents">0</div>
+            <div class="stat-num text-3xl md:text-4xl mb-1" id="adminTotalStudents">0</div>
             <div class="text-xs text-[var(--muted)] uppercase font-bold tracking-wider">Total Siswa PKL</div>
           </div>
           
@@ -1006,7 +1016,7 @@
               </div>
               <span class="admin-badge badge-info">Tercatat</span>
             </div>
-            <div class="stat-num text-4xl mb-1" id="adminTotalActivities">0</div>
+            <div class="stat-num text-3xl md:text-4xl mb-1" id="adminTotalActivities">0</div>
             <div class="text-xs text-[var(--muted)] uppercase font-bold tracking-wider">Total Dokumentasi</div>
           </div>
           
@@ -1017,7 +1027,7 @@
               </div>
               <span class="admin-badge badge-warning">Kategori</span>
             </div>
-            <div class="stat-num text-4xl mb-1" id="adminTotalCategories">0</div>
+            <div class="stat-num text-3xl md:text-4xl mb-1" id="adminTotalCategories">0</div>
             <div class="text-xs text-[var(--muted)] uppercase font-bold tracking-wider">Kategori Aktif</div>
           </div>
           
@@ -1028,7 +1038,7 @@
               </div>
               <span class="admin-badge badge-success">Selesai</span>
             </div>
-            <div class="stat-num text-4xl mb-1">4</div>
+            <div class="stat-num text-3xl md:text-4xl mb-1">4</div>
             <div class="text-xs text-[var(--muted)] uppercase font-bold tracking-wider">Bulan Program</div>
           </div>
         </div>
@@ -1075,7 +1085,7 @@
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
           <div>
             <div class="section-num mb-2">— Manajemen Data</div>
-            <h1 class="font-display text-4xl font-bold uppercase">Data Siswa PKL</h1>
+            <h1 class="font-display text-3xl md:text-4xl font-bold uppercase">Data Siswa PKL</h1>
             <p class="text-sm text-[var(--muted)] mt-1 font-medium">Kelola informasi siswa peserta PKL</p>
           </div>
           <button onclick="openStudentForm()" class="btn-primary">
@@ -1114,7 +1124,7 @@
       <section id="adminActivities" class="admin-section">
         <div class="mb-8">
           <div class="section-num mb-2">— Manajemen Data</div>
-          <h1 class="font-display text-4xl font-bold uppercase">Dokumentasi & Laporan</h1>
+          <h1 class="font-display text-3xl md:text-4xl font-bold uppercase">Dokumentasi & Laporan</h1>
           <p class="text-sm text-[var(--muted)] mt-1 font-medium">Unggah dokumentasi, kelola, dan unduh laporan PKL</p>
         </div>
 
@@ -1293,7 +1303,7 @@
       <section id="adminReports" class="admin-section">
         <div class="mb-8">
           <div class="section-num mb-2">— Export & Laporan</div>
-          <h1 class="font-display text-4xl font-bold uppercase">Pusat Laporan</h1>
+          <h1 class="font-display text-3xl md:text-4xl font-bold uppercase">Pusat Laporan</h1>
           <p class="text-sm text-[var(--muted)] mt-1 font-medium">Generate dan unduh laporan PKL</p>
         </div>
         
@@ -1326,7 +1336,7 @@
       <section id="adminSettings" class="admin-section">
         <div class="mb-8">
           <div class="section-num mb-2">— Konfigurasi</div>
-          <h1 class="font-display text-4xl font-bold uppercase">Pengaturan Sistem</h1>
+          <h1 class="font-display text-3xl md:text-4xl font-bold uppercase">Pengaturan Sistem</h1>
           <p class="text-sm text-[var(--muted)] mt-1 font-medium">Kelola akun dan preferensi sistem</p>
         </div>
         
@@ -1413,6 +1423,94 @@
   </div>
 </div>
 
+<!-- EDIT PEMBIMBING MODAL -->
+<div id="pembimbingEditorModal" class="admin-form-modal">
+  <div class="admin-form-card" style="max-width:600px;">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h3 class="font-display text-2xl font-bold uppercase">Edit Data Pembimbing</h3>
+        <p class="text-xs text-[var(--muted)] mt-1 font-medium">Atur identitas pembimbing sebelum generate PDF</p>
+      </div>
+      <button onclick="closePembimbingEditor()" class="icon-btn">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    
+    <div class="bg-[var(--bg-2)] border border-[var(--border)] rounded-lg p-3 mb-5 flex items-start gap-3">
+      <i class="fa-solid fa-circle-info text-[var(--accent-2)] mt-0.5"></i>
+      <p class="text-xs text-[var(--fg-2)] font-medium">Data yang Anda masukkan di sini akan tampil di halaman cover dan halaman penutup laporan PDF. Data tersimpan otomatis di browser.</p>
+    </div>
+    
+    <form id="pembimbingForm" class="space-y-4" onsubmit="confirmPembimbingData(event)">
+      <!-- Pembimbing Sekolah -->
+      <div class="border-l-4 border-[var(--accent)] pl-4">
+        <div class="text-[10px] uppercase tracking-widest text-[var(--accent-2)] font-bold mb-3">Pembimbing Sekolah</div>
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Nama Lengkap</label>
+            <input type="text" id="pe_nama_sekolah" class="input" placeholder="Drs. Sutrisno, M.Pd" required>
+          </div>
+          <div>
+            <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">NIP / Jabatan</label>
+            <input type="text" id="pe_jabatan_sekolah" class="input" placeholder="NIP. 1234567890">
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Institusi Sekolah</label>
+          <input type="text" id="pe_institusi_sekolah" class="input" placeholder="SMK Negeri 1 Buay Madang" required>
+        </div>
+      </div>
+      
+      <!-- Pembimbing Industri -->
+      <div class="border-l-4 border-[var(--fg)] pl-4">
+        <div class="text-[10px] uppercase tracking-widest text-[var(--fg-2)] font-bold mb-3">Pembimbing Industri</div>
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Nama Lengkap</label>
+            <input type="text" id="pe_nama_industri" class="input" placeholder="Bpk. Hendra Wijaya" required>
+          </div>
+          <div>
+            <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Jabatan</label>
+            <input type="text" id="pe_jabatan_industri" class="input" placeholder="Kepala Produksi">
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Institusi Industri</label>
+          <input type="text" id="pe_institusi_industri" class="input" placeholder="Konveksi Jersey Eco Sport" required>
+        </div>
+      </div>
+      
+      <!-- Info Tambahan -->
+      <div class="border-l-4 border-[var(--accent-2)] pl-4">
+        <div class="text-[10px] uppercase tracking-widest text-[var(--accent-2)] font-bold mb-3">Informasi Tambahan</div>
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Lokasi PKL</label>
+            <input type="text" id="pe_lokasi" class="input" placeholder="Buay Madang, OKU Timur">
+          </div>
+          <div>
+            <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Periode PKL</label>
+            <input type="text" id="pe_periode" class="input" placeholder="Januari - April 2025">
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-[var(--fg-2)] uppercase tracking-wider mb-2 block">Kota Penandatanganan</label>
+          <input type="text" id="pe_kota" class="input" placeholder="Buay Madang">
+        </div>
+      </div>
+      
+      <div class="flex gap-3 pt-2">
+        <button type="button" onclick="closePembimbingEditor()" class="btn-ghost flex-1 justify-center">
+          <i class="fa-solid fa-xmark mr-2"></i> Batal
+        </button>
+        <button type="submit" class="btn-primary flex-1 justify-center">
+          <i class="fa-solid fa-file-pdf mr-2"></i> Generate PDF
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div id="toast" class="toast">
   <div class="flex items-start gap-3">
@@ -1425,18 +1523,13 @@
 </div>
 
 <!-- MODAL GALERI -->
-<div id="galleryModal" class="fixed inset-0 z-[150] hidden items-center justify-center p-4" style="background:rgba(26,29,33,0.85);backdrop-filter:blur(8px);">
-  <div class="max-w-3xl w-full card relative" style="max-height:90vh; overflow-y:auto;">
-    <div class="sticky top-0 z-20 flex items-center justify-between px-5 py-3 bg-white border-b border-[var(--border)] rounded-t-xl">
-      <span class="font-display text-base font-bold uppercase tracking-wide text-[var(--fg)]">Detail Dokumentasi</span>
-      <button id="closeModal" class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition shadow-md" title="Tutup">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-    </div>
-    <div class="p-6">
-      <img id="modalImg" class="w-full rounded-lg mb-4 max-h-[60vh] object-cover">
-      <div id="modalContent"></div>
-    </div>
+<div id="galleryModal" class="fixed inset-0 z-[150] hidden items-center justify-center p-6" style="background:rgba(26,29,33,0.85);backdrop-filter:blur(8px);">
+  <div class="max-w-3xl w-full card p-6 relative">
+    <button id="closeModal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/10 flex items-center justify-center hover:bg-red-500/60 hover:text-white">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <img id="modalImg" class="w-full rounded-lg mb-4 max-h-[60vh] object-cover">
+    <div id="modalContent"></div>
   </div>
 </div>
 
@@ -1470,6 +1563,74 @@ let students = [];
 let activities = [];
 let currentPhotoData = null;
 let currentStudentPhotoData = null; // Variabel untuk foto siswa yang diupload
+
+// =============================================================
+// DATA PEMBIMBING (EDITABLE & PERSISTENT)
+// =============================================================
+let pembimbingData = {
+  namaSekolah: 'Drs. Sutrisno, M.Pd',
+  jabatanSekolah: 'NIP. 196505121990031005',
+  institusiSekolah: 'SMK Negeri 1 Buay Madang',
+  namaIndustri: 'Bpk. Hendra Wijaya',
+  jabatanIndustri: 'Kepala Produksi',
+  institusiIndustri: 'Konveksi Jersey Eco Sport',
+  lokasi: 'Buay Madang, OKU Timur',
+  periode: 'Januari - April 2025',
+  kota: 'Buay Madang'
+};
+
+// Load dari localStorage jika ada
+try {
+  const saved = localStorage.getItem('pembimbingData');
+  if (saved) pembimbingData = { ...pembimbingData, ...JSON.parse(saved) };
+} catch(e) { console.warn('Gagal load pembimbing data', e); }
+
+let pendingPdfButton = null;
+
+function openPembimbingEditor(btn) {
+  pendingPdfButton = btn;
+  // Pre-fill form dengan data tersimpan
+  document.getElementById('pe_nama_sekolah').value = pembimbingData.namaSekolah;
+  document.getElementById('pe_jabatan_sekolah').value = pembimbingData.jabatanSekolah;
+  document.getElementById('pe_institusi_sekolah').value = pembimbingData.institusiSekolah;
+  document.getElementById('pe_nama_industri').value = pembimbingData.namaIndustri;
+  document.getElementById('pe_jabatan_industri').value = pembimbingData.jabatanIndustri;
+  document.getElementById('pe_institusi_industri').value = pembimbingData.institusiIndustri;
+  document.getElementById('pe_lokasi').value = pembimbingData.lokasi;
+  document.getElementById('pe_periode').value = pembimbingData.periode;
+  document.getElementById('pe_kota').value = pembimbingData.kota;
+  document.getElementById('pembimbingEditorModal').classList.add('show');
+}
+
+function closePembimbingEditor() {
+  document.getElementById('pembimbingEditorModal').classList.remove('show');
+  pendingPdfButton = null;
+}
+
+function confirmPembimbingData(e) {
+  e.preventDefault();
+  // Simpan data baru
+  pembimbingData = {
+    namaSekolah: document.getElementById('pe_nama_sekolah').value.trim(),
+    jabatanSekolah: document.getElementById('pe_jabatan_sekolah').value.trim(),
+    institusiSekolah: document.getElementById('pe_institusi_sekolah').value.trim(),
+    namaIndustri: document.getElementById('pe_nama_industri').value.trim(),
+    jabatanIndustri: document.getElementById('pe_jabatan_industri').value.trim(),
+    institusiIndustri: document.getElementById('pe_institusi_industri').value.trim(),
+    lokasi: document.getElementById('pe_lokasi').value.trim(),
+    periode: document.getElementById('pe_periode').value.trim(),
+    kota: document.getElementById('pe_kota').value.trim()
+  };
+  
+  // Persist ke localStorage
+  try { localStorage.setItem('pembimbingData', JSON.stringify(pembimbingData)); } catch(e) {}
+  
+  // Tutup modal & generate PDF
+  closePembimbingEditor();
+  if (pendingPdfButton) {
+    generatePDF(pendingPdfButton);
+  }
+}
 
 // =============================================================
 // FUNGSI UTAMA
@@ -1531,15 +1692,15 @@ function renderStudents() {
   if (!grid) return;
   grid.innerHTML = students.map((s, i) => `
     <div class="card p-5 reveal visible" style="transition-delay:${i*60}ms">
-      <div class="photo-frame mb-5">
+      <div class="photo-frame mb-4">
         <img src="${s.foto}" alt="${s.nama}" loading="lazy">
         <div class="absolute top-3 left-3">
           <span class="pill pill-accent text-[10px]">0${s.id}</span>
         </div>
-        <div class="absolute bottom-3 left-3 right-3">
-          <div class="text-[10px] uppercase tracking-widest text-[var(--accent)] mb-1 font-bold">${s.posisi}</div>
-          <div class="font-display text-xl font-bold leading-tight uppercase">${s.nama}</div>
-        </div>
+      </div>
+      <div class="mb-3">
+        <div class="text-[10px] uppercase tracking-widest text-[var(--accent-2)] mb-1 font-bold">${s.posisi}</div>
+        <div class="font-display text-2xl font-bold leading-tight uppercase">${s.nama}</div>
       </div>
       <div class="flex items-center justify-between mb-3 text-xs">
         <span class="text-[var(--muted)] font-medium"><i class="fa-solid fa-id-card mr-1.5"></i>${s.kelas}</span>
@@ -1651,9 +1812,6 @@ function openModal(id) {
   `;
   document.getElementById('galleryModal').classList.remove('hidden');
   document.getElementById('galleryModal').classList.add('flex');
-  // Reset scroll ke atas saat dibuka
-  const modalScroll = document.querySelector('#galleryModal > div');
-  if (modalScroll) modalScroll.scrollTop = 0;
 }
 
 function showToast(msg, type = 'success') {
@@ -1680,6 +1838,12 @@ function showToast(msg, type = 'success') {
 // =============================================================
 // FORM & ADMIN LOGIC
 // =============================================================
+function toggleSidebar() {
+  const sidebar = document.getElementById('adminSidebar');
+  const overlay = document.getElementById('adminSidebarOverlay');
+  sidebar.classList.toggle('show');
+  overlay.classList.toggle('show');
+}
 
 function handleFile(file) {
   if (!file.type.startsWith('image/')) { showToast('File harus berupa gambar.','error'); return; }
@@ -1836,6 +2000,12 @@ function switchAdminSection(section, el) {
   if (section === 'overview') renderAdminOverview();
   if (section === 'students') renderAdminStudents();
   if (section === 'activities') { renderAdminActivities(); updateStats(); }
+  
+  // Auto close sidebar on mobile after click
+  if (window.innerWidth <= 768) {
+    document.getElementById('adminSidebar').classList.remove('show');
+    document.getElementById('adminSidebarOverlay').classList.remove('show');
+  }
 }
 
 function openSitePreview() {
@@ -2030,7 +2200,7 @@ function openStudentForm(id = null) {
     document.getElementById('sf_removePreview').addEventListener('click', () => {
       currentStudentPhotoData = null;
       sfInput.value = '';
-      document.getElementById('sf_previewWrap').classList.add('hidden');
+      document.getElementById('sf_previewWrap').classList.remove('hidden');
     });
   }
   
@@ -2199,8 +2369,7 @@ function generatePDF(btn) {
     pdf.setGState(new pdf.GState({ opacity: 1 }));
     pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 8, 'F');
     pdf.setFillColor(212, 175, 55); pdf.rect(0, 8, pageW, 2, 'F');
-    pdf.setFillColor(26, 29, 33); pdf.rect(0, pageH - 12, pageW, 12, 'F');
-    pdf.setFillColor(212, 175, 55); pdf.rect(0, pageH - 14, pageW, 2, 'F');
+    pdf.rect(0, pageH - 10, pageW, 10, 'F');
     pdf.setFillColor(26, 29, 33); pdf.roundedRect(margin, 25, 14, 14, 2, 2, 'F');
     pdf.setTextColor(212, 175, 55); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(10);
     pdf.text('ES', margin + 7, 34, { align: 'center' });
@@ -2217,7 +2386,7 @@ function generatePDF(btn) {
     pdf.setFont('helvetica', 'normal'); pdf.setFontSize(14); pdf.setTextColor(212, 175, 55);
     pdf.text('Konveksi Jersey Eco Sport', pageW/2, 162, { align: 'center' });
     pdf.setFontSize(10); pdf.setTextColor(74, 80, 87);
-    pdf.text('Periode Januari - April 2025', pageW/2, 170, { align: 'center' });
+    pdf.text(`Periode ${pembimbingData.periode}`, pageW/2, 170, { align: 'center' });
     pdf.setFillColor(255, 255, 255); pdf.setDrawColor(209, 213, 219);
     pdf.roundedRect(margin, 190, contentW, 55, 3, 3, 'FD');
     pdf.setFillColor(212, 175, 55); pdf.rect(margin, 190, contentW, 1.5, 'F');
@@ -2225,21 +2394,18 @@ function generatePDF(btn) {
     pdf.text('DISUSUN OLEH', margin + 8, 200); pdf.text('INSTITUSI', pageW/2, 200);
     pdf.setFont('helvetica', 'bold'); pdf.setFontSize(11); pdf.setTextColor(26, 29, 33);
     pdf.text('6 Siswa PKL SMKN 1 Buay Madang', margin + 8, 208);
-    pdf.text('SMK Negeri 1 Buay Madang', pageW/2, 208);
+    pdf.text(pembimbingData.institusiSekolah, pageW/2, 208);
     pdf.setFont('helvetica', 'normal'); pdf.setFontSize(8); pdf.setTextColor(74, 80, 87);
     pdf.text('Jurusan Tata Busana', margin + 8, 215);
-    pdf.text('Buay Madang, OKU Timur', pageW/2, 215);
+    pdf.text(pembimbingData.lokasi, pageW/2, 215);
     pdf.setFontSize(8); pdf.setTextColor(139, 146, 155);
     pdf.text('LOKASI PKL', margin + 8, 228); pdf.text('Pembimbing Industri', pageW/2, 228);
     pdf.setFont('helvetica', 'bold'); pdf.setFontSize(10); pdf.setTextColor(26, 29, 33);
-    pdf.text('Konveksi Jersey Eco Sport', margin + 8, 236);
-    pdf.text('Tim Produksi Eco Sport', pageW/2, 236);
+    pdf.text(pembimbingData.institusiIndustri, margin + 8, 236);
+    pdf.text(pembimbingData.namaIndustri, pageW/2, 236);
     pdf.setFont('helvetica', 'normal'); pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
-    pdf.text('Dokumen ini disusun secara otomatis berdasarkan dokumentasi kegiatan PKL', pageW/2, pageH - 22, { align: 'center' });
-    pdf.text(`Diunduh pada ${new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' })}`, pageW/2, pageH - 17, { align: 'center' });
-    pdf.setTextColor(212, 175, 55);
-    pdf.text('FB: konveksi.ecosport.oku.timur  |  IG: konveksi_ecosport_okutimur  |  TikTok: @konveksi.eco.sport', pageW/2, pageH - 7, { align: 'center' });
-    pdf.text('Web: ecosportokutimur-blip.github.io/jersey-eco-sport  |  Katalog: ecosportokutimur-blip.github.io/katalogecosport', pageW/2, pageH - 3, { align: 'center' });
+    pdf.text('Dokumen ini disusun secara otomatis berdasarkan dokumentasi kegiatan PKL', pageW/2, pageH - 20, { align: 'center' });
+    pdf.text(`Diunduh pada ${new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' })}`, pageW/2, pageH - 15, { align: 'center' });
 
     // PAGE 2: SISWA
     pdf.addPage();
@@ -2293,25 +2459,15 @@ function generatePDF(btn) {
       const a = activities[i];
       const student = students.find(s => s.id === a.studentId);
       
-      // Hitung tinggi dinamis berdasarkan teks
-      const titleLines = pdf.splitTextToSize(a.title, contentW - textOffset - 4);
-      const descLines = pdf.splitTextToSize(a.desc, contentW - textOffset - 4);
-      
-      const titleHeight = titleLines.length * 4.5; // estimasi tinggi judul
-      const descHeight = descLines.length * 4; // estimasi tinggi deskripsi
-      
-      // Tinggi kotak minimal 52 (untuk muat gambar) atau menyesuaikan teks
-      const blockHeight = Math.max(52, 15 + titleHeight + 7 + descHeight + 6);
-      
       // Cek halaman baru
-      if (y + blockHeight > pageH - 30) {
+      if (y > pageH - 80) {
         pdf.addPage(); pdf.setFillColor(244, 245, 247); pdf.rect(0, 0, pageW, pageH, 'F');
         pdf.setFillColor(26, 29, 33); pdf.rect(0, 0, pageW, 6, 'F');
         pdf.setFillColor(212, 175, 55); pdf.rect(0, 6, pageW, 2, 'F'); y = 25;
       }
       
       pdf.setFillColor(255, 255, 255); pdf.setDrawColor(209, 213, 219);
-      pdf.roundedRect(margin, y, contentW, blockHeight, 2, 2, 'FD');
+      pdf.roundedRect(margin, y, contentW, 52, 2, 2, 'FD');
       pdf.setFillColor(212, 175, 55); pdf.rect(margin, y, contentW, 1, 'F');
       
       // Masukkan Foto Dokumentasi
@@ -2340,19 +2496,17 @@ function generatePDF(btn) {
       
       // Judul
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(11); pdf.setTextColor(26, 29, 33);
-      pdf.text(titleLines, margin + textOffset, y + 15);
+      pdf.text(pdf.splitTextToSize(a.title, contentW - textOffset - 4), margin + textOffset, y + 15);
       
       // Siswa
-      let textY = y + 15 + titleHeight;
       pdf.setFont('helvetica', 'bold'); pdf.setFontSize(8); pdf.setTextColor(212, 175, 55);
-      pdf.text(`Oleh: ${student?.nama || '-'}`, margin + textOffset, textY);
+      pdf.text(`Oleh: ${student?.nama || '-'}`, margin + textOffset, y + 22);
       
-      // Deskripsi (tanpa dipotong)
-      textY += 5;
+      // Deskripsi
       pdf.setFont('helvetica', 'normal'); pdf.setFontSize(8); pdf.setTextColor(74, 80, 87);
-      pdf.text(descLines, margin + textOffset, textY);
+      pdf.text(pdf.splitTextToSize(a.desc, contentW - textOffset - 4).slice(0, 4), margin + textOffset, y + 27);
       
-      y += blockHeight + 8; // Jarak ke entri berikutnya
+      y += 60; // Jarak ke entri berikutnya
     }
 
     // LAST PAGE: PENUTUP
@@ -2365,18 +2519,22 @@ function generatePDF(btn) {
     pdf.text('Penutup', margin, 35);
     pdf.setDrawColor(212, 175, 55); pdf.line(margin, 40, margin + 35, 40);
     pdf.setFont('helvetica', 'normal'); pdf.setFontSize(9); pdf.setTextColor(74, 80, 87);
-    const penutup = `Demikian laporan Praktik Kerja Lapangan ini disusun berdasarkan ${activities.length} dokumentasi kegiatan yang dilakukan oleh 6 siswa-siswi SMK NEGERI 1 Buay Madang di Konveksi Jersey Eco Sport. Selama pelaksanaan PKL, siswa telah mempelajari berbagai aspek produksi jersey mulai dari desain artwork, proses sublimasi printing, cutting kain, hingga tahap akhir penjahitan dan packaging.\n\nKegiatan PKL ini memberikan pengalaman langsung kepada siswa dalam lingkungan industri konveksi yang sesungguhnya. Siswa tidak hanya mempelajari keterampilan teknis, tetapi juga etos kerja, disiplin, kerja sama tim, dan tanggung jawab profesional.\n\nKami mengucapkan terima kasih kepada pihak Konveksi Jersey Eco Sport yang telah memberikan kesempatan dan bimbingan kepada siswa-siswi kami. Semoga kerja sama ini dapat berlanjut dan memberikan manfaat bagi pengembangan SDM di bidang industri konveksi.`;
+    const penutup = `Demikian laporan Praktik Kerja Lapangan ini disusun berdasarkan ${activities.length} dokumentasi kegiatan yang dilakukan oleh ${students.length} siswa-siswi ${pembimbingData.institusiSekolah} di ${pembimbingData.institusiIndustri}. Selama pelaksanaan PKL, siswa telah mempelajari berbagai aspek produksi jersey mulai dari desain artwork, proses sublimasi printing, cutting kain, hingga tahap akhir penjahitan dan packaging.\n\nKegiatan PKL ini memberikan pengalaman langsung kepada siswa dalam lingkungan industri konveksi yang sesungguhnya. Siswa tidak hanya mempelajari keterampilan teknis, tetapi juga etos kerja, disiplin, kerja sama tim, dan tanggung jawab profesional.\n\nKami mengucapkan terima kasih kepada pihak ${pembimbingData.institusiIndustri} yang telah memberikan kesempatan dan bimbingan kepada siswa-siswi kami. Semoga kerja sama ini dapat berlanjut dan memberikan manfaat bagi pengembangan SDM di bidang industri konveksi.`;
     pdf.text(pdf.splitTextToSize(penutup, contentW), margin, 55);
     pdf.setFontSize(9); pdf.setTextColor(26, 29, 33);
-    pdf.text('Buay Madang, ' + new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' }), pageW - margin - 60, 200, { align: 'left' });
+    pdf.text(`${pembimbingData.kota}, ` + new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' }), pageW - margin - 60, 200, { align: 'left' });
     pdf.setFontSize(8); pdf.setTextColor(139, 146, 155);
     pdf.text('Pembimbing Sekolah', margin, 215); pdf.text('Pembimbing Industri', pageW - margin - 50, 215);
     pdf.setDrawColor(139, 146, 155); pdf.setLineWidth(0.2);
     pdf.line(margin, 240, margin + 60, 240); pdf.line(pageW - margin - 50, 240, pageW - margin, 240);
     pdf.setFontSize(9); pdf.setTextColor(26, 29, 33);
-    pdf.text('Drs. Sutrisno, M.Pd', margin, 246); pdf.text('Bpk. Hendra Wijaya', pageW - margin - 50, 246);
+    pdf.text(pembimbingData.namaSekolah, margin, 246); pdf.text(pembimbingData.namaIndustri, pageW - margin - 50, 246);
     pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
-    pdf.text('SMK Negeri 1 Buay Madang', margin, 251); pdf.text('Konveksi Jersey Eco Sport', pageW - margin - 50, 251);
+    pdf.text(pembimbingData.institusiSekolah, margin, 251); pdf.text(pembimbingData.institusiIndustri, pageW - margin - 50, 251);
+    // Tambahkan NIP / Jabatan di bawah institusi
+    pdf.setFontSize(7); pdf.setTextColor(139, 146, 155);
+    if (pembimbingData.jabatanSekolah) pdf.text(pembimbingData.jabatanSekolah, margin, 256);
+    if (pembimbingData.jabatanIndustri) pdf.text(pembimbingData.jabatanIndustri, pageW - margin - 50, 256);
     
     const pageCount = pdf.internal.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
@@ -2449,9 +2607,9 @@ if (document.getElementById('removePreview')) {
 document.getElementById('btnLogoutHeader').addEventListener('click', logoutAdmin);
 document.getElementById('btnLogoutSidebar').addEventListener('click', logoutAdmin);
 
-document.getElementById('btnDownloadPdfPublic').addEventListener('click', function() { generatePDF(this); });
-document.getElementById('btnDownloadPdfAdmin').addEventListener('click', function() { generatePDF(this); });
-document.getElementById('btnDownloadPdfReports').addEventListener('click', function() { generatePDF(this); });
+document.getElementById('btnDownloadPdfPublic').addEventListener('click', function() { openPembimbingEditor(this); });
+document.getElementById('btnDownloadPdfAdmin').addEventListener('click', function() { openPembimbingEditor(this); });
+document.getElementById('btnDownloadPdfReports').addEventListener('click', function() { openPembimbingEditor(this); });
 
 document.getElementById('adminLoginModal').addEventListener('click', function(e) {
   if (e.target.id === 'adminLoginModal') closeAdminLogin();
@@ -2459,15 +2617,15 @@ document.getElementById('adminLoginModal').addEventListener('click', function(e)
 document.getElementById('adminFormModal').addEventListener('click', function(e) {
   if (e.target.id === 'adminFormModal') closeAdminForm();
 });
+document.getElementById('pembimbingEditorModal').addEventListener('click', function(e) {
+  if (e.target.id === 'pembimbingEditorModal') closePembimbingEditor();
+});
 
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
-    if (document.getElementById('adminFormModal').classList.contains('show')) closeAdminForm();
+    if (document.getElementById('pembimbingEditorModal').classList.contains('show')) closePembimbingEditor();
+    else if (document.getElementById('adminFormModal').classList.contains('show')) closeAdminForm();
     else if (document.getElementById('adminLoginModal').classList.contains('show')) closeAdminLogin();
-    else if (!document.getElementById('galleryModal').classList.contains('hidden')) {
-      document.getElementById('galleryModal').classList.add('hidden');
-      document.getElementById('galleryModal').classList.remove('flex');
-    }
   }
 });
 
